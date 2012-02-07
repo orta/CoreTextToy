@@ -18,6 +18,9 @@
 		4548A9F6145B2422001C5654 /* CResizerThumb.m in Sources */ = {isa = PBXBuildFile; fileRef = 4548A9F5145B2422001C5654 /* CResizerThumb.m */; };
 		455C9FCE14548BDC0098B70F /* reply-badge.png in Resources */ = {isa = PBXBuildFile; fileRef = 455C9FCD14548BDC0098B70F /* reply-badge.png */; };
 		455C9FD214548E8E0098B70F /* Craig.png in Resources */ = {isa = PBXBuildFile; fileRef = 455C9FD114548E8E0098B70F /* Craig.png */; };
+		4571656314D1B7CB00FF71FA /* AtWork.gif in Resources */ = {isa = PBXBuildFile; fileRef = 4571656214D1B7CB00FF71FA /* AtWork.gif */; };
+		4571656E14D1B97F00FF71FA /* ImageIO.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4571656D14D1B97F00FF71FA /* ImageIO.framework */; };
+		4571657014D1B9B600FF71FA /* puke.gif in Resources */ = {isa = PBXBuildFile; fileRef = 4571656F14D1B9B600FF71FA /* puke.gif */; };
 		45789C5D145F1338004EA63E /* CCoreTextAttachment.m in Sources */ = {isa = PBXBuildFile; fileRef = 45789C5C145F1338004EA63E /* CCoreTextAttachment.m */; };
 		4592051D145A68D000DECA27 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4592051C145A68D000DECA27 /* QuartzCore.framework */; };
 		45920521145A6A9700DECA27 /* CTwitterStyleTweetTextLabel.m in Sources */ = {isa = PBXBuildFile; fileRef = 45920520145A6A9700DECA27 /* CTwitterStyleTweetTextLabel.m */; };
@@ -58,6 +61,9 @@
 		4548A9F5145B2422001C5654 /* CResizerThumb.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CResizerThumb.m; sourceTree = "<group>"; };
 		455C9FCD14548BDC0098B70F /* reply-badge.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "reply-badge.png"; sourceTree = "<group>"; };
 		455C9FD114548E8E0098B70F /* Craig.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Craig.png; sourceTree = "<group>"; };
+		4571656214D1B7CB00FF71FA /* AtWork.gif */ = {isa = PBXFileReference; lastKnownFileType = image.gif; path = AtWork.gif; sourceTree = "<group>"; };
+		4571656D14D1B97F00FF71FA /* ImageIO.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = ImageIO.framework; path = System/Library/Frameworks/ImageIO.framework; sourceTree = SDKROOT; };
+		4571656F14D1B9B600FF71FA /* puke.gif */ = {isa = PBXFileReference; lastKnownFileType = image.gif; path = puke.gif; sourceTree = "<group>"; };
 		45789C5B145F1338004EA63E /* CCoreTextAttachment.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CCoreTextAttachment.h; sourceTree = "<group>"; };
 		45789C5C145F1338004EA63E /* CCoreTextAttachment.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CCoreTextAttachment.m; sourceTree = "<group>"; };
 		4592051C145A68D000DECA27 /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
@@ -101,6 +107,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				4571656E14D1B97F00FF71FA /* ImageIO.framework in Frameworks */,
 				4592051D145A68D000DECA27 /* QuartzCore.framework in Frameworks */,
 				45FF286D13CD695E006D9574 /* CoreText.framework in Frameworks */,
 				45FF283313CD6920006D9574 /* UIKit.framework in Frameworks */,
@@ -180,6 +187,7 @@
 		45FF283113CD6920006D9574 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				4571656D14D1B97F00FF71FA /* ImageIO.framework */,
 				4592051C145A68D000DECA27 /* QuartzCore.framework */,
 				45FF286C13CD695E006D9574 /* CoreText.framework */,
 				45FF283213CD6920006D9574 /* UIKit.framework */,
@@ -210,6 +218,8 @@
 				45161E8D1635E14600E74EF1 /* CSimpleViewController.m */,
 				453427E914C64D1D00E1D75E /* Lorem.txt */,
 				455C9FCD14548BDC0098B70F /* reply-badge.png */,
+				4571656214D1B7CB00FF71FA /* AtWork.gif */,
+				4571656F14D1B9B600FF71FA /* puke.gif */,
 				455C9FD114548E8E0098B70F /* Craig.png */,
 				4548A9F1145B22D5001C5654 /* Thumb.png */,
 				45FF283913CD6920006D9574 /* Supporting Files */,
@@ -287,6 +297,8 @@
 				455C9FD214548E8E0098B70F /* Craig.png in Resources */,
 				4548A9F2145B22D5001C5654 /* Thumb.png in Resources */,
 				453427EA14C64D1D00E1D75E /* Lorem.txt in Resources */,
+				4571656314D1B7CB00FF71FA /* AtWork.gif in Resources */,
+				4571657014D1B9B600FF71FA /* puke.gif in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -81,184 +81,180 @@ NSString *const kSimpleHTMLParserErrorDomain = @"kSimpleHTMLParserErrorDomain";
 
 - (BOOL)parseString:(NSString *)inString error:(NSError **)outError
     {
-    @autoreleasepool
+    NSMutableCharacterSet *theCharacterSet = [self.whitespaceCharacterSet mutableCopy];
+    [theCharacterSet addCharactersInString:@"<&"];
+    [theCharacterSet invert];
+
+    NSScanner *theScanner = [[NSScanner alloc] initWithString:inString];
+    theScanner.charactersToBeSkipped = NULL;
+
+    NSMutableArray *theTagStack = [NSMutableArray array];
+
+    __block NSMutableString *theString = [NSMutableString string];
+
+    BOOL theLastCharacterWasWhitespace = NO;
+
+    while ([theScanner isAtEnd] == NO)
         {
-        NSMutableCharacterSet *theCharacterSet = [self.whitespaceCharacterSet mutableCopy];
-        [theCharacterSet addCharactersInString:@"<&"];
-        [theCharacterSet invert];
+        NSString *theRun = NULL;
 
-        NSScanner *theScanner = [[NSScanner alloc] initWithString:inString];
-        theScanner.charactersToBeSkipped = NULL;
+        NSString *theTagName = NULL;
+        NSDictionary *theAttributes = NULL;
 
-        NSMutableArray *theTagStack = [NSMutableArray array];
-        NSMutableString *theString = [NSMutableString string];
-
-        BOOL theLastCharacterWasWhitespace = NO;
-
-        while ([theScanner isAtEnd] == NO)
+        if ([theScanner scanCloseTag:&theTagName] == YES)
             {
-            @autoreleasepool
+            CSimpleHTMLTag *theTag = [[CSimpleHTMLTag alloc] init];
+            theTag.name = theTagName;
+            
+            if (theString.length > 0)
                 {
-                NSString *theRun = NULL;
-                NSString *theTagName = NULL;
-                NSDictionary *theAttributes = NULL;
+                theLastCharacterWasWhitespace = [[NSCharacterSet whitespaceCharacterSet] characterIsMember:[theString characterAtIndex:theString.length - 1]];
+                self.textHandler(theString, theTagStack);
+                }
+            theString = [NSMutableString string];
 
-                if ([theScanner scanCloseTag:&theTagName] == YES)
+            self.closeTagHandler(theTag, theTagStack);
+
+            NSUInteger theIndex = [theTagStack indexOfObjectWithOptions:NSEnumerationReverse passingTest:^BOOL(id obj, NSUInteger idx, BOOL *stop) { return([[obj name] isEqualToString:theTagName]); }];
+            if (theIndex == NSNotFound)
+                {
+                if (outError)
                     {
-                    CSimpleHTMLTag *theTag = [[CSimpleHTMLTag alloc] init];
-                    theTag.name = theTagName;
-                    
-                    if (theString.length > 0)
-                        {
-                        theLastCharacterWasWhitespace = [[NSCharacterSet whitespaceCharacterSet] characterIsMember:[theString characterAtIndex:theString.length - 1]];
-                        self.textHandler(theString, theTagStack);
-                        }
-                    theString = [NSMutableString string];
-
-                    self.closeTagHandler(theTag, theTagStack);
-
-                    NSUInteger theIndex = [theTagStack indexOfObjectWithOptions:NSEnumerationReverse passingTest:^BOOL(id obj, NSUInteger idx, BOOL *stop) { return([[obj name] isEqualToString:theTagName]); }];
-                    if (theIndex == NSNotFound)
-                        {
-                        if (outError)
-                            {
-                            NSDictionary *theUserInfo = [NSDictionary dictionaryWithObjectsAndKeys:
-                                @"Stack underflow", NSLocalizedDescriptionKey,
-                                NULL];
-                            *outError = [NSError errorWithDomain:kSimpleHTMLParserErrorDomain code:kSimpleHTMLParserErrorCode_StackUnderflow userInfo:theUserInfo];
-                            }
-                        return(NO);
-                        }
-
-                    [theTagStack removeObjectsInRange:(NSRange){ .location = theIndex, .length = theTagStack.count - theIndex }];
+                    NSDictionary *theUserInfo = [NSDictionary dictionaryWithObjectsAndKeys:
+                        @"Stack underflow", NSLocalizedDescriptionKey,
+                        NULL];
+                    *outError = [NSError errorWithDomain:kSimpleHTMLParserErrorDomain code:kSimpleHTMLParserErrorCode_StackUnderflow userInfo:theUserInfo];
                     }
-                else if ([theScanner scanOpenTag:&theTagName attributes:&theAttributes] == YES)
-                    {
-                    CSimpleHTMLTag *theTag = [[CSimpleHTMLTag alloc] init];
-                    theTag.name = theTagName;
-                    theTag.attributes = theAttributes;
+                return(NO);
+                }
 
-                    if (theString.length > 0)
-                        {
-                        theLastCharacterWasWhitespace = NO;
-                        self.textHandler(theString, theTagStack);
-                        theString = [NSMutableString string];
-                        }
+            [theTagStack removeObjectsInRange:(NSRange){ .location = theIndex, .length = theTagStack.count - theIndex }];
+            }
+        else if ([theScanner scanOpenTag:&theTagName attributes:&theAttributes] == YES)
+            {
+            CSimpleHTMLTag *theTag = [[CSimpleHTMLTag alloc] init];
+            theTag.name = theTagName;
+            theTag.attributes = theAttributes;
 
-                    if ([theTagName isEqualToString:@"br"])
-                        {
-                        theLastCharacterWasWhitespace = YES;
-                        self.textHandler(@"\n", theTagStack);
-                        theString = [NSMutableString string];
-                        }
-                    else
-                        {
-                        self.openTagHandler(theTag, theTagStack);
+            if (theString.length > 0)
+                {
+                theLastCharacterWasWhitespace = NO;
+                self.textHandler(theString, theTagStack);
+                theString = [NSMutableString string];
+                }
 
-                        [theTagStack addObject:theTag];
-                        }
-                    }
-                else if ([theScanner scanStandaloneTag:&theTagName attributes:&theAttributes] == YES)
-                    {
-                    CSimpleHTMLTag *theTag = [[CSimpleHTMLTag alloc] init];
-                    theTag.name = theTagName;
-                    theTag.attributes = theAttributes;
+            if ([theTagName isEqualToString:@"br"])
+                {
+                theLastCharacterWasWhitespace = YES;
+                self.textHandler(@"\n", theTagStack);
+                theString = [NSMutableString string];
+                }
+            else
+                {
+                self.openTagHandler(theTag, theTagStack);
 
-                    if (theString.length > 0)
-                        {
-                        theLastCharacterWasWhitespace = NO;
-                        self.textHandler(theString, theTagStack);
-                        theString = [NSMutableString string];
-                        }
-
-                    if ([theTagName isEqualToString:@"br"])
-                        {
-                        theLastCharacterWasWhitespace = YES;
-                        self.textHandler(@"\n", theTagStack);
-                        theString = [NSMutableString string];
-                        }
-                    else
-                        {
-                        self.openTagHandler(theTag, theTagStack);
-                        self.closeTagHandler(theTag, theTagStack);
-                        }
-                    }
-                else if ([theScanner scanString:@"&" intoString:NULL] == YES)
-                    {
-                    NSString *theEntity = NULL;
-                    if ([theScanner scanUpToString:@";" intoString:&theEntity] == NO)
-                        {
-                        if (outError)
-                            {
-                            NSDictionary *theUserInfo = [NSDictionary dictionaryWithObjectsAndKeys:
-                                @"& not followed by ;", NSLocalizedDescriptionKey,
-                                NULL];
-                            *outError = [NSError errorWithDomain:kSimpleHTMLParserErrorDomain code:kSimpleHTMLParserErrorCode_MalformedEntity userInfo:theUserInfo];
-                            }
-                        return(NO);
-                        }
-                    if ([theScanner scanString:@";" intoString:NULL] == NO)
-                        {
-                        if (outError)
-                            {
-                            NSDictionary *theUserInfo = [NSDictionary dictionaryWithObjectsAndKeys:
-                                @"& not followed by ;", NSLocalizedDescriptionKey,
-                                NULL];
-                            *outError = [NSError errorWithDomain:kSimpleHTMLParserErrorDomain code:kSimpleHTMLParserErrorCode_MalformedEntity userInfo:theUserInfo];
-                            }
-                        return(NO);
-                        }
-
-                    if (theString.length > 0)
-                        {
-                        theLastCharacterWasWhitespace = [self.whitespaceCharacterSet characterIsMember:[theString characterAtIndex:theString.length - 1]];
-                        self.textHandler(theString, theTagStack);
-                        theString = [NSMutableString string];
-                        }
-
-                    NSString *theEntityString = [self stringForEntity:theEntity];
-                    if (theEntityString.length > 0)
-                        {
-                        self.textHandler(theEntityString, theTagStack);
-                        theLastCharacterWasWhitespace = NO;
-                        }
-                    }
-                else if ([theScanner scanCharactersFromSet:self.whitespaceCharacterSet intoString:NULL])
-                    {
-                    if (theLastCharacterWasWhitespace == NO)
-                        {
-                        [theString appendString:@" "];
-                        theLastCharacterWasWhitespace = YES;
-                        }
-                    }
-                else if ([theScanner scanCharactersFromSet:theCharacterSet intoString:&theRun])
-                    {
-                    [theString appendString:theRun];
-                    theLastCharacterWasWhitespace = [self.whitespaceCharacterSet characterIsMember:[theString characterAtIndex:theString.length - 1]];
-                    }
-                else
-                    {
-                    if (outError)
-                        {
-                        NSDictionary *theUserInfo = [NSDictionary dictionaryWithObjectsAndKeys:
-                            @"Unknown error occured!", NSLocalizedDescriptionKey,
-                            [NSNumber numberWithInt:theScanner.scanLocation], @"character",
-                            inString, @"markup",
-                            NULL];
-                        *outError = [NSError errorWithDomain:kSimpleHTMLParserErrorDomain code:kSimpleHTMLParserErrorCode_UnknownError userInfo:theUserInfo];
-                        }
-                    return(NO);
-                    }
+                [theTagStack addObject:theTag];
                 }
             }
-
-        if (theString.length > 0)
+        else if ([theScanner scanStandaloneTag:&theTagName attributes:&theAttributes] == YES)
             {
+            CSimpleHTMLTag *theTag = [[CSimpleHTMLTag alloc] init];
+            theTag.name = theTagName;
+            theTag.attributes = theAttributes;
+
+            if (theString.length > 0)
+                {
+                theLastCharacterWasWhitespace = NO;
+                self.textHandler(theString, theTagStack);
+                theString = [NSMutableString string];
+                }
+
+            if ([theTagName isEqualToString:@"br"])
+                {
+                theLastCharacterWasWhitespace = YES;
+                self.textHandler(@"\n", theTagStack);
+                theString = [NSMutableString string];
+                }
+            else
+                {
+                self.openTagHandler(theTag, theTagStack);
+                self.closeTagHandler(theTag, theTagStack);
+                }
+            }
+        else if ([theScanner scanString:@"&" intoString:NULL] == YES)
+            {
+            NSString *theEntity = NULL;
+            if ([theScanner scanUpToString:@";" intoString:&theEntity] == NO)
+                {
+                if (outError)
+                    {
+                    NSDictionary *theUserInfo = [NSDictionary dictionaryWithObjectsAndKeys:
+                        @"& not followed by ;", NSLocalizedDescriptionKey,
+                        NULL];
+                    *outError = [NSError errorWithDomain:kSimpleHTMLParserErrorDomain code:kSimpleHTMLParserErrorCode_MalformedEntity userInfo:theUserInfo];
+                    }
+                return(NO);
+                }
+            if ([theScanner scanString:@";" intoString:NULL] == NO)
+                {
+                if (outError)
+                    {
+                    NSDictionary *theUserInfo = [NSDictionary dictionaryWithObjectsAndKeys:
+                        @"& not followed by ;", NSLocalizedDescriptionKey,
+                        NULL];
+                    *outError = [NSError errorWithDomain:kSimpleHTMLParserErrorDomain code:kSimpleHTMLParserErrorCode_MalformedEntity userInfo:theUserInfo];
+                    }
+                return(NO);
+                }
+
+            if (theString.length > 0)
+                {
+                theLastCharacterWasWhitespace = [self.whitespaceCharacterSet characterIsMember:[theString characterAtIndex:theString.length - 1]];
+                self.textHandler(theString, theTagStack);
+                theString = [NSMutableString string];
+                }
+
+            NSString *theEntityString = [self stringForEntity:theEntity];
+            if (theEntityString.length > 0)
+                {
+                self.textHandler(theEntityString, theTagStack);
+                theLastCharacterWasWhitespace = NO;
+                }
+            }
+        else if ([theScanner scanCharactersFromSet:self.whitespaceCharacterSet intoString:NULL])
+            {
+            if (theLastCharacterWasWhitespace == NO)
+                {
+                [theString appendString:@" "];
+                theLastCharacterWasWhitespace = YES;
+                }
+            }
+        else if ([theScanner scanCharactersFromSet:theCharacterSet intoString:&theRun])
+            {
+            [theString appendString:theRun];
             theLastCharacterWasWhitespace = [self.whitespaceCharacterSet characterIsMember:[theString characterAtIndex:theString.length - 1]];
-            self.textHandler(theString, theTagStack);
+            }
+        else
+            {
+            if (outError)
+                {
+                NSDictionary *theUserInfo = [NSDictionary dictionaryWithObjectsAndKeys:
+                    @"Unknown error occured!", NSLocalizedDescriptionKey,
+                    [NSNumber numberWithInt:theScanner.scanLocation], @"character",
+                    inString, @"markup",
+                    NULL];
+                *outError = [NSError errorWithDomain:kSimpleHTMLParserErrorDomain code:kSimpleHTMLParserErrorCode_UnknownError userInfo:theUserInfo];
+                }
+            return(NO);
             }
         }
-        
+
+    if (theString.length > 0)
+        {
+        theLastCharacterWasWhitespace = [self.whitespaceCharacterSet characterIsMember:[theString characterAtIndex:theString.length - 1]];
+        self.textHandler(theString, theTagStack);
+        }
+
     return(YES);
     }
 

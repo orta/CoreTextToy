@@ -37,40 +37,28 @@
 
 + (NSSet *)featuresForFontName:(NSString *)inFontName
     {
-        
-    NSMutableSet *theFeatures = nil;
-        
-    // In this section we use the NSScanner method
-    // - (BOOL)scanCharactersFromSet:(NSCharacterSet *)scanSet intoString:(NSString **)stringValue
-    // Apparently `stringValue` is autoreleased and ARC does not handle that properly.
-    // Therefore we need this autorelease pool.
-    @autoreleasepool
-    {
-            
-        NSScanner *theScanner = [[NSScanner alloc] initWithString:inFontName];
+    NSScanner *theScanner = [[NSScanner alloc] initWithString:inFontName];
 
-        if ([theScanner scanCharactersFromSet:[NSCharacterSet letterCharacterSet] intoString:NULL] == NO)
-            {
-            NSLog(@"Could not scan font name");
-            return(NULL);
-            }
+    if ([theScanner scanCharactersFromSet:[NSCharacterSet letterCharacterSet] intoString:NULL] == NO)
+        {
+        NSLog(@"Could not scan font name");
+        return(NULL);
+        }
 
-        [theScanner scanString:@"-" intoString:NULL];
+    [theScanner scanString:@"-" intoString:NULL];
 
-        theFeatures = [NSMutableSet set];
+    NSMutableSet *theFeatures = [NSMutableSet set];
 
-        while([theScanner isAtEnd] == NO)
-            {
-            NSString *theLetter;
-            [theScanner scanUpToCharactersFromSet:[NSCharacterSet lowercaseLetterCharacterSet] intoString:&theLetter];
+    while([theScanner isAtEnd] == NO)
+        {
+        NSString *theLetter;
+        [theScanner scanUpToCharactersFromSet:[NSCharacterSet lowercaseLetterCharacterSet] intoString:&theLetter];
 
-            NSString *theRemainder;
-            [theScanner scanUpToCharactersFromSet:[NSCharacterSet uppercaseLetterCharacterSet] intoString:&theRemainder];
+        NSString *theRemainder;
+        [theScanner scanUpToCharactersFromSet:[NSCharacterSet uppercaseLetterCharacterSet] intoString:&theRemainder];
 
-            [theFeatures addObject:[theLetter stringByAppendingString:theRemainder]];
-            }
-            
-    }
+        [theFeatures addObject:[theLetter stringByAppendingString:theRemainder]];
+        }
 
     return(theFeatures);
     }

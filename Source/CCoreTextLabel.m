@@ -40,6 +40,10 @@
 #import "UIColor+Hex.h"
 #import "NSAttributedString_Extensions.h"
 
+// For conenience CCoreTextRenderer deals with CFRanges, CCoreTextLabel deals with NSRanges.
+#define CFRangeToNSRange_(r) ({ const CFRange r_ = (r); (NSRange){ r_.location, r_.length }; })
+#define NSRangeToCFRange_(r) ({ const NSRange r_ = (r); (CFRange){ r_.location, r_.length }; })
+
 @interface CCoreTextLabel ()
 @property (readwrite, nonatomic, strong) CCoreTextRenderer *renderer;
 
@@ -295,7 +299,7 @@
 
         if (self.lineBreakMode != self.lastLineBreakMode && renderer.visibleLines.count > 1)
             {
-            NSRange theLastLineRange = [renderer rangeOfLastLine];
+            NSRange theLastLineRange = CFRangeToNSRange_([renderer rangeOfLastLine]);
             
             CTParagraphStyleRef theParagraphStyle = [[self class] createParagraphStyleForAttributes:NULL alignment:[[self class] CTLineBreakModeForUITextAlignment:self.textAlignment] lineBreakMode:kCTLineBreakByTruncatingTail];
 
@@ -389,12 +393,13 @@
     
 - (NSArray *)rectsForRange:(NSRange)inRange;
     {
-    return([self.renderer rectsForRange:inRange]);
+    return([self.renderer rectsForRange:NSRangeToCFRange_(inRange)]);
     }
 
 - (NSDictionary *)attributesAtPoint:(CGPoint)inPoint effectiveRange:(NSRange *)outRange
     {
-    return([self.renderer attributesAtPoint:inPoint effectiveRange:outRange]);
+    NSDictionary *theDictionary = [self.renderer attributesAtPoint:inPoint effectiveRange:(CFRange *)outRange];
+    return(theDictionary);
     }
     
 #pragma mark -

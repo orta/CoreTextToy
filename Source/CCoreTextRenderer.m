@@ -327,7 +327,7 @@
 
 #pragma mark -
 
-- (NSDictionary *)attributesAtPoint:(CGPoint)inPoint effectiveRange:(NSRange *)outRange
+- (NSDictionary *)attributesAtPoint:(CGPoint)inPoint effectiveRange:(CFRange *)outRange
     {
     const NSUInteger theIndex = [self indexAtPoint:inPoint];
     if (theIndex == NSNotFound || theIndex >= self.text.length)
@@ -336,12 +336,12 @@
         }
     else
         {
-        NSDictionary *theAttributes = [self.text attributesAtIndex:theIndex effectiveRange:outRange];
+        NSDictionary *theAttributes = [self.text attributesAtIndex:theIndex effectiveRange:(NSRange *)outRange];
         return(theAttributes);
         }
     }
     
-- (NSArray *)rectsForRange:(NSRange)inRange
+- (NSArray *)rectsForRange:(CFRange)inRange
     {
     NSMutableArray *theRects = [NSMutableArray array];
 
@@ -417,13 +417,13 @@
     return([theVisibleLines copy]);
     }
 
-- (NSRange)rangeOfLastLine
+- (CFRange)rangeOfLastLine
     {
     CTLineRef theLine = (__bridge CTLineRef)[self.visibleLines lastObject];
     
     CFRange theRange = CTLineGetStringRange(theLine);
     
-    return((NSRange){ .location = theRange.location, .length = theRange.length });
+    return((CFRange){ .location = theRange.location, .length = theRange.length });
     }
 
 #pragma mark -

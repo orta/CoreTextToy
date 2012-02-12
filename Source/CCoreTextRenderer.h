@@ -25,10 +25,10 @@
 - (CGSize)sizeThatFits:(CGSize)inSize;
 - (void)drawInContext:(CGContextRef)inContext;
 
-- (NSDictionary *)attributesAtPoint:(CGPoint)inPoint effectiveRange:(NSRange *)outRange;
-- (NSArray *)rectsForRange:(NSRange)inRange;
+- (NSDictionary *)attributesAtPoint:(CGPoint)inPoint effectiveRange:(CFRange *)outRange;
+- (NSArray *)rectsForRange:(CFRange)inRange;
 - (NSUInteger)indexAtPoint:(CGPoint)inPoint;
 - (NSArray *)visibleLines;
-- (NSRange)rangeOfLastLine;
+- (CFRange)rangeOfLastLine;
 
 @end

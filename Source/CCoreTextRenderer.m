@@ -243,22 +243,19 @@
         }
     else
         {
-        NSUInteger idx = 0;
-        NSArray *theLines = (__bridge NSArray *)CTFrameGetLines(self.frame);
-        for (id obj in theLines)
-            {
-            CTLineRef theLine = (__bridge CTLineRef)obj;
+        const CGPoint *theLineOrigins = self.lineOrigins;
 
+        [self enumerateLines:^(CTLineRef line, NSUInteger idx, BOOL *stop) {
             // ### Get the line rect offseting it by the line origin
-            const CGPoint theLineOrigin = self.lineOrigins[idx];
+            const CGPoint theLineOrigin = theLineOrigins[idx];
 
             CGContextSetTextPosition(inContext, theLineOrigin.x, theLineOrigin.y);
             
             // ### Iterate each run... Keeping track of our X position...
-            NSArray *theRuns = (__bridge NSArray *)CTLineGetGlyphRuns(theLine);
-            for (id oneRun in theRuns)
-                {
-                CTRunRef theRun = (__bridge CTRunRef)oneRun;
+            NSArray *theRuns = (__bridge NSArray *)CTLineGetGlyphRuns(line);
+            [theRuns enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
+
+                CTRunRef theRun = (__bridge CTRunRef)obj;
 
                 // TODO: Optimisation instead of constantly saving/restoring state and setting shadow we can keep track of current shadow and only save/restore/set when there's a change.
                 NSDictionary *theAttributes = (__bridge NSDictionary *)CTRunGetAttributes(theRun);
@@ -283,10 +280,11 @@
                     {
                     CGContextRestoreGState(inContext);
                     }
-                }
 
-            idx++;
-            }
+                }];
+
+            }];
+        
         }
 
     // ### Reset the text position (important!)
@@ -406,8 +404,6 @@
             }
         }];
     
-    
-    
     return([theVisibleLines copy]);
     }
 
@@ -437,21 +433,15 @@
     NSParameterAssert(inHandler != NULL);
 
     // ### Iterate through each line...
-    NSUInteger idx = 0;
-    NSArray *theLines = (__bridge NSArray *)CTFrameGetLines(self.frame);
-    for (id obj in theLines)
-        {
-        CTLineRef theLine = (__bridge CTLineRef)obj;
-
+    [self enumerateLines:^(CTLineRef line, NSUInteger idx, BOOL *stop) {
         // ### Get the line rect offseting it by the line origin
         const CGPoint theLineOrigin = self.lineOrigins[idx];
         
         // ### Iterate each run... Keeping track of our X position...
-        CGFloat theXPosition = 0;
-        NSArray *theRuns = (__bridge NSArray *)CTLineGetGlyphRuns(theLine);
-        for (id oneRun in theRuns)
-            {
-            CTRunRef theRun = (__bridge CTRunRef)oneRun;
+        __block CGFloat theXPosition = 0;
+        NSArray *theRuns = (__bridge NSArray *)CTLineGetGlyphRuns(line);
+        [theRuns enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
+            CTRunRef theRun = (__bridge CTRunRef)obj;
             
             // ### Get the ascent, descent, leading, width and produce a rect for the run...
             CGFloat theAscent, theDescent, theLeading;
@@ -464,12 +454,9 @@
             inHandler(theRun, theRunRect);
 
             theXPosition += theWidth;
-            }
-
-        idx++;
-        }
+            }];
+        }];
     }
-
 
 #pragma mark -
 

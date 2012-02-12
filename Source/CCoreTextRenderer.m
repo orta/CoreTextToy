@@ -14,6 +14,8 @@
 #import "CCoreTextAttachment.h"
 #import "NSAttributedString_Extensions.h"
 
+static CFRange MyCFRangeIntersection(CFRange R1, CFRange R2);
+
 @interface CCoreTextRenderer ()
 @property (readwrite, nonatomic, strong) NSMutableDictionary *prerenderersForAttributes;
 @property (readwrite, nonatomic, strong) NSMutableDictionary *postRenderersForAttributes;
@@ -221,7 +223,7 @@
     // ### If we have any pre-render blocks we enumerate over the runs and fire the blocks if the attributes match...
     if (self.prerenderersForAttributes.count > 0)
         {
-        [self enumerateRuns:^(CTRunRef inRun, CGRect inRect) {
+        [self enumerateRuns:^(CTRunRef inRun, CGRect inRect, NSUInteger idx, BOOL *stop) {
             NSDictionary *theAttributes = (__bridge NSDictionary *)CTRunGetAttributes(inRun);
             [self.prerenderersForAttributes enumerateKeysAndObjectsUsingBlock:^(id key, id obj, BOOL *stop) {
                 if ([theAttributes objectForKey:key])
@@ -293,7 +295,7 @@
     // ### If we have any pre-render blocks we enumerate over the runs and fire the blocks if the attributes match...
     if (self.postRenderersForAttributes.count > 0)
         {
-        [self enumerateRuns:^(CTRunRef inRun, CGRect inRect) {
+        [self enumerateRuns:^(CTRunRef inRun, CGRect inRect, NSUInteger idx, BOOL *stop) {
             NSDictionary *theAttributes = (__bridge NSDictionary *)CTRunGetAttributes(inRun);
             [self.postRenderersForAttributes enumerateKeysAndObjectsUsingBlock:^(id key, id obj, BOOL *stop) {
                 if ([theAttributes objectForKey:key])
@@ -308,7 +310,7 @@
     CGContextRestoreGState(inContext);
 
     // ### Now that the CTM is restored. Iterate through each line and render any attachments.
-    [self enumerateRuns:^(CTRunRef inRun, CGRect inRect) {
+    [self enumerateRuns:^(CTRunRef inRun, CGRect inRect, NSUInteger idx, BOOL *stop) {
         NSDictionary *theAttributes = (__bridge NSDictionary *)CTRunGetAttributes(inRun);
         // ### If we have an image we draw it...
         CCoreTextAttachment *theAttachment = [theAttributes objectForKey:kMarkupAttachmentAttributeName];
@@ -336,27 +338,6 @@
         NSDictionary *theAttributes = [self.text attributesAtIndex:theIndex effectiveRange:(NSRange *)outRange];
         return(theAttributes);
         }
-    }
-    
-- (NSArray *)rectsForRange:(CFRange)inRange
-    {
-    NSMutableArray *theRects = [NSMutableArray array];
-
-    [self enumerateRuns:^(CTRunRef inRun, CGRect inRect) {
-
-//    NSIntersectionRange(inRange, 
-    
-        CFRange theRunRange = CTRunGetStringRange(inRun);
-        if (theRunRange.location >= (CFIndex)inRange.location && theRunRange.location <= (CFIndex)inRange.location + (CFIndex)inRange.length)
-            {
-            inRect.origin.y *= -1;
-            inRect.origin.y += self.size.height -  inRect.size.height;
-            
-            [theRects addObject:[NSValue valueWithCGRect:inRect]];
-            }
-        }];
-
-    return(theRects);
     }
     
 - (NSUInteger)indexAtPoint:(CGPoint)inPoint
@@ -428,7 +409,7 @@
         }];
     }
 
-- (void)enumerateRuns:(void (^)(CTRunRef, CGRect))inHandler
+- (void)enumerateRuns:(void (^)(CTRunRef, CGRect, NSUInteger, BOOL *))inHandler
     {
     NSParameterAssert(inHandler != NULL);
 
@@ -442,21 +423,76 @@
         NSArray *theRuns = (__bridge NSArray *)CTLineGetGlyphRuns(line);
         [theRuns enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
             CTRunRef theRun = (__bridge CTRunRef)obj;
+
+            CGFloat theAscent, theDescent, theLeading;
+            CGFloat theWidth = CTRunGetTypographicBounds(theRun, (CFRange){ }, &theAscent, &theDescent, &theLeading);
             
             // ### Get the ascent, descent, leading, width and produce a rect for the run...
-            CGFloat theAscent, theDescent, theLeading;
-            double theWidth = CTRunGetTypographicBounds(theRun, (CFRange){}, &theAscent, &theDescent, &theLeading);
             CGRect theRunRect = {
                 .origin = { theLineOrigin.x + theXPosition, theLineOrigin.y },
-                .size = { (CGFloat)theWidth, theAscent + theDescent },
+                .size = { theWidth, theAscent },
                 };
 
-            inHandler(theRun, theRunRect);
+            inHandler(theRun, theRunRect, idx, stop);
 
-            theXPosition += theWidth;
+            theXPosition += theRunRect.size.width;
             }];
         }];
     }
+
+- (void)enumerateRunsForRange:(CFRange)inRange handler:(void (^)(CTRunRef inRun, CFRange inRunRange, CGRect inRect, NSUInteger idx, BOOL *stop))inHandler
+    {
+    NSParameterAssert(inHandler != NULL);
+
+    __block NSUInteger theIndex = 0;
+
+    // ### Iterate through each line...
+    [self enumerateLines:^(CTLineRef line, NSUInteger idx, BOOL *stop) {
+        // ### Get the line rect offseting it by the line origin
+        const CGPoint theLineOrigin = self.lineOrigins[idx];
+        
+        // ### Iterate each run... Keeping track of our X position...
+        __block CGFloat theXPosition = 0;
+        NSArray *theRuns = (__bridge NSArray *)CTLineGetGlyphRuns(line);
+        [theRuns enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
+            CTRunRef theRun = (__bridge CTRunRef)obj;
+
+            const CFRange theRunRange = CTRunGetStringRange(theRun);
+            const CFRange theIntersection = MyCFRangeIntersection(inRange, theRunRange);
+            if (theIntersection.length > 0)
+                {
+                CGFloat theAscent, theDescent, theLeading;
+                
+                CFRange theRange = (CFRange){ theIntersection.location - theRunRange.location, .length = theIntersection.length };
+                CGFloat theWidth = CTRunGetTypographicBounds(theRun, theRange, &theAscent, &theDescent, &theLeading);
+                
+                // ### Get the ascent, descent, leading, width and produce a rect for the run...
+                CGRect theRunRect = {
+                    .origin = { theLineOrigin.x + theXPosition, theLineOrigin.y },
+                    .size = { theWidth, theAscent },
+                    };
+
+                inHandler(theRun, theRunRange, theRunRect, theIndex++, stop);
+
+                theXPosition += theRunRect.size.width;
+                }
+            }];
+        }];
+    }
+
+
+- (void)enumerateRectForRange:(CFRange)inRange handler:(void (^)(CGRect, NSUInteger, BOOL *))inHandler
+    {
+    [self enumerateRunsForRange:inRange handler:^(CTRunRef inRun, CFRange inRunRange, CGRect inRect, NSUInteger idx, BOOL *stop) {
+
+        inRect.origin.y *= -1;
+        inRect.origin.y += self.size.height - inRect.size.height;
+        inRect.size.height += 4;
+        
+        inHandler(inRect, idx, stop);
+        }];
+    }
+
 
 #pragma mark -
 
@@ -479,3 +515,21 @@
     }
 
 @end
+
+#pragma mark -
+
+static CFRange MyCFRangeIntersection(CFRange R1, CFRange R2)
+    {
+    CFRange theRange = { NSNotFound, 0 };
+    NSUInteger theLocation = MAX(R1.location, R2.location);
+    NSInteger theLength = MIN(R1.location + R1.length, R2.location + R2.length) - theLocation;
+    if (theLength <= 0)
+        {
+        theRange.location = NSNotFound;
+        }
+    else
+        {
+        theRange = (CFRange){ .location = theLocation, .length = theLength };
+        }
+    return(theRange);
+    }

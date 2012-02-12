@@ -391,9 +391,16 @@
     return(theSize);
     }
     
-- (NSArray *)rectsForRange:(NSRange)inRange;
+- (NSArray *)rectsForRange:(NSRange)inRange
     {
-    return([self.renderer rectsForRange:NSRangeToCFRange_(inRange)]);
+    NSMutableArray *theArray = [NSMutableArray array];
+    
+    [self.renderer enumerateRectForRange:NSRangeToCFRange_(inRange) handler:^(CGRect inRect, NSUInteger idx, BOOL *stop) {
+        inRect = CGRectOffset(inRect, self.insets.left, self.insets.top);
+        [theArray addObject:[NSValue valueWithCGRect:inRect]];
+    }];
+    
+    return(theArray);
     }
 
 - (NSDictionary *)attributesAtPoint:(CGPoint)inPoint effectiveRange:(NSRange *)outRange

@@ -26,12 +26,13 @@
 - (void)drawInContext:(CGContextRef)inContext;
 
 - (NSDictionary *)attributesAtPoint:(CGPoint)inPoint effectiveRange:(CFRange *)outRange;
-- (NSArray *)rectsForRange:(CFRange)inRange;
 - (NSUInteger)indexAtPoint:(CGPoint)inPoint;
 - (NSArray *)visibleLines;
 - (CFRange)rangeOfLastLine;
 
 - (void)enumerateLines:(void (^)(CTLineRef line, NSUInteger idx, BOOL *stop))inHandler;
-- (void)enumerateRuns:(void (^)(CTRunRef, CGRect))inHandler;
+- (void)enumerateRuns:(void (^)(CTRunRef, CGRect, NSUInteger idx, BOOL *stop))inHandler;
+
+- (void)enumerateRectForRange:(CFRange)inRange handler:(void (^)(CGRect, NSUInteger, BOOL *))inHandler;
 
 @end

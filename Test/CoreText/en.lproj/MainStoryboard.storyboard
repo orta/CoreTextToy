@@ -124,7 +124,7 @@ Links will work too:&lt;br>
                                 <nil key="highlightedColor"/>
                                 <color key="shadowColor" red="1" green="0.0" blue="0.0" alpha="0.33000000000000002" colorSpace="calibratedRGB"/>
                             </label>
-                            <view contentMode="scaleToFill" id="eYe-o4-m2T" customClass="CTwitterStyleTweetTextLabel">
+                            <view contentMode="scaleToFill" id="eYe-o4-m2T" customClass="CSelectableCoreTextLabel">
                                 <rect key="frame" x="20" y="20" width="437" height="148"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <subviews>
@@ -134,7 +134,7 @@ Links will work too:&lt;br>
                                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                                     </view>
                                 </subviews>
-                                <color key="backgroundColor" red="0.32156863810000003" green="0.32156863810000003" blue="0.32156863810000003" alpha="1" colorSpace="deviceRGB"/>
+                                <color key="backgroundColor" cocoaTouchSystemColor="tableCellGroupedBackgroundColor"/>
                             </view>
                             <view contentMode="scaleToFill" id="ern-RK-tYB" customClass="CCoreTextLabel">
                                 <rect key="frame" x="20" y="705" width="437" height="103"/>

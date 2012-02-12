@@ -102,10 +102,7 @@
     self.label6.text = [[NSAttributedString alloc] initWithString:theString];
     self.label6.insets = (UIEdgeInsets){ .left = 20, .top = 20, .right = 20, .bottom = 20 };
     self.label6.lineBreakMode = UILineBreakModeWordWrap;
-    
-    self.label6.backgroundColor = [UIColor grayColor];
-//    self.label6.textAlignment = UITextAlignmentRight;
-    self.label6.textColor = [UIColor whiteColor];
+    self.label6.textColor = [UIColor blackColor];
     self.label6.font = [UIFont systemFontOfSize:18];
     
     

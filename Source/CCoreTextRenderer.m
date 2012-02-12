@@ -366,21 +366,16 @@
     inPoint.y *= -1;
     inPoint.y += self.size.height;
 
-    NSArray *theLines = (__bridge NSArray *)CTFrameGetLines(self.frame);
-
     __block CGPoint theLastLineOrigin = (CGPoint){ 0, CGFLOAT_MAX };
-    __block CFIndex theIndex = NSNotFound;
+    __block NSUInteger theIndex = NSNotFound;
 
-    [theLines enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
-
+    [self enumerateLines:^(CTLineRef line, NSUInteger idx, BOOL *stop) {
         CGPoint theLineOrigin;
         CTFrameGetLineOrigins(self.frame, CFRangeMake(idx, 1), &theLineOrigin);
 
         if (inPoint.y > theLineOrigin.y && inPoint.y < theLastLineOrigin.y)
             {
-            CTLineRef theLine = (__bridge CTLineRef)obj;
-
-            theIndex = CTLineGetStringIndexForPosition(theLine, (CGPoint){ .x = inPoint.x - theLineOrigin.x, inPoint.y - theLineOrigin.y });
+            theIndex = CTLineGetStringIndexForPosition(line, (CGPoint){ .x = inPoint.x - theLineOrigin.x, inPoint.y - theLineOrigin.y });
             if (theIndex != NSNotFound && (NSUInteger)theIndex < self.text.length)
                 {
                 *stop = YES;
@@ -388,7 +383,6 @@
             }
         theLastLineOrigin = theLineOrigin;
         }];
-    
         
     return(theIndex);
     }

@@ -25,7 +25,6 @@
 @property (readwrite, nonatomic, strong) NSMutableData *lineOriginsData;
 
 - (void)reset;
-- (void)enumerateRuns:(void (^)(CTRunRef, CGRect))inHandler;
 
 @end
 
@@ -398,24 +397,23 @@
     {
     NSMutableArray *theVisibleLines = [NSMutableArray array];
     
-    NSArray *theLines = (__bridge NSArray *)CTFrameGetLines(self.frame);
-
-    [theLines enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
-
+    [self enumerateLines:^(CTLineRef line, NSUInteger idx, BOOL *stop) {
         CGPoint theLineOrigin;
         CTFrameGetLineOrigins(self.frame, CFRangeMake(idx, 1), &theLineOrigin);
 
         // TODO use CTLineGetTypographicBounds?
         if (theLineOrigin.y >= 0.0 && theLineOrigin.y <= self.size.height)
             {
-            [theVisibleLines addObject:obj];
+            [theVisibleLines addObject:(__bridge id)line];
             }
         if (theLineOrigin.y > self.size.height)
             {
             *stop = YES;
             }
         }];
-        
+    
+    
+    
     return([theVisibleLines copy]);
     }
 
@@ -428,24 +426,16 @@
     return((CFRange){ .location = theRange.location, .length = theRange.length });
     }
 
-#pragma mark -
-
-- (void)reset
+- (void)enumerateLines:(void (^)(CTLineRef line, NSUInteger idx, BOOL *stop))inHandler
     {
-    if (frame)
-        {
-        CFRelease(frame);
-        self.frame = NULL;
-        }
-
-    if (framesetter)
-        {
-        CFRelease(framesetter);
-        self.framesetter = NULL;
-        }
-
-    self.lineOrigins = NULL;
-    self.lineOriginsData = NULL;
+    NSParameterAssert(inHandler != NULL);
+    
+    // ### Iterate through each line...
+    NSArray *theLines = (__bridge NSArray *)CTFrameGetLines(self.frame);
+    [theLines enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
+        CTLineRef theLine = (__bridge CTLineRef)obj;
+        inHandler(theLine, idx, stop);
+        }];
     }
 
 - (void)enumerateRuns:(void (^)(CTRunRef, CGRect))inHandler
@@ -484,6 +474,27 @@
 
         idx++;
         }
+    }
+
+
+#pragma mark -
+
+- (void)reset
+    {
+    if (frame)
+        {
+        CFRelease(frame);
+        self.frame = NULL;
+        }
+
+    if (framesetter)
+        {
+        CFRelease(framesetter);
+        self.framesetter = NULL;
+        }
+
+    self.lineOrigins = NULL;
+    self.lineOriginsData = NULL;
     }
 
 @end

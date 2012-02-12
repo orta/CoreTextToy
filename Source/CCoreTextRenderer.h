@@ -31,4 +31,7 @@
 - (NSArray *)visibleLines;
 - (CFRange)rangeOfLastLine;
 
+- (void)enumerateLines:(void (^)(CTLineRef line, NSUInteger idx, BOOL *stop))inHandler;
+- (void)enumerateRuns:(void (^)(CTRunRef, CGRect))inHandler;
+
 @end

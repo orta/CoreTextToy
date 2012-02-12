@@ -56,3 +56,12 @@
 - (NSDictionary *)attributesAtPoint:(CGPoint)inPoint effectiveRange:(NSRange *)outRange;
 
 @end
+
+#pragma mark -
+
+@class CCoreTextRenderer;
+
+@interface CCoreTextLabel (CCoreTextLabel_PrivateExtensions)
+@property (readonly, nonatomic, strong) CCoreTextRenderer *renderer;
+@end
+

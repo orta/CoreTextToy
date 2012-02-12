@@ -25,7 +25,7 @@
 @property (readwrite, nonatomic, strong) NSMutableData *lineOriginsData;
 
 - (void)reset;
-- (void)enumerateRunsInContext:(CGContextRef)inContext handler:(void (^)(CGContextRef, CTRunRef, CGRect))inHandler;
+- (void)enumerateRuns:(void (^)(CTRunRef, CGRect))inHandler;
 
 @end
 
@@ -222,13 +222,13 @@
     // ### If we have any pre-render blocks we enumerate over the runs and fire the blocks if the attributes match...
     if (self.prerenderersForAttributes.count > 0)
         {
-        [self enumerateRunsInContext:inContext handler:^(CGContextRef inContext2, CTRunRef inRun, CGRect inRect) {
+        [self enumerateRuns:^(CTRunRef inRun, CGRect inRect) {
             NSDictionary *theAttributes = (__bridge NSDictionary *)CTRunGetAttributes(inRun);
             [self.prerenderersForAttributes enumerateKeysAndObjectsUsingBlock:^(id key, id obj, BOOL *stop) {
                 if ([theAttributes objectForKey:key])
                     {
                     void (^theBlock)(CGContextRef, CTRunRef, CGRect) = obj;
-                    theBlock(inContext2, inRun, inRect);
+                    theBlock(inContext, inRun, inRect);
                     }
                 }];
             }];
@@ -296,13 +296,13 @@
     // ### If we have any pre-render blocks we enumerate over the runs and fire the blocks if the attributes match...
     if (self.postRenderersForAttributes.count > 0)
         {
-        [self enumerateRunsInContext:inContext handler:^(CGContextRef inContext2, CTRunRef inRun, CGRect inRect) {
+        [self enumerateRuns:^(CTRunRef inRun, CGRect inRect) {
             NSDictionary *theAttributes = (__bridge NSDictionary *)CTRunGetAttributes(inRun);
             [self.postRenderersForAttributes enumerateKeysAndObjectsUsingBlock:^(id key, id obj, BOOL *stop) {
                 if ([theAttributes objectForKey:key])
                     {
                     void (^theBlock)(CGContextRef, CTRunRef, CGRect) = obj;
-                    theBlock(inContext2, inRun, inRect);
+                    theBlock(inContext, inRun, inRect);
                     }
                 }];
             }];
@@ -311,7 +311,7 @@
     CGContextRestoreGState(inContext);
 
     // ### Now that the CTM is restored. Iterate through each line and render any attachments.
-    [self enumerateRunsInContext:inContext handler:^(CGContextRef inContext2, CTRunRef inRun, CGRect inRect) {
+    [self enumerateRuns:^(CTRunRef inRun, CGRect inRect) {
         NSDictionary *theAttributes = (__bridge NSDictionary *)CTRunGetAttributes(inRun);
         // ### If we have an image we draw it...
         CCoreTextAttachment *theAttachment = [theAttributes objectForKey:kMarkupAttachmentAttributeName];
@@ -320,7 +320,7 @@
             inRect.origin.y *= -1;
             inRect.origin.y += self.size.height - inRect.size.height;
 
-            theAttachment.renderer(theAttachment, inContext2, inRect);
+            theAttachment.renderer(theAttachment, inContext, inRect);
             }
         }];
     }
@@ -345,7 +345,9 @@
     {
     NSMutableArray *theRects = [NSMutableArray array];
 
-    [self enumerateRunsInContext:NULL handler:^(CGContextRef inContext, CTRunRef inRun, CGRect inRect) {
+    [self enumerateRuns:^(CTRunRef inRun, CGRect inRect) {
+
+//    NSIntersectionRange(inRange, 
     
         CFRange theRunRange = CTRunGetStringRange(inRun);
         if (theRunRange.location >= (CFIndex)inRange.location && theRunRange.location <= (CFIndex)inRange.location + (CFIndex)inRange.length)
@@ -446,8 +448,10 @@
     self.lineOriginsData = NULL;
     }
 
-- (void)enumerateRunsInContext:(CGContextRef)inContext handler:(void (^)(CGContextRef, CTRunRef, CGRect))inHandler
+- (void)enumerateRuns:(void (^)(CTRunRef, CGRect))inHandler
     {
+    NSParameterAssert(inHandler != NULL);
+
     // ### Iterate through each line...
     NSUInteger idx = 0;
     NSArray *theLines = (__bridge NSArray *)CTFrameGetLines(self.frame);
@@ -473,10 +477,7 @@
                 .size = { (CGFloat)theWidth, theAscent + theDescent },
                 };
 
-            if (inHandler)
-                {
-                inHandler(inContext, theRun, theRunRect);
-                }
+            inHandler(theRun, theRunRect);
 
             theXPosition += theWidth;
             }

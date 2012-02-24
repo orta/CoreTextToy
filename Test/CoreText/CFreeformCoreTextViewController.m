@@ -32,6 +32,7 @@
 #import "CFreeformCoreTextViewController.h"
 
 #import <QuartzCore/QuartzCore.h>
+#import <CoreText/CoreText.h>
 
 #import "CLinkingCoreTextLabel.h"
 #import "CMarkupValueTransformer.h"
@@ -77,6 +78,16 @@
 
     CMarkupValueTransformer *theTransformer = [[CMarkupValueTransformer alloc] init];
 
+    BTagHandler theHandler = ^(CSimpleHTMLTag *inTag) {
+        NSDictionary *theAttributes = [NSDictionary dictionaryWithObjectsAndKeys:
+                                       (__bridge id)[UIColor purpleColor].CGColor, (__bridge NSString *)kCTForegroundColorAttributeName,
+                                       NULL];
+        return(theAttributes);
+    };
+    
+    [theTransformer addHandler:theHandler forTag:@"purple"];
+
+        
     NSAttributedString *theAttributedString = [theTransformer transformedValue:textView.text error:&theError];
 
     if (theAttributedString == NULL)

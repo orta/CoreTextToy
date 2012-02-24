@@ -280,7 +280,6 @@
             {
             NSDictionary *theAttributes = theHandler(theTag);
             [theCumulativeAttributes addEntriesFromDictionary:theAttributes];
-            break;
             }
         }
 

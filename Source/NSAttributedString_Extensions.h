@@ -12,6 +12,7 @@ extern NSString *const kMarkupLinkAttributeName;
 extern NSString *const kMarkupBoldAttributeName;
 extern NSString *const kMarkupItalicAttributeName;
 extern NSString *const kMarkupSizeAdjustmentAttributeName;
+extern NSString *const kMarkupFontNameAttributeName;
 extern NSString *const kShadowColorAttributeName;
 extern NSString *const kShadowOffsetAttributeName;
 extern NSString *const kShadowBlurRadiusAttributeName;

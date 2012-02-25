@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="1.0" toolsVersion="1938" systemVersion="11C73" targetRuntime="iOS.CocoaTouch.iPad" propertyAccessControl="none" initialViewController="93x-WQ-fvS">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="1.0" toolsVersion="1938" systemVersion="11D50b" targetRuntime="iOS.CocoaTouch.iPad" propertyAccessControl="none" initialViewController="93x-WQ-fvS">
     <dependencies>
         <development defaultVersion="4200" identifier="xcode"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="933"/>
@@ -136,6 +136,11 @@ Links will work too:&lt;br>
                                 </subviews>
                                 <color key="backgroundColor" red="0.32156863810000003" green="0.32156863810000003" blue="0.32156863810000003" alpha="1" colorSpace="deviceRGB"/>
                             </view>
+                            <view contentMode="scaleToFill" id="ern-RK-tYB" customClass="CCoreTextLabel">
+                                <rect key="frame" x="20" y="705" width="437" height="103"/>
+                                <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                                <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                            </view>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                     </view>
@@ -147,6 +152,7 @@ Links will work too:&lt;br>
                         <outlet property="label4" destination="ZCd-jT-zLQ" id="1zo-DG-aUW"/>
                         <outlet property="label5" destination="BVh-bx-AJV" id="1Al-l0-kD7"/>
                         <outlet property="label6" destination="eYe-o4-m2T" id="d8D-eA-XOB"/>
+                        <outlet property="label7" destination="ern-RK-tYB" id="ONf-Zf-UQc"/>
                     </connections>
                 </viewController>
             </objects>
@@ -206,39 +212,6 @@ Links will work too:&lt;br>
     <resources>
         <image name="Craig.png" width="64" height="64"/>
     </resources>
-    <classes>
-        <class className="CCoreTextLabel" superclassName="UIView">
-            <source key="sourceIdentifier" type="project" relativePath="./Classes/CCoreTextLabel.h"/>
-        </class>
-        <class className="CExampleCoreTextViewController" superclassName="UIViewController">
-            <source key="sourceIdentifier" type="project" relativePath="./Classes/CExampleCoreTextViewController.h"/>
-            <relationships>
-                <relationship kind="outlet" name="label1" candidateClass="CCoreTextLabel"/>
-                <relationship kind="outlet" name="label2" candidateClass="CCoreTextLabel"/>
-                <relationship kind="outlet" name="label3" candidateClass="CCoreTextLabel"/>
-                <relationship kind="outlet" name="label4" candidateClass="CCoreTextLabel"/>
-                <relationship kind="outlet" name="label5" candidateClass="CCoreTextLabel"/>
-                <relationship kind="outlet" name="label6" candidateClass="CCoreTextLabel"/>
-            </relationships>
-        </class>
-        <class className="CFreeformCoreTextViewController" superclassName="UIViewController">
-            <source key="sourceIdentifier" type="project" relativePath="./Classes/CFreeformCoreTextViewController.h"/>
-            <relationships>
-                <relationship kind="outlet" name="attributedView" candidateClass="UITextView"/>
-                <relationship kind="outlet" name="editView" candidateClass="UITextView"/>
-                <relationship kind="outlet" name="previewView" candidateClass="CLinkingCoreTextLabel"/>
-            </relationships>
-        </class>
-        <class className="CLinkingCoreTextLabel" superclassName="CCoreTextLabel">
-            <source key="sourceIdentifier" type="project" relativePath="./Classes/CLinkingCoreTextLabel.h"/>
-        </class>
-        <class className="CResizerThumb" superclassName="UIView">
-            <source key="sourceIdentifier" type="project" relativePath="./Classes/CResizerThumb.h"/>
-        </class>
-        <class className="CTwitterStyleTweetTextLabel" superclassName="CCoreTextLabel">
-            <source key="sourceIdentifier" type="project" relativePath="./Classes/CTwitterStyleTweetTextLabel.h"/>
-        </class>
-    </classes>
     <simulatedMetricsContainer key="defaultSimulatedMetrics">
         <simulatedStatusBarMetrics key="statusBar" statusBarStyle="blackTranslucent"/>
         <simulatedOrientationMetrics key="orientation"/>

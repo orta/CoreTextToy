@@ -15,6 +15,7 @@ NSString *const kMarkupLinkAttributeName = @"com.touchcode.link";
 NSString *const kMarkupBoldAttributeName = @"com.touchcode.bold";
 NSString *const kMarkupItalicAttributeName = @"com.touchcode.italic";
 NSString *const kMarkupSizeAdjustmentAttributeName = @"com.touchcode.sizeAdjustment";
+NSString *const kMarkupFontNameAttributeName = @"com.touchcode.fontName";
 NSString *const kShadowColorAttributeName = @"com.touchcode.shadowColor";
 NSString *const kShadowOffsetAttributeName = @"com.touchcode.shadowOffset";
 NSString *const kShadowBlurRadiusAttributeName = @"com.touchcode.shadowBlurRadius";
@@ -45,10 +46,18 @@ NSString *const kMarkupStrikeColorAttributeName = @"com.touchcode.strikeColor";
 + (NSDictionary *)normalizeAttributes:(NSDictionary *)inAttributes baseFont:(UIFont *)inBaseFont
     {
     NSMutableDictionary *theAttributes = [inAttributes mutableCopy];
-    
-    UIFont *theFont = inBaseFont;
-    
+        
     // NORMALIZE ATTRIBUTES
+    UIFont *theBaseFont = inBaseFont;
+    NSString *theFontName = [theAttributes objectForKey:kMarkupFontNameAttributeName];
+    if (theFontName != NULL)
+        {
+        theBaseFont = [UIFont fontWithName:theFontName size:inBaseFont.pointSize];
+        [theAttributes removeObjectForKey:kMarkupFontNameAttributeName];
+        }
+    
+    UIFont *theFont = theBaseFont;
+    
     BOOL theBoldFlag = [[theAttributes objectForKey:kMarkupBoldAttributeName] boolValue];
     if ([theAttributes objectForKey:kMarkupBoldAttributeName] != NULL)
         {
@@ -63,15 +72,15 @@ NSString *const kMarkupStrikeColorAttributeName = @"com.touchcode.strikeColor";
     
     if (theBoldFlag == YES && theItalicFlag == YES)
         {
-        theFont = inBaseFont.boldItalicFont;
+        theFont = theBaseFont.boldItalicFont;
         }
     else if (theBoldFlag == YES)
         {
-        theFont = inBaseFont.boldFont;
+        theFont = theBaseFont.boldFont;
         }
     else if (theItalicFlag == YES)
         {
-        theFont = inBaseFont.italicFont;
+        theFont = theBaseFont.italicFont;
         }
         
     NSNumber *theSizeValue = [theAttributes objectForKey:kMarkupSizeAdjustmentAttributeName];

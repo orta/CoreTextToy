@@ -16,6 +16,7 @@
 #import "CMarkupValueTransformer.h"
 #import "UIFont_CoreTextExtensions.h"
 #import "NSAttributedString_DebugExtensions.h"
+#import "NSAttributedString_Extensions.h"
 
 @interface CExampleCoreTextViewController ()
 @property (readwrite, nonatomic, retain) IBOutlet CCoreTextLabel *label1;
@@ -24,6 +25,7 @@
 @property (readwrite, nonatomic, retain) IBOutlet CCoreTextLabel *label4;
 @property (readwrite, nonatomic, retain) IBOutlet CCoreTextLabel *label5;
 @property (readwrite, nonatomic, retain) IBOutlet CCoreTextLabel *label6;
+@property (readwrite, nonatomic, retain) IBOutlet CCoreTextLabel *label7;
 
 @property (readwrite, nonatomic, retain) CALayer *sizeLayer;
 @end
@@ -36,6 +38,7 @@
 @synthesize label4;
 @synthesize label5;
 @synthesize label6;
+@synthesize label7;
 @synthesize sizeLayer;
 
 - (void)viewDidLoad
@@ -55,12 +58,13 @@
     BTagHandler theHandler = ^(CSimpleHTMLTag *inTag) {
         NSDictionary *theAttributes = [NSDictionary dictionaryWithObjectsAndKeys:
             (__bridge id)[UIColor colorWithRed:0.761 green:0.486 blue:0.165 alpha:1.000].CGColor, (__bridge NSString *)kCTForegroundColorAttributeName,
-            [NSNumber numberWithInt:1], @"BOLD",
+            [NSNumber numberWithBool:YES], kMarkupBoldAttributeName,
             NULL];
         return(theAttributes);
         };
 
     [self.label2.markupValueTransformer addHandler:theHandler forTag:@"username"];
+    
     self.label2.lineBreakMode = UILineBreakModeWordWrap;
     self.label2.textColor = [[UIColor whiteColor] colorWithAlphaComponent:0.6];
     self.label2.markup = @"<username>@schwa</username> RUBBERS";
@@ -115,6 +119,42 @@
     
     [self addObserver:self forKeyPath:@"label6.frame" options:0 context:NULL];
     
+    // #########################################################################
+
+    BTagHandler theCochinHandler = ^(CSimpleHTMLTag *inTag) {
+        NSDictionary *theAttributes = [NSDictionary dictionaryWithObjectsAndKeys:
+            @"Cochin", kMarkupFontNameAttributeName,
+            [NSNumber numberWithBool:YES], kMarkupItalicAttributeName,
+            NULL];
+        return(theAttributes);
+        };
+
+    [self.label7.markupValueTransformer addHandler:theCochinHandler forTag:@"cochin"];
+    
+    BTagHandler theChalkdusterHandler = ^(CSimpleHTMLTag *inTag) {
+        NSDictionary *theAttributes = [NSDictionary dictionaryWithObjectsAndKeys:
+            @"Chalkduster", kMarkupFontNameAttributeName,
+            NULL];
+        return(theAttributes);
+        };
+
+    [self.label7.markupValueTransformer addHandler:theChalkdusterHandler forTag:@"chalkduster"];
+    
+    BTagHandler theZapfinoHandler = ^(CSimpleHTMLTag *inTag) {
+        NSDictionary *theAttributes = [NSDictionary dictionaryWithObjectsAndKeys:
+            @"Zapfino", kMarkupFontNameAttributeName,
+            NULL];
+        return(theAttributes);
+        };
+
+    [self.label7.markupValueTransformer addHandler:theZapfinoHandler forTag:@"zapfino"];
+    
+    self.label7.backgroundColor = [UIColor grayColor];
+    self.label7.lineBreakMode = UILineBreakModeWordWrap;
+    self.label7.textColor = [[UIColor whiteColor] colorWithAlphaComponent:0.6];
+    self.label7.markup = @"<cochin>All</cochin> my <chalkduster>fonts</chalkduster> are so <zapfino>pretty</zapfino>";
+    
+
     }
 
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation

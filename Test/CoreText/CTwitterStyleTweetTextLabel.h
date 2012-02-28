@@ -10,7 +10,7 @@
 
 @interface CTwitterStyleTweetTextLabel : CCoreTextLabel
 
-@property (readonly, nonatomic, retain) NSArray *linkRanges;
+@property (readonly, nonatomic, strong) NSArray *linkRanges;
 @property (readwrite, nonatomic, assign) NSInteger selectedLinkIndex;
 
 @end

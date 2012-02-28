@@ -35,8 +35,8 @@
 
 @interface CFreeformCoreTextViewController : UIViewController
 
-@property (readwrite, nonatomic, retain) IBOutlet UITextView *editView;
-@property (readwrite, nonatomic, retain) IBOutlet UITextView *attributedView;
-@property (readwrite, nonatomic, retain) IBOutlet CLinkingCoreTextLabel *previewView;
+@property (readwrite, nonatomic, strong) IBOutlet UITextView *editView;
+@property (readwrite, nonatomic, strong) IBOutlet UITextView *attributedView;
+@property (readwrite, nonatomic, strong) IBOutlet CLinkingCoreTextLabel *previewView;
 
 @end

@@ -10,9 +10,9 @@
 
 @interface CLinkingCoreTextLabel : CCoreTextLabel
 
-@property (readonly, nonatomic, retain) NSArray *linkRanges;
+@property (readonly, nonatomic, strong) NSArray *linkRanges;
 
 @property (readwrite, nonatomic, copy) BOOL (^URLHandler)(NSRange,NSURL *);
-@property (readwrite, nonatomic, retain) UITapGestureRecognizer *tapRecognizer;
+@property (readwrite, nonatomic, strong) UITapGestureRecognizer *tapRecognizer;
 
 @end

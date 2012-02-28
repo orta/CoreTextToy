@@ -12,7 +12,7 @@
 #import "NSAttributedString_Extensions.h"
 
 @interface CLinkingCoreTextLabel ()
-@property (readwrite, nonatomic, retain) NSArray *linkRanges;
+@property (readwrite, nonatomic, strong) NSArray *linkRanges;
 @end
 
 #pragma mark -

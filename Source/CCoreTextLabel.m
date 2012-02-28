@@ -41,7 +41,7 @@
 #import "NSAttributedString_Extensions.h"
 
 @interface CCoreTextLabel ()
-@property (readwrite, nonatomic, retain) CCoreTextRenderer *renderer;
+@property (readwrite, nonatomic, strong) CCoreTextRenderer *renderer;
 
 + (CTParagraphStyleRef)createParagraphStyleForAttributes:(NSDictionary *)inAttributes alignment:(CTTextAlignment)inTextAlignment lineBreakMode:(CTLineBreakMode)inLineBreakMode;
 + (NSAttributedString *)normalizeString:(NSAttributedString *)inString settings:(id)inSettings;

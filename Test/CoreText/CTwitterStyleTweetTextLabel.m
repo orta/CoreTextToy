@@ -14,7 +14,7 @@
 #import "NSAttributedString_Extensions.h"
 
 @interface CTwitterStyleTweetTextLabel ()
-@property (readwrite, nonatomic, retain) CALayer *selectionLayer;
+@property (readwrite, nonatomic, strong) CALayer *selectionLayer;
 @end
 
 #pragma mark -

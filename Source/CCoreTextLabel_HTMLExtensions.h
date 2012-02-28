@@ -12,7 +12,7 @@
 
 @interface CCoreTextLabel (CCoreTextLabel_HTMLExtensions)
 
-@property (readwrite, nonatomic, retain) CMarkupValueTransformer *markupValueTransformer;
-@property (readwrite, nonatomic, retain) NSString *markup;
+@property (readwrite, nonatomic, strong) CMarkupValueTransformer *markupValueTransformer;
+@property (readwrite, nonatomic, strong) NSString *markup;
 
 @end

@@ -15,8 +15,8 @@
 #import "NSAttributedString_Extensions.h"
 
 @interface CCoreTextRenderer ()
-@property (readwrite, nonatomic, retain) NSMutableDictionary *prerenderersForAttributes;
-@property (readwrite, nonatomic, retain) NSMutableDictionary *postRenderersForAttributes;
+@property (readwrite, nonatomic, strong) NSMutableDictionary *prerenderersForAttributes;
+@property (readwrite, nonatomic, strong) NSMutableDictionary *postRenderersForAttributes;
 @property (readwrite, nonatomic, assign) BOOL enableShadowRenderer;
 
 @property (readwrite, nonatomic, assign) CTFramesetterRef framesetter;

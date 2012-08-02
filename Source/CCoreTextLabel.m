@@ -46,6 +46,7 @@
 
 @interface CCoreTextLabel ()
 @property (readwrite, nonatomic, strong) CCoreTextRenderer *renderer;
++ (Class)rendererClass;
 
 + (CTParagraphStyleRef)createParagraphStyleForAttributes:(NSDictionary *)inAttributes alignment:(CTTextAlignment)inTextAlignment lineBreakMode:(CTLineBreakMode)inLineBreakMode;
 + (NSAttributedString *)normalizeString:(NSAttributedString *)inString settings:(id)inSettings;
@@ -286,6 +287,11 @@
 
 #pragma mark -
 
++ (Class)rendererClass
+    {
+    return [CCoreTextRenderer class];
+    }
+
 - (CCoreTextRenderer *)renderer
     {
     if (renderer == NULL)
@@ -295,8 +301,12 @@
         CGRect theBounds = self.bounds;
         theBounds = UIEdgeInsetsInsetRect(theBounds, self.insets);
         
-        renderer = [[CCoreTextRenderer alloc] initWithText:theNormalizedText size:theBounds.size];
-
+        Class theRendererClass = [[self class] rendererClass];
+        renderer = [[theRendererClass alloc] initWithText:theNormalizedText size:theBounds.size];
+        
+        // Some way to do this check before allocation? I know of no way to check with just a Class
+        NSAssert2([renderer isKindOfClass:[CCoreTextRenderer class]], @"-[%@ rendererClass] must return a sublass of CCoreTextRenderer, got %@", NSStringFromClass([self class]), NSStringFromClass(theRendererClass));
+            
         if (self.lineBreakMode != self.lastLineBreakMode && renderer.visibleLines.count > 1)
             {
             NSRange theLastLineRange = CFRangeToNSRange_([renderer rangeOfLastLine]);

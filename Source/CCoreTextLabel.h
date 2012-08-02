@@ -63,5 +63,6 @@
 
 @interface CCoreTextLabel (CCoreTextLabel_PrivateExtensions)
 @property (readonly, nonatomic, strong) CCoreTextRenderer *renderer;
++ (Class)rendererClass;
 @end
 

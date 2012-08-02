@@ -35,3 +35,11 @@
 - (void)enumerateRuns:(void (^)(CTRunRef, CGRect))inHandler;
 
 @end
+
+#pragma mark -
+
+@interface CCoreTextRenderer (CCoreTextRenderer_PrivateExtensions)
+@property (readwrite, nonatomic, assign) CTFramesetterRef framesetter;
+@property (readwrite, nonatomic, assign) CTFrameRef frame;
+- (void)reset;
+@end

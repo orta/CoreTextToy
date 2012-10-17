@@ -55,21 +55,21 @@
 
 @implementation CCoreTextLabel
 
-@synthesize text;
-@synthesize font;
-@synthesize textColor;
-@synthesize textAlignment;
-@synthesize lineBreakMode;
-@synthesize lastLineBreakMode;
-@synthesize shadowColor;
-@synthesize shadowOffset;
-@synthesize shadowBlurRadius;
-@synthesize highlightedTextColor;
-@synthesize highlighted;
-@synthesize enabled;
-@synthesize insets;
+@synthesize text = _text;
+@synthesize font = _font;
+@synthesize textColor = _textColor;
+@synthesize textAlignment = _textAlignment;
+@synthesize lineBreakMode = _lineBreakMode;
+@synthesize lastLineBreakMode = _lastLineBreakMode;
+@synthesize shadowColor = _shadowColor;
+@synthesize shadowOffset = _shadowOffset;
+@synthesize shadowBlurRadius = _shadowBlurRadius;
+@synthesize highlightedTextColor = _highlightedTextColor;
+@synthesize highlighted = _highlighted;
+@synthesize enabled = _enabled;
+@synthesize insets = _insets;
 
-@synthesize renderer;
+@synthesize renderer = _renderer;
 
 // TODO rename thatFits -> constrainedToSize
 + (CGSize)sizeForString:(NSAttributedString *)inString font:(UIFont *)inBaseFont alignment:(UITextAlignment)inTextAlignment lineBreakMode:(UILineBreakMode)inLineBreakMode contentInsets:(UIEdgeInsets)inContentInsets thatFits:(CGSize)inSize 
@@ -103,16 +103,16 @@
         self.accessibilityTraits = UIAccessibilityTraitStaticText;
         self.accessibilityLabel = @"";
 
-        font = [UIFont systemFontOfSize:17];
-        textColor = [UIColor blackColor];
-        textAlignment = UITextAlignmentLeft;
-        lineBreakMode = UILineBreakModeTailTruncation;
-        lastLineBreakMode = UILineBreakModeTailTruncation;
-        shadowColor = NULL;
-        shadowOffset = (CGSize){ 0.0, -1.0 };
-        shadowBlurRadius = 0.0;
-        highlightedTextColor = [UIColor whiteColor];
-        enabled = YES;
+        _font = [UIFont systemFontOfSize:17];
+        _textColor = [UIColor blackColor];
+        _textAlignment = UITextAlignmentLeft;
+        _lineBreakMode = UILineBreakModeTailTruncation;
+        _lastLineBreakMode = UILineBreakModeTailTruncation;
+        _shadowColor = NULL;
+        _shadowOffset = (CGSize){ 0.0, -1.0 };
+        _shadowBlurRadius = 0.0;
+        _highlightedTextColor = [UIColor whiteColor];
+        _enabled = YES;
         }
     return(self);
     }
@@ -127,16 +127,16 @@
         self.accessibilityTraits = UIAccessibilityTraitStaticText;
         self.accessibilityLabel = @"";
 
-        font = [UIFont systemFontOfSize:17];
-        textColor = [UIColor blackColor];
-        textAlignment = UITextAlignmentLeft;
-        lineBreakMode = UILineBreakModeTailTruncation;
-        lastLineBreakMode = UILineBreakModeTailTruncation;
-        shadowColor = NULL;
-        shadowOffset = (CGSize){ 0.0, -1.0 };
-        shadowBlurRadius = 0.0;
-        highlightedTextColor = [UIColor whiteColor];
-        enabled = YES;
+        _font = [UIFont systemFontOfSize:17];
+        _textColor = [UIColor blackColor];
+        _textAlignment = UITextAlignmentLeft;
+        _lineBreakMode = UILineBreakModeTailTruncation;
+        _lastLineBreakMode = UILineBreakModeTailTruncation;
+        _shadowColor = NULL;
+        _shadowOffset = (CGSize){ 0.0, -1.0 };
+        _shadowBlurRadius = 0.0;
+        _highlightedTextColor = [UIColor whiteColor];
+        _enabled = YES;
         }
     return(self);
     }
@@ -154,9 +154,9 @@
 
 - (void)setText:(NSAttributedString *)inText
     {
-    if (text != inText)
+    if (_text != inText)
         {
-        text = inText;
+        _text = inText;
         
         self.accessibilityLabel = inText.string;
         
@@ -166,9 +166,9 @@
 
 - (void)setFont:(UIFont *)inFont
     {
-    if (font != inFont)
+    if (_font != inFont)
         {
-        font = inFont;
+        _font = inFont;
         
         self.renderer = NULL;
         }
@@ -176,9 +176,9 @@
 
 - (void)setTextColor:(UIColor *)inTextColor
     {
-    if (textColor != inTextColor)
+    if (_textColor != inTextColor)
         {
-        textColor = inTextColor;
+        _textColor = inTextColor;
         
         if (self.highlighted == NO)
             {
@@ -189,9 +189,9 @@
 
 - (void)setTextAlignment:(UITextAlignment)inTextAlignment
     {
-    if (textAlignment != inTextAlignment)
+    if (_textAlignment != inTextAlignment)
         {
-        textAlignment = inTextAlignment;
+        _textAlignment = inTextAlignment;
         
         self.renderer = NULL;
         }
@@ -199,9 +199,9 @@
     
 - (void)setLineBreakMode:(UILineBreakMode)inLineBreakMode
     {
-    if (lineBreakMode != inLineBreakMode)
+    if (_lineBreakMode != inLineBreakMode)
         {
-        lineBreakMode = inLineBreakMode;
+        _lineBreakMode = inLineBreakMode;
         
         self.renderer = NULL;
         }
@@ -209,9 +209,9 @@
 
 - (void)setLastLineBreakMode:(UILineBreakMode)inLastLineBreakMode
     {
-    if (lastLineBreakMode != inLastLineBreakMode)
+    if (_lastLineBreakMode != inLastLineBreakMode)
         {
-        lastLineBreakMode = inLastLineBreakMode;
+        _lastLineBreakMode = inLastLineBreakMode;
         
         self.renderer = NULL;
         }
@@ -219,9 +219,9 @@
 
 - (void)setShadowColor:(UIColor *)inShadowColor
     {
-    if (shadowColor != inShadowColor)
+    if (_shadowColor != inShadowColor)
         {
-        shadowColor = inShadowColor;
+        _shadowColor = inShadowColor;
         
         self.renderer = NULL;
         }
@@ -229,16 +229,16 @@
 
 - (void)setShadowOffset:(CGSize)inShadowOffset
     {
-    shadowOffset = inShadowOffset;
+    _shadowOffset = inShadowOffset;
     
     self.renderer = NULL;
     }
 
 - (void)setShadowBlurRadius:(CGFloat)inShadowBlurRadius
     {
-    if (shadowBlurRadius != inShadowBlurRadius)
+    if (_shadowBlurRadius != inShadowBlurRadius)
         {
-        shadowBlurRadius = inShadowBlurRadius;
+        _shadowBlurRadius = inShadowBlurRadius;
         
         self.renderer = NULL;
         }
@@ -246,9 +246,9 @@
 
 - (void)setHighlightedTextColor:(UIColor *)inHighlightedTextColor
     {
-    if (highlightedTextColor != inHighlightedTextColor)
+    if (_highlightedTextColor != inHighlightedTextColor)
         {
-        highlightedTextColor = inHighlightedTextColor;
+        _highlightedTextColor = inHighlightedTextColor;
         
         if (self.highlighted == NO)
             {
@@ -259,9 +259,9 @@
 
 - (void)setHighlighted:(BOOL)inHighlighted
     {
-    if (highlighted != inHighlighted)
+    if (_highlighted != inHighlighted)
         {
-        highlighted = inHighlighted;
+        _highlighted = inHighlighted;
 
         self.renderer = NULL;
         }
@@ -269,9 +269,9 @@
 
 - (void)setEnabled:(BOOL)inEnabled
     {
-    if (enabled != inEnabled)
+    if (_enabled != inEnabled)
         {
-        enabled = inEnabled;
+        _enabled = inEnabled;
         
         // Disabling also turns off shadow, so we need to reset the renderer.
         self.renderer = NULL;
@@ -280,7 +280,7 @@
 
 - (void)setInsets:(UIEdgeInsets)inInsets
     {
-    insets = inInsets;
+    _insets = inInsets;
 
     self.renderer = NULL;
     }
@@ -294,7 +294,7 @@
 
 - (CCoreTextRenderer *)renderer
     {
-    if (renderer == NULL)
+    if (_renderer == NULL)
         {
         NSMutableAttributedString *theNormalizedText = [[[self class] normalizeString:self.text settings:self] mutableCopy];
 
@@ -302,32 +302,32 @@
         theBounds = UIEdgeInsetsInsetRect(theBounds, self.insets);
         
         Class theRendererClass = [[self class] rendererClass];
-        renderer = [[theRendererClass alloc] initWithText:theNormalizedText size:theBounds.size];
+        _renderer = [[theRendererClass alloc] initWithText:theNormalizedText size:theBounds.size];
         
         // Some way to do this check before allocation? I know of no way to check with just a Class
-        NSAssert2([renderer isKindOfClass:[CCoreTextRenderer class]], @"-[%@ rendererClass] must return a sublass of CCoreTextRenderer, got %@", NSStringFromClass([self class]), NSStringFromClass(theRendererClass));
+        NSAssert2([_renderer isKindOfClass:[CCoreTextRenderer class]], @"-[%@ rendererClass] must return a sublass of CCoreTextRenderer, got %@", NSStringFromClass([self class]), NSStringFromClass(theRendererClass));
             
-        if (self.lineBreakMode != self.lastLineBreakMode && renderer.visibleLines.count > 1)
+        if (self.lineBreakMode != self.lastLineBreakMode && _renderer.visibleLines.count > 1)
             {
-            NSRange theLastLineRange = CFRangeToNSRange_([renderer rangeOfLastLine]);
+            NSRange theLastLineRange = CFRangeToNSRange_([_renderer rangeOfLastLine]);
             
             CTParagraphStyleRef theParagraphStyle = [[self class] createParagraphStyleForAttributes:NULL alignment:[[self class] CTLineBreakModeForUITextAlignment:self.textAlignment] lineBreakMode:kCTLineBreakByTruncatingTail];
 
             [theNormalizedText addAttribute:(__bridge NSString *)kCTParagraphStyleAttributeName value:(__bridge id)theParagraphStyle range:theLastLineRange];
             
-            renderer.text = theNormalizedText;
+            _renderer.text = theNormalizedText;
             }
         
 
 
-        [renderer addPrerendererBlock:^(CGContextRef inContext, CTRunRef inRun, CGRect inRect) {
+        [_renderer addPrerendererBlock:^(CGContextRef inContext, CTRunRef inRun, CGRect inRect) {
             NSDictionary *theAttributes2 = (__bridge NSDictionary *)CTRunGetAttributes(inRun);
             CGColorRef theColor2 = (__bridge CGColorRef)theAttributes2[kMarkupBackgroundColorAttributeName];
             CGContextSetFillColorWithColor(inContext, theColor2);
             CGContextFillRect(inContext, inRect);
             } forAttributeKey:kMarkupBackgroundColorAttributeName];
 
-        [renderer addPostRendererBlock:^(CGContextRef inContext, CTRunRef inRun, CGRect inRect) {
+        [_renderer addPostRendererBlock:^(CGContextRef inContext, CTRunRef inRun, CGRect inRect) {
             NSDictionary *theAttributes2 = (__bridge NSDictionary *)CTRunGetAttributes(inRun);
             
             CTFontRef theFont = (__bridge CTFontRef)theAttributes2[(__bridge NSString *)kCTFontAttributeName];
@@ -343,14 +343,14 @@
             CGContextStrokePath(inContext);
             } forAttributeKey:kMarkupStrikeColorAttributeName];
         }
-    return(renderer);
+    return(_renderer);
     }
 
 - (void)setRenderer:(CCoreTextRenderer *)inRenderer
     {
-    if (renderer != inRenderer)
+    if (_renderer != inRenderer)
         {
-        renderer = inRenderer;
+        _renderer = inRenderer;
         
         [self setNeedsDisplay];
         }

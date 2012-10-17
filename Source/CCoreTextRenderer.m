@@ -32,17 +32,17 @@
 
 @implementation CCoreTextRenderer
 
-@synthesize text;
-@synthesize size;
+@synthesize text = _text;
+@synthesize size = _size;
 
-@synthesize prerenderersForAttributes;
-@synthesize postRenderersForAttributes;
-@synthesize enableShadowRenderer;
+@synthesize prerenderersForAttributes = _prerenderersForAttributes;
+@synthesize postRenderersForAttributes = _postRenderersForAttributes;
+@synthesize enableShadowRenderer = _enableShadowRenderer;
 
-@synthesize framesetter;
-@synthesize frame;
-@synthesize lineOrigins;
-@synthesize lineOriginsData;
+@synthesize framesetter = _framesetter;
+@synthesize frame = _frame;
+@synthesize lineOrigins = _lineOrigins;
+@synthesize lineOriginsData = _lineOriginsData;
 
 + (CGSize)sizeForString:(NSAttributedString *)inString thatFits:(CGSize)inSize
     {
@@ -75,12 +75,12 @@
     {
     if ((self = [super init]) != NULL)
         {
-        text = [inText copy];
-        size = inSize;
-        enableShadowRenderer = NO;
+        _text = [inText copy];
+        _size = inSize;
+        _enableShadowRenderer = NO;
         
-        [text enumerateAttribute:kShadowColorAttributeName inRange:(NSRange){ .length = text.length } options:0 usingBlock:^(id value, NSRange range, BOOL *stop) {
-            enableShadowRenderer = YES;
+        [_text enumerateAttribute:kShadowColorAttributeName inRange:(NSRange){ .length = _text.length } options:0 usingBlock:^(id value, NSRange range, BOOL *stop) {
+            _enableShadowRenderer = YES;
             *stop = YES;
             }];
         }
@@ -89,16 +89,16 @@
 
 - (void)dealloc
     {
-    if (frame)
+    if (_frame)
         {
-        CFRelease(frame);
-        frame = NULL;
+        CFRelease(_frame);
+        _frame = NULL;
         }
 
-    if (framesetter)
+    if (_framesetter)
         {
-        CFRelease(framesetter);
-        framesetter = NULL;
+        CFRelease(_framesetter);
+        _framesetter = NULL;
         }
     }
 
@@ -106,40 +106,40 @@
 
 - (CTFramesetterRef)framesetter
     {
-    if (framesetter == NULL && self.text != NULL)
+    if (_framesetter == NULL && self.text != NULL)
         {
-        framesetter = CTFramesetterCreateWithAttributedString((__bridge CFAttributedStringRef)self.text);
-        if (framesetter == NULL)
+        _framesetter = CTFramesetterCreateWithAttributedString((__bridge CFAttributedStringRef)self.text);
+        if (_framesetter == NULL)
             {
             NSLog(@"Could not create CTFramesetter");
             }
         }
-    return(framesetter);
+    return(_framesetter);
     }
 
 - (CTFrameRef)frame
     {
-    if (frame == NULL && self.text != NULL)
+    if (_frame == NULL && self.text != NULL)
         {
         CGPathRef thePath = CGPathCreateWithRect((CGRect){ .size = self.size }, NULL);
 
-        frame = CTFramesetterCreateFrame(self.framesetter, (CFRange){}, thePath, NULL);
+        _frame = CTFramesetterCreateFrame(self.framesetter, (CFRange){}, thePath, NULL);
 
-        if (frame == NULL)
+        if (_frame == NULL)
             {
             NSLog(@"Could not create CTFrameRef");
             }
             
         CFRelease(thePath);
         }
-    return(frame);
+    return(_frame);
     }
     
 - (void)setText:(NSAttributedString *)inText
     {
-    if (text != inText)
+    if (_text != inText)
         {
-        text = [inText copy];
+        _text = [inText copy];
     
         [self reset];
         }
@@ -147,21 +147,21 @@
     
 - (void)setSize:(CGSize)inSize
     {
-    size = inSize;
+    _size = inSize;
     
     [self reset];    
     }
     
 - (CGPoint *)lineOrigins
     {
-    if (lineOriginsData == NULL)
+    if (_lineOriginsData == NULL)
         {
         NSArray *theLines = (__bridge NSArray *)CTFrameGetLines(self.frame);
 
-        lineOriginsData = [NSMutableData dataWithLength:sizeof(CGPoint) * theLines.count];
-        CTFrameGetLineOrigins(self.frame, (CFRange){}, [lineOriginsData mutableBytes]); 
+        _lineOriginsData = [NSMutableData dataWithLength:sizeof(CGPoint) * theLines.count];
+        CTFrameGetLineOrigins(self.frame, (CFRange){}, [_lineOriginsData mutableBytes]);
         }
-    return([lineOriginsData mutableBytes]);
+    return([_lineOriginsData mutableBytes]);
     }
 
 #pragma mark -
@@ -462,15 +462,15 @@
 
 - (void)reset
     {
-    if (frame)
+    if (_frame)
         {
-        CFRelease(frame);
+        CFRelease(_frame);
         self.frame = NULL;
         }
 
-    if (framesetter)
+    if (_framesetter)
         {
-        CFRelease(framesetter);
+        CFRelease(_framesetter);
         self.framesetter = NULL;
         }
 

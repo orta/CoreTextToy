@@ -19,17 +19,17 @@
 
 @implementation CLinkingCoreTextLabel
 
-@synthesize linkRanges;
-@synthesize URLHandler;
-@synthesize tapRecognizer;
+@synthesize linkRanges = _linkRanges;
+@synthesize URLHandler = _URLHandler;
+@synthesize tapRecognizer = _tapRecognizer;
 
 - (id)initWithFrame:(CGRect)frame
     {
     if ((self = [super initWithFrame:frame]) != NULL)
         {
-        tapRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(tap:)];
-        tapRecognizer.enabled = NO;
-        [self addGestureRecognizer:self.tapRecognizer];
+        _tapRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(tap:)];
+        _tapRecognizer.enabled = NO;
+        [self addGestureRecognizer:_tapRecognizer];
         }
     return(self);
     }
@@ -38,9 +38,9 @@
     {
     if ((self = [super initWithCoder:inCoder]) != NULL)
         {
-        tapRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(tap:)];
-        tapRecognizer.enabled = NO;
-        [self addGestureRecognizer:self.tapRecognizer];
+        _tapRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(tap:)];
+        _tapRecognizer.enabled = NO;
+        [self addGestureRecognizer:_tapRecognizer];
         }
     return(self);
     }

@@ -15,21 +15,21 @@ static void MyCTRunDelegateDeallocCallback(void *refCon);
 
 @implementation CCoreTextAttachment
 
-@synthesize ascent;
-@synthesize descent;
-@synthesize width;
-@synthesize representedObject;
-@synthesize renderer;
+@synthesize ascent = _ascent;
+@synthesize descent = _descent;
+@synthesize width = _width;
+@synthesize representedObject = _representedObject;
+@synthesize renderer = _renderer;
 
 - (id)initWithAscent:(CGFloat)inAscent descent:(CGFloat)inDescent width:(CGFloat)inWidth representedObject:(id)inRepresentedObject renderer:(void (^)(CCoreTextAttachment *,CGContextRef,CGRect))inRenderer;
     {
     if ((self = [super init]) != NULL)
         {
-        ascent = inAscent;
-        descent = inDescent;
-        width = inWidth;
-        representedObject = inRepresentedObject;
-        renderer = [inRenderer copy];
+        _ascent = inAscent;
+        _descent = inDescent;
+        _width = inWidth;
+        _representedObject = inRepresentedObject;
+        _renderer = [inRenderer copy];
         }
     return self;
     }

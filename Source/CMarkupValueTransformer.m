@@ -51,9 +51,9 @@
 
 @implementation CMarkupValueTransformer
 
-@synthesize whitespaceCharacterSet;
+@synthesize whitespaceCharacterSet = _whitespaceCharacterSet;
 
-@synthesize tagHandlers;
+@synthesize tagHandlers = _tagHandlers;
 
 + (Class)transformedValueClass
     {
@@ -69,7 +69,7 @@
 	{
 	if ((self = [super init]) != NULL)
 		{
-        tagHandlers = [NSMutableDictionary dictionary];
+        _tagHandlers = [NSMutableDictionary dictionary];
 
         [self resetStyles];
 

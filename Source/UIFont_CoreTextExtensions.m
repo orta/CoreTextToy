@@ -108,7 +108,7 @@ static void *kCGFontKey;
         theFont = CGFontCreateWithFontName((__bridge CFStringRef)self.fontName);
         NSAssert1(theFont != NULL, @"Could not convert font %@ to CGFont", self.fontName);
 
-        objc_setAssociatedObject(self, &kCGFontKey, (__bridge id)theFont, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
+        objc_setAssociatedObject(self, &kCGFontKey, (__bridge_transfer id)theFont, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
         }
     return(theFont);
     }

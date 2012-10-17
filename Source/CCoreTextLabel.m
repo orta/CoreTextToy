@@ -55,20 +55,6 @@
 
 @implementation CCoreTextLabel
 
-@synthesize text = _text;
-@synthesize font = _font;
-@synthesize textColor = _textColor;
-@synthesize textAlignment = _textAlignment;
-@synthesize lineBreakMode = _lineBreakMode;
-@synthesize lastLineBreakMode = _lastLineBreakMode;
-@synthesize shadowColor = _shadowColor;
-@synthesize shadowOffset = _shadowOffset;
-@synthesize shadowBlurRadius = _shadowBlurRadius;
-@synthesize highlightedTextColor = _highlightedTextColor;
-@synthesize highlighted = _highlighted;
-@synthesize enabled = _enabled;
-@synthesize insets = _insets;
-
 @synthesize renderer = _renderer;
 
 // TODO rename thatFits -> constrainedToSize

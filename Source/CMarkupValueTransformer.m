@@ -51,10 +51,6 @@
 
 @implementation CMarkupValueTransformer
 
-@synthesize whitespaceCharacterSet = _whitespaceCharacterSet;
-
-@synthesize tagHandlers = _tagHandlers;
-
 + (Class)transformedValueClass
     {
     return([NSAttributedString class]);

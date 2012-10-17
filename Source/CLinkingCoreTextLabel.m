@@ -19,10 +19,6 @@
 
 @implementation CLinkingCoreTextLabel
 
-@synthesize linkRanges = _linkRanges;
-@synthesize URLHandler = _URLHandler;
-@synthesize tapRecognizer = _tapRecognizer;
-
 - (id)initWithFrame:(CGRect)frame
     {
     if ((self = [super initWithFrame:frame]) != NULL)

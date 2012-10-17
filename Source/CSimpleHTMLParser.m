@@ -42,11 +42,6 @@ NSString *const kSimpleHTMLParserErrorDomain = @"kSimpleHTMLParserErrorDomain";
 
 @implementation CSimpleHTMLParser
 
-@synthesize openTagHandler = _openTagHandler;
-@synthesize closeTagHandler = _closeTagHandler;
-@synthesize textHandler = _textHandler;
-@synthesize whitespaceCharacterSet = _whitespaceCharacterSet;
-
 - (id)init
 	{
 	if ((self = [super init]) != NULL)

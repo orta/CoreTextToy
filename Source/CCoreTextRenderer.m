@@ -32,18 +32,6 @@
 
 @implementation CCoreTextRenderer
 
-@synthesize text = _text;
-@synthesize size = _size;
-
-@synthesize prerenderersForAttributes = _prerenderersForAttributes;
-@synthesize postRenderersForAttributes = _postRenderersForAttributes;
-@synthesize enableShadowRenderer = _enableShadowRenderer;
-
-@synthesize framesetter = _framesetter;
-@synthesize frame = _frame;
-@synthesize lineOrigins = _lineOrigins;
-@synthesize lineOriginsData = _lineOriginsData;
-
 + (CGSize)sizeForString:(NSAttributedString *)inString thatFits:(CGSize)inSize
     {
     CTFramesetterRef theFramesetter = CTFramesetterCreateWithAttributedString((__bridge CFAttributedStringRef)inString);

@@ -85,7 +85,7 @@
                 }
             }
 
-        [theAttributes setObject:theAttributeValue forKey:theAttributeName];
+        theAttributes[theAttributeName] = theAttributeValue;
         }
 
     if ([self scanString:@">" intoString:NULL] == NO)
@@ -201,7 +201,7 @@
                 }
             }
 
-        [theAttributes setObject:theAttributeValue forKey:theAttributeName];
+        theAttributes[theAttributeName] = theAttributeValue;
         }
 
     if ([self scanString:@"/>" intoString:NULL] == NO)

@@ -31,7 +31,7 @@ NSString *const kMarkupStrikeColorAttributeName = @"com.touchcode.strikeColor";
     
     [theString enumerateAttributesInRange:(NSRange){ .length = theString.length } options:0 usingBlock:^(NSDictionary *attrs, NSRange range, BOOL *stop) {
         UIFont *theFont = inBaseFont;
-        CTFontRef theCTFont = (__bridge CTFontRef)[attrs objectForKey:(__bridge NSString *)kCTFontAttributeName];
+        CTFontRef theCTFont = (__bridge CTFontRef)attrs[(__bridge NSString *)kCTFontAttributeName];
         if (theCTFont != NULL)
             {
             theFont = [UIFont fontWithCTFont:theCTFont];
@@ -49,7 +49,7 @@ NSString *const kMarkupStrikeColorAttributeName = @"com.touchcode.strikeColor";
         
     // NORMALIZE ATTRIBUTES
     UIFont *theBaseFont = inBaseFont;
-    NSString *theFontName = [theAttributes objectForKey:kMarkupFontNameAttributeName];
+    NSString *theFontName = theAttributes[kMarkupFontNameAttributeName];
     if (theFontName != NULL)
         {
         theBaseFont = [UIFont fontWithName:theFontName size:inBaseFont.pointSize];
@@ -58,14 +58,14 @@ NSString *const kMarkupStrikeColorAttributeName = @"com.touchcode.strikeColor";
     
     UIFont *theFont = theBaseFont;
     
-    BOOL theBoldFlag = [[theAttributes objectForKey:kMarkupBoldAttributeName] boolValue];
-    if ([theAttributes objectForKey:kMarkupBoldAttributeName] != NULL)
+    BOOL theBoldFlag = [theAttributes[kMarkupBoldAttributeName] boolValue];
+    if (theAttributes[kMarkupBoldAttributeName] != NULL)
         {
         [theAttributes removeObjectForKey:kMarkupBoldAttributeName];
         }
 
-    BOOL theItalicFlag = [[theAttributes objectForKey:kMarkupItalicAttributeName] boolValue];
-    if ([theAttributes objectForKey:kMarkupItalicAttributeName] != NULL)
+    BOOL theItalicFlag = [theAttributes[kMarkupItalicAttributeName] boolValue];
+    if (theAttributes[kMarkupItalicAttributeName] != NULL)
         {
         [theAttributes removeObjectForKey:kMarkupItalicAttributeName];
         }
@@ -83,7 +83,7 @@ NSString *const kMarkupStrikeColorAttributeName = @"com.touchcode.strikeColor";
         theFont = theBaseFont.italicFont;
         }
         
-    NSNumber *theSizeValue = [theAttributes objectForKey:kMarkupSizeAdjustmentAttributeName];
+    NSNumber *theSizeValue = theAttributes[kMarkupSizeAdjustmentAttributeName];
     if (theSizeValue != NULL)
         {
         CGFloat theSize = [theSizeValue floatValue];
@@ -94,7 +94,7 @@ NSString *const kMarkupStrikeColorAttributeName = @"com.touchcode.strikeColor";
 
     if (theFont != NULL)
         {
-        [theAttributes setObject:(__bridge id)theFont.CTFont forKey:(__bridge NSString *)kCTFontAttributeName];
+        theAttributes[(__bridge NSString *)kCTFontAttributeName] = (__bridge id)theFont.CTFont;
         }
         
     return(theAttributes);

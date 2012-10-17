@@ -81,7 +81,7 @@
 
     NSRange theRange;
     NSDictionary *theAttributes = [self attributesAtPoint:theLocation effectiveRange:&theRange];
-    NSURL *theLink = [theAttributes objectForKey:kMarkupLinkAttributeName];
+    NSURL *theLink = theAttributes[kMarkupLinkAttributeName];
     if (theLink != NULL)
         {
         if (self.URLHandler != NULL)

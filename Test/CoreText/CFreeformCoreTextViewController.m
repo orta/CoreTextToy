@@ -79,9 +79,9 @@
     CMarkupValueTransformer *theTransformer = [[CMarkupValueTransformer alloc] init];
 
     BTagHandler theHandler = ^(CSimpleHTMLTag *inTag) {
-        NSDictionary *theAttributes = [NSDictionary dictionaryWithObjectsAndKeys:
-                                       (__bridge id)[UIColor purpleColor].CGColor, (__bridge NSString *)kCTForegroundColorAttributeName,
-                                       NULL];
+        NSDictionary *theAttributes = @{
+			(__bridge NSString *)kCTForegroundColorAttributeName: (__bridge id)[UIColor purpleColor].CGColor,
+			};
         return(theAttributes);
     };
     

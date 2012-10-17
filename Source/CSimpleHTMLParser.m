@@ -64,17 +64,18 @@ NSString *const kSimpleHTMLParserErrorDomain = @"kSimpleHTMLParserErrorDomain";
     static NSDictionary *sEntities = NULL;
     static dispatch_once_t sOnceToken;
     dispatch_once(&sOnceToken, ^{
-        sEntities = [NSDictionary dictionaryWithObjectsAndKeys:
-            @"\"", @"quot",
-            @"&", @"amp",
-            @"'", @"apos",
-            @"<", @"lt",
-            @">", @"gt",
-            [NSString stringWithFormat:@"%C", (unichar)0xA0], @"nbsp",
-            NULL];
+        sEntities = @{
+			@"quot": @"\"",
+            @"amp": @"&",
+            @"apos": @"'",
+            @"lt": @"<",
+            @"gt": @">",
+            @"nbsp": [NSString stringWithFormat:@"%C", (unichar)0xA0],
+//            @"nbsp": @"\uA0", ???
+			};
         });
 
-    NSString *theString = [sEntities objectForKey:inEntity];
+    NSString *theString = sEntities[inEntity];
 
     return(theString);
     }
@@ -122,9 +123,7 @@ NSString *const kSimpleHTMLParserErrorDomain = @"kSimpleHTMLParserErrorDomain";
                         {
                         if (outError)
                             {
-                            NSDictionary *theUserInfo = [NSDictionary dictionaryWithObjectsAndKeys:
-                                @"Stack underflow", NSLocalizedDescriptionKey,
-                                NULL];
+                            NSDictionary *theUserInfo = @{NSLocalizedDescriptionKey: @"Stack underflow"};
                             *outError = [NSError errorWithDomain:kSimpleHTMLParserErrorDomain code:kSimpleHTMLParserErrorCode_StackUnderflow userInfo:theUserInfo];
                             }
                         return(NO);
@@ -190,9 +189,7 @@ NSString *const kSimpleHTMLParserErrorDomain = @"kSimpleHTMLParserErrorDomain";
                         {
                         if (outError)
                             {
-                            NSDictionary *theUserInfo = [NSDictionary dictionaryWithObjectsAndKeys:
-                                @"& not followed by ;", NSLocalizedDescriptionKey,
-                                NULL];
+                            NSDictionary *theUserInfo = @{NSLocalizedDescriptionKey: @"& not followed by ;"};
                             *outError = [NSError errorWithDomain:kSimpleHTMLParserErrorDomain code:kSimpleHTMLParserErrorCode_MalformedEntity userInfo:theUserInfo];
                             }
                         return(NO);
@@ -201,9 +198,7 @@ NSString *const kSimpleHTMLParserErrorDomain = @"kSimpleHTMLParserErrorDomain";
                         {
                         if (outError)
                             {
-                            NSDictionary *theUserInfo = [NSDictionary dictionaryWithObjectsAndKeys:
-                                @"& not followed by ;", NSLocalizedDescriptionKey,
-                                NULL];
+                            NSDictionary *theUserInfo = @{NSLocalizedDescriptionKey: @"& not followed by ;"};
                             *outError = [NSError errorWithDomain:kSimpleHTMLParserErrorDomain code:kSimpleHTMLParserErrorCode_MalformedEntity userInfo:theUserInfo];
                             }
                         return(NO);
@@ -240,11 +235,11 @@ NSString *const kSimpleHTMLParserErrorDomain = @"kSimpleHTMLParserErrorDomain";
                     {
                     if (outError)
                         {
-                        NSDictionary *theUserInfo = [NSDictionary dictionaryWithObjectsAndKeys:
-                            @"Unknown error occured!", NSLocalizedDescriptionKey,
-                            [NSNumber numberWithInt:theScanner.scanLocation], @"character",
-                            inString, @"markup",
-                            NULL];
+                        NSDictionary *theUserInfo = @{
+							NSLocalizedDescriptionKey: @"Unknown error occured!",
+                            @"character": @(theScanner.scanLocation),
+                            @"markup": inString
+							};
                         *outError = [NSError errorWithDomain:kSimpleHTMLParserErrorDomain code:kSimpleHTMLParserErrorCode_UnknownError userInfo:theUserInfo];
                         }
                     return(NO);

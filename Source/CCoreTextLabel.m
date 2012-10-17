@@ -74,11 +74,11 @@
 // TODO rename thatFits -> constrainedToSize
 + (CGSize)sizeForString:(NSAttributedString *)inString font:(UIFont *)inBaseFont alignment:(UITextAlignment)inTextAlignment lineBreakMode:(UILineBreakMode)inLineBreakMode contentInsets:(UIEdgeInsets)inContentInsets thatFits:(CGSize)inSize 
     {
-    NSDictionary *theSettings = [NSDictionary dictionaryWithObjectsAndKeys:
-        inBaseFont, @"font",
-        [NSNumber numberWithInteger:inTextAlignment], @"textAlignment",
-        [NSNumber numberWithInteger:inLineBreakMode], @"lineBreakMode",
-        NULL];
+    NSDictionary *theSettings = @{
+		@"font": inBaseFont,
+        @"textAlignment": @(inTextAlignment),
+        @"lineBreakMode": @(inLineBreakMode),
+		};
         
     NSAttributedString *theNormalizedText = [self normalizeString:inString settings:theSettings];
         
@@ -322,7 +322,7 @@
 
         [renderer addPrerendererBlock:^(CGContextRef inContext, CTRunRef inRun, CGRect inRect) {
             NSDictionary *theAttributes2 = (__bridge NSDictionary *)CTRunGetAttributes(inRun);
-            CGColorRef theColor2 = (__bridge CGColorRef)[theAttributes2 objectForKey:kMarkupBackgroundColorAttributeName];
+            CGColorRef theColor2 = (__bridge CGColorRef)theAttributes2[kMarkupBackgroundColorAttributeName];
             CGContextSetFillColorWithColor(inContext, theColor2);
             CGContextFillRect(inContext, inRect);
             } forAttributeKey:kMarkupBackgroundColorAttributeName];
@@ -330,11 +330,11 @@
         [renderer addPostRendererBlock:^(CGContextRef inContext, CTRunRef inRun, CGRect inRect) {
             NSDictionary *theAttributes2 = (__bridge NSDictionary *)CTRunGetAttributes(inRun);
             
-            CTFontRef theFont = (__bridge CTFontRef)[theAttributes2 objectForKey:(__bridge NSString *)kCTFontAttributeName];
+            CTFontRef theFont = (__bridge CTFontRef)theAttributes2[(__bridge NSString *)kCTFontAttributeName];
             
             CGFloat theXHeight = CTFontGetXHeight(theFont);
             
-            CGColorRef theColor2 = (__bridge CGColorRef)[theAttributes2 objectForKey:kMarkupStrikeColorAttributeName];
+            CGColorRef theColor2 = (__bridge CGColorRef)theAttributes2[kMarkupStrikeColorAttributeName];
             CGContextSetStrokeColorWithColor(inContext, theColor2);
             const CGFloat Y = CGRectGetMidY(inRect) - theXHeight * 0.5f;
             
@@ -430,7 +430,7 @@
     CTWritingDirection theBaseWritingDirection; 
 
     BOOL createdCurrentStyle = NO;
-    CTParagraphStyleRef currentParagraphStyle = (__bridge CTParagraphStyleRef)[inAttributes objectForKey:(__bridge NSString *)kCTParagraphStyleAttributeName];
+    CTParagraphStyleRef currentParagraphStyle = (__bridge CTParagraphStyleRef)inAttributes[(__bridge NSString *)kCTParagraphStyleAttributeName];
     if (currentParagraphStyle == NULL)
         {
         // Create default style
@@ -489,11 +489,11 @@
 
     UIColor *theTextColor = [inSettings valueForKey:@"textColor"] ?: [UIColor blackColor];
     [theMutableText enumerateAttributesInRange:(NSRange){ .length = theMutableText.length } options:0 usingBlock:^(NSDictionary *attrs, NSRange range, BOOL *stop) {
-        if ([attrs objectForKey:(__bridge NSString *)kCTFontAttributeName] == NULL)
+        if (attrs[(__bridge NSString *)kCTFontAttributeName] == NULL)
             {
             [theMutableText addAttribute:(__bridge NSString *)kCTFontAttributeName value:(__bridge id)theFont.CTFont range:range];
             }
-        if ([attrs objectForKey:(__bridge NSString *)kCTForegroundColorAttributeName] == NULL)
+        if (attrs[(__bridge NSString *)kCTForegroundColorAttributeName] == NULL)
             {
             [theMutableText addAttribute:(__bridge NSString *)kCTForegroundColorAttributeName value:(__bridge id)theTextColor.CGColor range:range];
             }
@@ -509,13 +509,13 @@
     if (theShadowColor != NULL && [[inSettings valueForKey:@"enabled"] boolValue] == YES)
         {
         NSMutableDictionary *theShadowAttributes = [NSMutableDictionary dictionary];
-        [theShadowAttributes setObject:(__bridge id)theShadowColor.CGColor forKey:kShadowColorAttributeName];
+        theShadowAttributes[kShadowColorAttributeName] = (__bridge id)theShadowColor.CGColor;
         
         NSValue *theShadowOffset = [inSettings valueForKey:@"shadowOffset"];
-        [theShadowAttributes setObject:theShadowOffset forKey:kShadowOffsetAttributeName];
+        theShadowAttributes[kShadowOffsetAttributeName] = theShadowOffset;
 
         NSNumber *theShadowBlueRadius = [inSettings valueForKey:@"shadowBlurRadius"];
-        [theShadowAttributes setObject:theShadowBlueRadius forKey:kShadowBlurRadiusAttributeName];
+        theShadowAttributes[kShadowBlurRadiusAttributeName] = theShadowBlueRadius;
 
         [theMutableText addAttributes:theShadowAttributes range:(NSRange){ .length = [theMutableText length] }];
         }

@@ -56,10 +56,10 @@
     // #########################################################################
 
     BTagHandler theHandler = ^(CSimpleHTMLTag *inTag) {
-        NSDictionary *theAttributes = [NSDictionary dictionaryWithObjectsAndKeys:
-            (__bridge id)[UIColor colorWithRed:0.761 green:0.486 blue:0.165 alpha:1.000].CGColor, (__bridge NSString *)kCTForegroundColorAttributeName,
-            [NSNumber numberWithBool:YES], kMarkupBoldAttributeName,
-            NULL];
+        NSDictionary *theAttributes = @{
+			(__bridge NSString *)kCTForegroundColorAttributeName: (__bridge id)[UIColor colorWithRed:0.761 green:0.486 blue:0.165 alpha:1.000].CGColor,
+            kMarkupBoldAttributeName: @YES,
+			};
         return(theAttributes);
         };
 
@@ -122,28 +122,28 @@
     // #########################################################################
 
     BTagHandler theCochinHandler = ^(CSimpleHTMLTag *inTag) {
-        NSDictionary *theAttributes = [NSDictionary dictionaryWithObjectsAndKeys:
-            @"Cochin", kMarkupFontNameAttributeName,
-            [NSNumber numberWithBool:YES], kMarkupItalicAttributeName,
-            NULL];
+        NSDictionary *theAttributes = @{
+			kMarkupFontNameAttributeName: @"Cochin",
+            kMarkupItalicAttributeName: @YES
+			};
         return(theAttributes);
         };
 
     [self.label7.markupValueTransformer addHandler:theCochinHandler forTag:@"cochin"];
     
     BTagHandler theChalkdusterHandler = ^(CSimpleHTMLTag *inTag) {
-        NSDictionary *theAttributes = [NSDictionary dictionaryWithObjectsAndKeys:
-            @"Chalkduster", kMarkupFontNameAttributeName,
-            NULL];
+        NSDictionary *theAttributes = @{
+			kMarkupFontNameAttributeName: @"Chalkduster"
+			};
         return(theAttributes);
         };
 
     [self.label7.markupValueTransformer addHandler:theChalkdusterHandler forTag:@"chalkduster"];
     
     BTagHandler theZapfinoHandler = ^(CSimpleHTMLTag *inTag) {
-        NSDictionary *theAttributes = [NSDictionary dictionaryWithObjectsAndKeys:
-            @"Zapfino", kMarkupFontNameAttributeName,
-            NULL];
+        NSDictionary *theAttributes = @{
+			kMarkupFontNameAttributeName: @"Zapfino"
+			};
         return(theAttributes);
         };
 

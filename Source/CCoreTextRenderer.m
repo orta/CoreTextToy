@@ -173,7 +173,7 @@
         self.prerenderersForAttributes = [NSMutableDictionary dictionary];
         }
         
-    [self.prerenderersForAttributes setObject:[inBlock copy] forKey:inKey];
+    (self.prerenderersForAttributes)[inKey] = [inBlock copy];
     }
 
 - (void)addPostRendererBlock:(void (^)(CGContextRef, CTRunRef, CGRect))inBlock forAttributeKey:(NSString *)inKey;
@@ -183,7 +183,7 @@
         self.postRenderersForAttributes = [NSMutableDictionary dictionary];
         }
         
-    [self.postRenderersForAttributes setObject:[inBlock copy] forKey:inKey];
+    (self.postRenderersForAttributes)[inKey] = [inBlock copy];
     }
 
 #pragma mark -
@@ -224,7 +224,7 @@
         [self enumerateRuns:^(CTRunRef inRun, CGRect inRect) {
             NSDictionary *theAttributes = (__bridge NSDictionary *)CTRunGetAttributes(inRun);
             [self.prerenderersForAttributes enumerateKeysAndObjectsUsingBlock:^(id key, id obj, BOOL *stop) {
-                if ([theAttributes objectForKey:key])
+                if (theAttributes[key])
                     {
                     void (^theBlock)(CGContextRef, CTRunRef, CGRect) = obj;
                     theBlock(inContext, inRun, inRect);
@@ -259,14 +259,14 @@
 
                 // TODO: Optimisation instead of constantly saving/restoring state and setting shadow we can keep track of current shadow and only save/restore/set when there's a change.
                 NSDictionary *theAttributes = (__bridge NSDictionary *)CTRunGetAttributes(theRun);
-                CGColorRef theShadowColor = (__bridge CGColorRef)[theAttributes objectForKey:kShadowColorAttributeName];
+                CGColorRef theShadowColor = (__bridge CGColorRef)theAttributes[kShadowColorAttributeName];
                 CGSize theShadowOffset = CGSizeZero;
-                NSValue *theShadowOffsetValue = [theAttributes objectForKey:kShadowOffsetAttributeName];
+                NSValue *theShadowOffsetValue = theAttributes[kShadowOffsetAttributeName];
                 if (theShadowColor != NULL && theShadowOffsetValue != NULL)
                     {
                     theShadowOffset = [theShadowOffsetValue CGSizeValue];
 
-                    CGFloat theShadowBlurRadius = [[theAttributes objectForKey:kShadowBlurRadiusAttributeName] floatValue];
+                    CGFloat theShadowBlurRadius = [theAttributes[kShadowBlurRadiusAttributeName] floatValue];
 
                     CGContextSaveGState(inContext);
                     CGContextSetShadowWithColor(inContext, theShadowOffset, theShadowBlurRadius, theShadowColor);
@@ -296,7 +296,7 @@
         [self enumerateRuns:^(CTRunRef inRun, CGRect inRect) {
             NSDictionary *theAttributes = (__bridge NSDictionary *)CTRunGetAttributes(inRun);
             [self.postRenderersForAttributes enumerateKeysAndObjectsUsingBlock:^(id key, id obj, BOOL *stop) {
-                if ([theAttributes objectForKey:key])
+                if (theAttributes[key])
                     {
                     void (^theBlock)(CGContextRef, CTRunRef, CGRect) = obj;
                     theBlock(inContext, inRun, inRect);
@@ -311,7 +311,7 @@
     [self enumerateRuns:^(CTRunRef inRun, CGRect inRect) {
         NSDictionary *theAttributes = (__bridge NSDictionary *)CTRunGetAttributes(inRun);
         // ### If we have an image we draw it...
-        CCoreTextAttachment *theAttachment = [theAttributes objectForKey:kMarkupAttachmentAttributeName];
+        CCoreTextAttachment *theAttachment = theAttributes[kMarkupAttachmentAttributeName];
         if (theAttachment != NULL)
             {
             inRect.origin.y *= -1;

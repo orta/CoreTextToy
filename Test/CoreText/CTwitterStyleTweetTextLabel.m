@@ -75,8 +75,8 @@
         self.selectedLinkIndex %= self.linkRanges.count;
         }
     
-    NSRange theLinkRange = [[self.linkRanges objectAtIndex:self.selectedLinkIndex] rangeValue];
-    CGRect theRect = [[[self rectsForRange:theLinkRange] objectAtIndex:0] CGRectValue];
+    NSRange theLinkRange = [(self.linkRanges)[self.selectedLinkIndex] rangeValue];
+    CGRect theRect = [[self rectsForRange:theLinkRange][0] CGRectValue];
     if (self.selectionLayer == NULL)
         {
         self.selectionLayer = [CALayer layer];

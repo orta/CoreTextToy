@@ -32,15 +32,6 @@
 
 @implementation CExampleCoreTextViewController
 
-@synthesize label1;
-@synthesize label2;
-@synthesize label3;
-@synthesize label4;
-@synthesize label5;
-@synthesize label6;
-@synthesize label7;
-@synthesize sizeLayer;
-
 - (void)viewDidLoad
     {
     [super viewDidLoad];

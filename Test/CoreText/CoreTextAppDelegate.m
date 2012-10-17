@@ -33,7 +33,4 @@
 
 @implementation CoreTextAppDelegate
 
-@synthesize window;
-
-
 @end

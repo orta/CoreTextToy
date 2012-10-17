@@ -20,11 +20,6 @@
 
 @implementation CResizerThumb
 
-@synthesize thumbSize;
-@synthesize minimumSize;
-@synthesize originalSize;
-@synthesize touchBeganLocation;
-
 - (id)initWithCoder:(NSCoder *)inCoder
     {
     if ((self = [super initWithCoder:inCoder]) != NULL)

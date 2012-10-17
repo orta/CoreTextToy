@@ -258,7 +258,4 @@ NSString *const kSimpleHTMLParserErrorDomain = @"kSimpleHTMLParserErrorDomain";
 
 @implementation CSimpleHTMLTag
 
-@synthesize name;
-@synthesize attributes;
-
 @end

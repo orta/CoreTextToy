@@ -45,10 +45,6 @@
 
 @implementation CFreeformCoreTextViewController
 
-@synthesize editView;
-@synthesize attributedView;
-@synthesize previewView;
-
 - (void)viewDidLoad
     {
     self.previewView.layer.borderWidth = 1.0;

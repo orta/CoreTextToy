@@ -21,10 +21,7 @@
 
 @implementation CTwitterStyleTweetTextLabel
 
-@synthesize linkRanges;
-@synthesize selectedLinkIndex;
-
-@synthesize selectionLayer;
+@synthesize linkRanges = _linkRanges;
 
 - (id)initWithCoder:(NSCoder *)inCoder
     {
@@ -32,7 +29,7 @@
         {
         [self addGestureRecognizer:[[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(tap:)]];
         
-        selectedLinkIndex = NSNotFound;
+        _selectedLinkIndex = NSNotFound;
         }
     return(self);
     }
@@ -48,7 +45,7 @@
 
 - (NSArray *)linkRanges
     {
-    if (linkRanges == NULL)
+    if (_linkRanges == NULL)
         {
         NSMutableArray *theRanges = [NSMutableArray array];
         [self.text enumerateAttribute:kMarkupLinkAttributeName inRange:(NSRange){ .length = self.text.length } options:0 usingBlock:^(id value, NSRange range, BOOL *stop) {
@@ -58,9 +55,9 @@
                 }
             }];
         
-        linkRanges = [theRanges copy];
+        _linkRanges = [theRanges copy];
         }
-    return(linkRanges);
+    return(_linkRanges);
     }
 
 - (IBAction)tap:(id)sender

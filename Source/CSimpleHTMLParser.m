@@ -70,7 +70,7 @@ NSString *const kSimpleHTMLParserErrorDomain = @"kSimpleHTMLParserErrorDomain";
             @"'", @"apos",
             @"<", @"lt",
             @">", @"gt",
-            [NSString stringWithFormat:@"%C", 0xA0], @"nbsp",
+            [NSString stringWithFormat:@"%C", (unichar)0xA0], @"nbsp",
             NULL];
         });
 

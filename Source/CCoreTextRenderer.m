@@ -185,7 +185,7 @@
         }
     
     CFRange theFitRange;
-    CGSize theSize = CTFramesetterSuggestFrameSizeWithConstraints(self.framesetter, (CFRange){}, NULL, inSize, &theFitRange);
+    CGSize theSize = CTFramesetterSuggestFrameSizeWithConstraints(self.framesetter, (CFRange){ .length = (CFIndex)self.text.length }, NULL, inSize, &theFitRange);
 
     theSize.width = roundf(MIN(theSize.width, inSize.width));
     theSize.height = roundf(MIN(theSize.height, inSize.height));
@@ -241,7 +241,7 @@
             
             // ### Iterate each run... Keeping track of our X position...
             NSArray *theRuns = (__bridge NSArray *)CTLineGetGlyphRuns(line);
-            [theRuns enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
+            [theRuns enumerateObjectsUsingBlock:^(id obj, NSUInteger idx2, BOOL *stop2) {
 
                 CTRunRef theRun = (__bridge CTRunRef)obj;
 
@@ -353,11 +353,11 @@
     inPoint.y += self.size.height;
 
     __block CGPoint theLastLineOrigin = (CGPoint){ 0, CGFLOAT_MAX };
-    __block NSUInteger theIndex = NSNotFound;
+    __block CFIndex theIndex = NSNotFound;
 
     [self enumerateLines:^(CTLineRef line, NSUInteger idx, BOOL *stop) {
         CGPoint theLineOrigin;
-        CTFrameGetLineOrigins(self.frame, CFRangeMake(idx, 1), &theLineOrigin);
+        CTFrameGetLineOrigins(self.frame, CFRangeMake((CFIndex)idx, 1), &theLineOrigin);
 
         if (inPoint.y > theLineOrigin.y && inPoint.y < theLastLineOrigin.y)
             {
@@ -370,7 +370,7 @@
         theLastLineOrigin = theLineOrigin;
         }];
         
-    return(theIndex);
+    return((NSUInteger)theIndex);
     }
 
 - (NSArray *)visibleLines
@@ -379,7 +379,7 @@
     
     [self enumerateLines:^(CTLineRef line, NSUInteger idx, BOOL *stop) {
         CGPoint theLineOrigin;
-        CTFrameGetLineOrigins(self.frame, CFRangeMake(idx, 1), &theLineOrigin);
+        CTFrameGetLineOrigins(self.frame, CFRangeMake((CFIndex)idx, 1), &theLineOrigin);
 
         // TODO use CTLineGetTypographicBounds?
         if (theLineOrigin.y >= 0.0 && theLineOrigin.y <= self.size.height)
@@ -428,7 +428,7 @@
         // ### Iterate each run... Keeping track of our X position...
         __block CGFloat theXPosition = 0;
         NSArray *theRuns = (__bridge NSArray *)CTLineGetGlyphRuns(line);
-        [theRuns enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
+        [theRuns enumerateObjectsUsingBlock:^(id obj, NSUInteger idx2, BOOL *stop2) {
             CTRunRef theRun = (__bridge CTRunRef)obj;
             
             // ### Get the ascent, descent, leading, width and produce a rect for the run...

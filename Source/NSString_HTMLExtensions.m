@@ -36,13 +36,13 @@
 - (NSString *)stringByLinkifyingString
     {
     NSError *theError = NULL;
-    NSDataDetector *theDataDetector = [NSDataDetector dataDetectorWithTypes:NSTextCheckingTypeLink error:&theError];
+    NSDataDetector *theDataDetector = [NSDataDetector dataDetectorWithTypes:NSTextCheckingAllSystemTypes error:&theError];
 
     NSMutableString *theReplacementString = [NSMutableString string];
 
     __block NSRange theLastRange = { .length = 0 };
 
-    [theDataDetector enumerateMatchesInString:self options:NSMatchingCompleted range:(NSRange){ .length = self.length } usingBlock:^(NSTextCheckingResult *result, NSMatchingFlags flags, BOOL *stop) {
+    [theDataDetector enumerateMatchesInString:self options:NSMatchingReportCompletion range:(NSRange){ .length = self.length } usingBlock:^(NSTextCheckingResult *result, NSMatchingFlags flags, BOOL *stop) {
 
         NSRange theRange = result.range;
         if (theRange.length > 0)

@@ -280,7 +280,7 @@
 
 - (void)addStyleHandlerWithAttributes:(NSDictionary *)inDictionary forTag:(NSString *)inTag
     {
-    BTagHandler theHandler = ^(CSimpleHTMLTag *inTag) {
+    BTagHandler theHandler = ^(CSimpleHTMLTag *tag) {
         return(inDictionary);
         };
     [self addHandler:theHandler forTag:inTag];

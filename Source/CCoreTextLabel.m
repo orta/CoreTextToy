@@ -41,8 +41,8 @@
 #import "NSAttributedString_Extensions.h"
 
 // For conenience CCoreTextRenderer deals with CFRanges, CCoreTextLabel deals with NSRanges.
-#define CFRangeToNSRange_(r) ({ const CFRange r_ = (r); (NSRange){ r_.location, r_.length }; })
-#define NSRangeToCFRange_(r) ({ const NSRange r_ = (r); (CFRange){ r_.location, r_.length }; })
+#define CFRangeToNSRange_(r) ({ const CFRange r_ = (r); (NSRange){ (NSUInteger)r_.location, (NSUInteger)r_.length }; })
+#define NSRangeToCFRange_(r) ({ const NSRange r_ = (r); (CFRange){ (CFIndex)r_.location, (CFIndex)r_.length }; })
 
 @interface CCoreTextLabel ()
 @property (readwrite, nonatomic, strong) CCoreTextRenderer *renderer;

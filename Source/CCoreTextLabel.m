@@ -99,6 +99,8 @@
         _shadowBlurRadius = 0.0;
         _highlightedTextColor = [UIColor whiteColor];
         _enabled = YES;
+
+		_preferredMaxLayoutWidth = CGFLOAT_MAX;
         }
     return(self);
     }
@@ -123,17 +125,24 @@
         _shadowBlurRadius = 0.0;
         _highlightedTextColor = [UIColor whiteColor];
         _enabled = YES;
+
+		_preferredMaxLayoutWidth = CGFLOAT_MAX;
         }
     return(self);
     }
 
 #pragma mark -
 
-- (void)setFrame:(CGRect)inFrame
+- (void)setBounds:(CGRect)inBounds
     {
-    [super setFrame:inFrame];
+	CGSize theOldSize = self.bounds.size;
 
-    self.renderer = NULL;
+    [super setBounds:inBounds];
+
+	if (CGSizeEqualToSize(theOldSize, inBounds.size) == NO)
+		{
+		self.renderer = NULL;
+		}
     }
 
 #pragma mark -
@@ -147,6 +156,7 @@
         self.accessibilityLabel = inText.string;
         
         self.renderer = NULL;
+		[self invalidateIntrinsicContentSize];
         }
     }
 
@@ -157,6 +167,7 @@
         _font = inFont;
         
         self.renderer = NULL;
+		[self invalidateIntrinsicContentSize];
         }
     }
 
@@ -180,6 +191,7 @@
         _textAlignment = inTextAlignment;
         
         self.renderer = NULL;
+		[self invalidateIntrinsicContentSize];
         }
     }
     
@@ -190,6 +202,7 @@
         _lineBreakMode = inLineBreakMode;
         
         self.renderer = NULL;
+		[self invalidateIntrinsicContentSize];
         }
     }
 
@@ -200,6 +213,7 @@
         _lastLineBreakMode = inLastLineBreakMode;
         
         self.renderer = NULL;
+		[self invalidateIntrinsicContentSize];
         }
     }
 
@@ -269,6 +283,7 @@
     _insets = inInsets;
 
     self.renderer = NULL;
+	[self invalidateIntrinsicContentSize];
     }
 
 #pragma mark -
@@ -359,15 +374,20 @@
 
 - (void)drawRect:(CGRect)rect
     {
+    CGContextRef theContext = UIGraphicsGetCurrentContext();
+
     // ### Work out the inset bounds...
-    CGRect theBounds = self.bounds;
-    theBounds = UIEdgeInsetsInsetRect(theBounds, self.insets);
+	CGRect theBounds = self.bounds;
+    CGRect theInsetBounds = UIEdgeInsetsInsetRect(theBounds, self.insets);
+
+//	CGRect theRect = { .size = self.intrinsicContentSize };
+//	CGContextStrokeRect(theContext, theRect);
 
     // ### Get and set up the context...
-    CGContextRef theContext = UIGraphicsGetCurrentContext();
     CGContextSaveGState(theContext);
-    CGContextTranslateCTM(theContext, theBounds.origin.x, theBounds.origin.y);
-    
+
+    CGContextTranslateCTM(theContext, theInsetBounds.origin.x, theInsetBounds.origin.y);
+
     if (self.enabled == NO)
         {
         // 0.44 seems to be magic number (at least with black text).
@@ -378,6 +398,14 @@
 
     CGContextRestoreGState(theContext);    
     }
+
+#pragma mark -
+
+- (CGSize)intrinsicContentSize
+	{
+	CGSize theSize = [self sizeThatFits:(CGSize){ self.preferredMaxLayoutWidth, CGFLOAT_MAX }];
+	return(theSize);
+	}
 
 #pragma mark -
 

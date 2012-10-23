@@ -14,6 +14,8 @@
 @property (readwrite, nonatomic, assign) CGSize thumbSize;
 @property (readwrite, nonatomic, assign) CGSize originalSize;
 @property (readwrite, nonatomic, assign) CGPoint touchBeganLocation;
+@property (readwrite, nonatomic, weak) IBOutlet NSLayoutConstraint *widthConstraint;
+@property (readwrite, nonatomic, weak) IBOutlet NSLayoutConstraint *heightConstraint;
 @end
 
 #pragma mark -
@@ -24,10 +26,9 @@
     {
     if ((self = [super initWithCoder:inCoder]) != NULL)
         {
-        CALayer *theLayer = [CALayer layer];
-        theLayer.frame = self.bounds;
-        theLayer.contents = (__bridge id)[UIImage imageNamed:@"Thumb.png"].CGImage;
-        [self.layer addSublayer:theLayer];
+		UIImageView *theImageView = [[UIImageView alloc] initWithFrame:(CGRect){ .size = 16, 16 }];
+		theImageView.image = [UIImage imageNamed:@"Thumb.png"];
+		[self addSubview:theImageView];
         }
     return(self);
     }
@@ -36,10 +37,9 @@
     {
     if ((self = [super initWithFrame:frame]) != NULL)
         {
-        CALayer *theLayer = [CALayer layer];
-        theLayer.frame = self.bounds;
-        theLayer.contents = (__bridge id)[UIImage imageNamed:@"Thumb.png"].CGImage;
-        [self.layer addSublayer:theLayer];
+		UIImageView *theImageView = [[UIImageView alloc] initWithFrame:(CGRect){ .size = 16, 16 }];
+		theImageView.image = [UIImage imageNamed:@"Thumb.png"];
+		[self addSubview:theImageView];
         }
     return(self);
     }
@@ -58,14 +58,16 @@
     UITouch *theTouch = [touches anyObject];
     CGPoint theLocation = [self convertPoint:[theTouch locationInView:self] toView:self.superview];
 
-    self.superview.frame = (CGRect){
-        .origin = self.superview.frame.origin,
-        .size = {
-            .width = MAX(self.originalSize.width + (theLocation.x - self.touchBeganLocation.x), self.minimumSize.width),
-            .height = MAX(self.originalSize.height + (theLocation.y - self.touchBeganLocation.y), self.minimumSize.height),
-            },
-        };
-    
+//    self.superview.frame = (CGRect){
+//        .origin = self.superview.frame.origin,
+//        .size = {
+//            .width = MAX(self.originalSize.width + (theLocation.x - self.touchBeganLocation.x), self.minimumSize.width),
+//            .height = MAX(self.originalSize.height + (theLocation.y - self.touchBeganLocation.y), self.minimumSize.height),
+//            },
+//        };
+
+	self.widthConstraint.constant = MAX(self.originalSize.width + (theLocation.x - self.touchBeganLocation.x), self.minimumSize.width);
+	self.heightConstraint.constant = MAX(self.originalSize.height + (theLocation.y - self.touchBeganLocation.y), self.minimumSize.height);
     }
     
 - (void)touchesEnded:(NSSet *)touches withEvent:(UIEvent *)event

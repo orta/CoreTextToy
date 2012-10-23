@@ -71,17 +71,20 @@
         self.selectedLinkIndex += 1;
         self.selectedLinkIndex %= self.linkRanges.count;
         }
-    
-    NSRange theLinkRange = [(self.linkRanges)[self.selectedLinkIndex] rangeValue];
-    CGRect theRect = [[self rectsForRange:theLinkRange][0] CGRectValue];
-    if (self.selectionLayer == NULL)
-        {
-        self.selectionLayer = [CALayer layer];
-        self.selectionLayer.backgroundColor = [[UIColor redColor] colorWithAlphaComponent:0.5].CGColor;
-        [self.layer addSublayer:self.selectionLayer];
-        }
 
-    self.selectionLayer.frame = theRect;
+	if (self.selectedLinkIndex < self.linkRanges.count)
+		{
+		NSRange theLinkRange = [self.linkRanges[self.selectedLinkIndex] rangeValue];
+		CGRect theRect = [[self rectsForRange:theLinkRange][0] CGRectValue];
+		if (self.selectionLayer == NULL)
+			{
+			self.selectionLayer = [CALayer layer];
+			self.selectionLayer.backgroundColor = [[UIColor redColor] colorWithAlphaComponent:0.5].CGColor;
+			[self.layer addSublayer:self.selectionLayer];
+			}
+
+		self.selectionLayer.frame = theRect;
+		}
     }
 
 

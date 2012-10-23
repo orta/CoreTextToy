@@ -1,27 +1,26 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="1.0" toolsVersion="1938" systemVersion="11D50b" targetRuntime="iOS.CocoaTouch.iPad" propertyAccessControl="none" initialViewController="93x-WQ-fvS">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="2.0" toolsVersion="2843" systemVersion="12C60" targetRuntime="iOS.CocoaTouch.iPad" propertyAccessControl="none" useAutolayout="YES" initialViewController="93x-WQ-fvS">
     <dependencies>
-        <development defaultVersion="4200" identifier="xcode"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="933"/>
+        <development version="4400" identifier="xcode"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="1929"/>
     </dependencies>
     <scenes>
+        <!--Freeform Core Text View Controller - Freeform-->
         <scene sceneID="4">
             <objects>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="3" sceneMemberID="firstResponder"/>
                 <viewController id="2" customClass="CFreeformCoreTextViewController" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="5">
                         <rect key="frame" x="0.0" y="64" width="768" height="911"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <view contentMode="scaleToFill" id="6" customClass="CLinkingCoreTextLabel">
-                                <rect key="frame" x="0.0" y="380" width="768" height="240"/>
-                                <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxY="YES"/>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="6" customClass="CLinkingCoreTextLabel">
                                 <color key="backgroundColor" white="0.95000000000000007" alpha="1" colorSpace="calibratedWhite"/>
                             </view>
-                            <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" showsHorizontalScrollIndicator="NO" id="7">
-                                <rect key="frame" x="0.0" y="0.0" width="768" height="180"/>
-                                <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxY="YES"/>
+                            <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" showsHorizontalScrollIndicator="NO" translatesAutoresizingMaskIntoConstraints="NO" id="7">
                                 <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="180" id="zKz-M4-P0o"/>
+                                </constraints>
                                 <string key="text">&lt;b>hello &lt;i>world&lt;/i>&lt;/b>&lt;br>
 A lot of entites are supported. &amp;amp; &amp;lt; &amp;gt;&lt;br>
 White space mostly follows normal HTML rules. (But a bit buggy?)&lt;br>
@@ -39,15 +38,28 @@ Links will work too:&lt;br>
                                     <outlet property="delegate" destination="2" id="10"/>
                                 </connections>
                             </textView>
-                            <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" showsHorizontalScrollIndicator="NO" editable="NO" id="fH4-cd-KeY">
-                                <rect key="frame" x="0.0" y="192" width="768" height="180"/>
-                                <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                            <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" showsHorizontalScrollIndicator="NO" editable="NO" translatesAutoresizingMaskIntoConstraints="NO" id="fH4-cd-KeY">
                                 <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="180" id="VNS-kc-qpD"/>
+                                </constraints>
                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                 <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
                             </textView>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstItem="6" firstAttribute="leading" secondItem="5" secondAttribute="leading" type="default" id="1Jc-0y-mXu"/>
+                            <constraint firstItem="7" firstAttribute="trailing" secondItem="5" secondAttribute="trailing" type="default" id="5bl-IY-FEo"/>
+                            <constraint firstItem="6" firstAttribute="top" secondItem="fH4-cd-KeY" secondAttribute="bottom" constant="8" symbolic="YES" type="default" id="DdK-Fh-VZf"/>
+                            <constraint firstItem="7" firstAttribute="top" secondItem="5" secondAttribute="top" type="default" id="GRM-R6-yWC"/>
+                            <constraint firstItem="fH4-cd-KeY" firstAttribute="leading" secondItem="5" secondAttribute="leading" type="default" id="Ggb-vy-1q3"/>
+                            <constraint firstItem="fH4-cd-KeY" firstAttribute="trailing" secondItem="5" secondAttribute="trailing" type="default" id="Pem-S2-YHz"/>
+                            <constraint firstItem="6" firstAttribute="trailing" secondItem="5" secondAttribute="trailing" type="default" id="Y8Y-sy-8Rg"/>
+                            <constraint firstAttribute="bottom" secondItem="6" secondAttribute="bottom" constant="291" id="Ynj-1u-WQX"/>
+                            <constraint firstItem="7" firstAttribute="leading" secondItem="5" secondAttribute="leading" type="default" id="pr9-sl-i5R"/>
+                            <constraint firstItem="fH4-cd-KeY" firstAttribute="top" secondItem="5" secondAttribute="top" constant="192" id="sVr-OI-ON8"/>
+                        </constraints>
                     </view>
                     <navigationItem key="navigationItem" title="Freeform" id="OsL-xV-lIA"/>
                     <connections>
@@ -56,93 +68,101 @@ Links will work too:&lt;br>
                         <outlet property="previewView" destination="6" id="8"/>
                     </connections>
                 </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="3" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="-2074" y="-1720"/>
         </scene>
+        <!--Example Core Text View Controller - Examples-->
         <scene sceneID="JSW-7g-sGO">
             <objects>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="QWO-vw-DPg" userLabel="First Responder" sceneMemberID="firstResponder"/>
                 <viewController id="dcq-s2-iTd" customClass="CExampleCoreTextViewController" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="tdV-w0-UKv">
                         <rect key="frame" x="0.0" y="64" width="768" height="911"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <subviews>
-                            <view contentMode="scaleToFill" id="QZU-o6-6vw">
-                                <rect key="frame" x="20" y="174" width="437" height="104"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="QZU-o6-6vw">
                                 <subviews>
-                                    <view contentMode="scaleToFill" id="aCq-c8-VcB" customClass="CCoreTextLabel">
-                                        <rect key="frame" x="97" y="20" width="320" height="31"/>
-                                        <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxY="YES"/>
+                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="aCq-c8-VcB" customClass="CCoreTextLabel">
                                         <color key="backgroundColor" red="0.3803921938" green="0.1960784495" blue="0.078431375319999996" alpha="1" colorSpace="deviceRGB"/>
                                     </view>
-                                    <view contentMode="scaleToFill" id="Hgu-BW-07S" customClass="CCoreTextLabel">
-                                        <rect key="frame" x="97" y="53" width="320" height="31"/>
-                                        <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxY="YES"/>
+                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Hgu-BW-07S" customClass="CCoreTextLabel">
                                         <color key="backgroundColor" red="0.3803921938" green="0.1960784495" blue="0.078431375319999996" alpha="1" colorSpace="deviceRGB"/>
                                     </view>
-                                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" image="Craig.png" id="w9K-BD-TXk">
-                                        <rect key="frame" x="20" y="20" width="64" height="64"/>
-                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                    </imageView>
-                                    <view contentMode="scaleToFill" id="GX1-Oz-lxh" customClass="CResizerThumb">
-                                        <rect key="frame" x="421" y="88" width="16" height="16"/>
-                                        <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMinY="YES"/>
-                                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
-                                    </view>
+                                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" image="Craig.png" translatesAutoresizingMaskIntoConstraints="NO" id="w9K-BD-TXk"/>
                                 </subviews>
                                 <color key="backgroundColor" red="0.38039219379425049" green="0.19607844948768616" blue="0.078431375324726105" alpha="1" colorSpace="deviceRGB"/>
                                 <gestureRecognizers/>
+                                <constraints>
+                                    <constraint firstAttribute="trailing" secondItem="aCq-c8-VcB" secondAttribute="trailing" constant="20" symbolic="YES" type="default" id="5ic-SG-BTZ"/>
+                                    <constraint firstAttribute="width" constant="437" type="user" id="87R-M4-3eT"/>
+                                    <constraint firstItem="aCq-c8-VcB" firstAttribute="leading" secondItem="QZU-o6-6vw" secondAttribute="leading" constant="97" id="HgU-Us-ReM"/>
+                                    <constraint firstAttribute="bottom" secondItem="w9K-BD-TXk" secondAttribute="bottom" constant="20" symbolic="YES" type="user" id="PAl-iD-ha9"/>
+                                    <constraint firstAttribute="height" constant="104" type="user" id="Yj5-DK-TZR"/>
+                                    <constraint firstItem="w9K-BD-TXk" firstAttribute="top" secondItem="QZU-o6-6vw" secondAttribute="top" constant="20" symbolic="YES" type="user" id="ghz-G0-bw4"/>
+                                    <constraint firstItem="Hgu-BW-07S" firstAttribute="top" secondItem="QZU-o6-6vw" secondAttribute="top" constant="53" id="gmp-gc-RWx"/>
+                                    <constraint firstItem="w9K-BD-TXk" firstAttribute="leading" secondItem="QZU-o6-6vw" secondAttribute="leading" constant="20" symbolic="YES" type="default" id="jsk-JC-ab2"/>
+                                    <constraint firstAttribute="bottom" secondItem="aCq-c8-VcB" secondAttribute="bottom" constant="53" id="kYn-7x-w1E"/>
+                                    <constraint firstAttribute="bottom" secondItem="Hgu-BW-07S" secondAttribute="bottom" constant="20" symbolic="YES" type="default" id="kpq-eX-lyT"/>
+                                    <constraint firstItem="aCq-c8-VcB" firstAttribute="leading" secondItem="Hgu-BW-07S" secondAttribute="leading" type="default" id="oCl-zI-QeA"/>
+                                    <constraint firstItem="aCq-c8-VcB" firstAttribute="top" secondItem="QZU-o6-6vw" secondAttribute="top" constant="20" symbolic="YES" type="default" id="onR-gV-dw1"/>
+                                    <constraint firstAttribute="trailing" secondItem="Hgu-BW-07S" secondAttribute="trailing" constant="20" symbolic="YES" type="default" id="wn2-A0-jJC"/>
+                                </constraints>
                             </view>
-                            <view contentMode="scaleToFill" id="iDk-ZM-dad" customClass="CTwitterStyleTweetTextLabel">
-                                <rect key="frame" x="20" y="282" width="437" height="148"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <subviews>
-                                    <view contentMode="scaleToFill" id="7tK-aN-v5P" customClass="CResizerThumb">
-                                        <rect key="frame" x="421" y="132" width="16" height="16"/>
-                                        <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMinY="YES"/>
-                                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
-                                    </view>
-                                </subviews>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="iDk-ZM-dad" customClass="CTwitterStyleTweetTextLabel">
                                 <color key="backgroundColor" red="0.32156863810000003" green="0.32156863810000003" blue="0.32156863810000003" alpha="1" colorSpace="deviceRGB"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="437" type="user" id="7b8-P1-1eb"/>
+                                    <constraint firstAttribute="height" constant="148" type="user" id="tGi-nC-203"/>
+                                </constraints>
                             </view>
-                            <view contentMode="scaleToFill" id="ZCd-jT-zLQ" customClass="CCoreTextLabel">
-                                <rect key="frame" x="20" y="436" width="437" height="31"/>
-                                <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="ZCd-jT-zLQ" customClass="CCoreTextLabel">
                                 <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                             </view>
-                            <view contentMode="scaleToFill" id="BVh-bx-AJV" customClass="CCoreTextLabel">
-                                <rect key="frame" x="20" y="504" width="437" height="181"/>
-                                <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="BVh-bx-AJV" customClass="CCoreTextLabel">
                                 <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                             </view>
-                            <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" text="This is a UILabel with shadow " lineBreakMode="tailTruncation" minimumFontSize="10" enabled="NO" id="IDA-VA-7TK">
-                                <rect key="frame" x="20" y="475" width="437" height="21"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                            <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" text="This is a UILabel with shadow " lineBreakMode="tailTruncation" minimumFontSize="10" enabled="NO" translatesAutoresizingMaskIntoConstraints="NO" id="IDA-VA-7TK">
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="437" type="user" id="JrO-t5-zvA"/>
+                                    <constraint firstAttribute="height" constant="21" id="vDZ-fU-Slz"/>
+                                </constraints>
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                 <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                                 <nil key="highlightedColor"/>
                                 <color key="shadowColor" red="1" green="0.0" blue="0.0" alpha="0.33000000000000002" colorSpace="calibratedRGB"/>
                             </label>
-                            <view contentMode="scaleToFill" id="eYe-o4-m2T" customClass="CTwitterStyleTweetTextLabel">
-                                <rect key="frame" x="20" y="20" width="437" height="148"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <subviews>
-                                    <view contentMode="scaleToFill" id="Sw0-Ab-r8z" customClass="CResizerThumb">
-                                        <rect key="frame" x="421" y="132" width="16" height="16"/>
-                                        <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMinY="YES"/>
-                                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
-                                    </view>
-                                </subviews>
+                            <view contentMode="scaleToFill" horizontalHuggingPriority="1" verticalHuggingPriority="1" horizontalCompressionResistancePriority="1" verticalCompressionResistancePriority="1" translatesAutoresizingMaskIntoConstraints="NO" id="eYe-o4-m2T" customClass="CTwitterStyleTweetTextLabel">
                                 <color key="backgroundColor" red="0.32156863810000003" green="0.32156863810000003" blue="0.32156863810000003" alpha="1" colorSpace="deviceRGB"/>
                             </view>
-                            <view contentMode="scaleToFill" id="ern-RK-tYB" customClass="CCoreTextLabel">
-                                <rect key="frame" x="20" y="705" width="437" height="103"/>
-                                <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="ern-RK-tYB" customClass="CCoreTextLabel">
                                 <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                             </view>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstItem="BVh-bx-AJV" firstAttribute="top" secondItem="tdV-w0-UKv" secondAttribute="top" constant="468" id="0s0-1D-Qff"/>
+                            <constraint firstItem="IDA-VA-7TK" firstAttribute="leading" secondItem="tdV-w0-UKv" secondAttribute="leading" constant="20" symbolic="YES" type="default" id="3Gs-rq-bkB"/>
+                            <constraint firstItem="BVh-bx-AJV" firstAttribute="leading" secondItem="tdV-w0-UKv" secondAttribute="leading" constant="20" symbolic="YES" type="default" id="5PK-Ue-d10"/>
+                            <constraint firstItem="eYe-o4-m2T" firstAttribute="top" secondItem="tdV-w0-UKv" secondAttribute="top" constant="20" symbolic="YES" type="default" id="5Zv-nh-KDk"/>
+                            <constraint firstAttribute="bottom" secondItem="ZCd-jT-zLQ" secondAttribute="bottom" constant="483" id="8ef-0V-UvW"/>
+                            <constraint firstItem="ern-RK-tYB" firstAttribute="top" secondItem="BVh-bx-AJV" secondAttribute="bottom" constant="8" symbolic="YES" type="default" id="AcY-aD-MbX"/>
+                            <constraint firstItem="ern-RK-tYB" firstAttribute="leading" secondItem="tdV-w0-UKv" secondAttribute="leading" constant="20" symbolic="YES" type="default" id="EbX-Z8-spj"/>
+                            <constraint firstItem="ern-RK-tYB" firstAttribute="top" secondItem="tdV-w0-UKv" secondAttribute="top" constant="657" id="Gyy-zo-SYa"/>
+                            <constraint firstItem="iDk-ZM-dad" firstAttribute="top" secondItem="tdV-w0-UKv" secondAttribute="top" constant="241" id="Jyl-Il-H7h"/>
+                            <constraint firstItem="eYe-o4-m2T" firstAttribute="leading" secondItem="tdV-w0-UKv" secondAttribute="leading" constant="20" symbolic="YES" type="default" id="Mhw-tp-DPb"/>
+                            <constraint firstItem="ZCd-jT-zLQ" firstAttribute="leading" secondItem="tdV-w0-UKv" secondAttribute="leading" constant="20" symbolic="YES" type="default" id="Nac-fk-osZ"/>
+                            <constraint firstItem="QZU-o6-6vw" firstAttribute="leading" secondItem="tdV-w0-UKv" secondAttribute="leading" constant="20" symbolic="YES" type="default" id="Oj5-CS-t2t"/>
+                            <constraint firstItem="QZU-o6-6vw" firstAttribute="trailing" secondItem="iDk-ZM-dad" secondAttribute="trailing" type="user" id="Qgz-ae-g3r"/>
+                            <constraint firstItem="IDA-VA-7TK" firstAttribute="trailing" secondItem="ZCd-jT-zLQ" secondAttribute="trailing" type="default" id="WBn-uh-WiT"/>
+                            <constraint firstAttribute="trailing" secondItem="eYe-o4-m2T" secondAttribute="trailing" constant="20" symbolic="YES" type="default" id="YCK-yu-ZIN"/>
+                            <constraint firstItem="IDA-VA-7TK" firstAttribute="centerY" secondItem="tdV-w0-UKv" secondAttribute="centerY" type="default" id="Za6-pO-4eX"/>
+                            <constraint firstItem="ern-RK-tYB" firstAttribute="trailing" secondItem="BVh-bx-AJV" secondAttribute="trailing" type="default" id="av8-AW-hT7"/>
+                            <constraint firstAttribute="bottom" secondItem="ern-RK-tYB" secondAttribute="bottom" constant="151" id="huS-wd-U2d"/>
+                            <constraint firstItem="IDA-VA-7TK" firstAttribute="trailing" secondItem="BVh-bx-AJV" secondAttribute="trailing" type="default" id="mKa-59-WR3"/>
+                            <constraint firstItem="QZU-o6-6vw" firstAttribute="top" secondItem="eYe-o4-m2T" secondAttribute="bottom" constant="8" symbolic="YES" type="default" id="mXa-Hx-6VS"/>
+                            <constraint firstItem="QZU-o6-6vw" firstAttribute="top" secondItem="tdV-w0-UKv" secondAttribute="top" constant="124" id="tJf-lb-JBc"/>
+                            <constraint firstItem="ZCd-jT-zLQ" firstAttribute="top" secondItem="iDk-ZM-dad" secondAttribute="bottom" constant="8" symbolic="YES" type="default" id="uwL-sb-8aq"/>
+                        </constraints>
                     </view>
                     <navigationItem key="navigationItem" title="Examples" id="5sF-az-a9T"/>
                     <connections>
@@ -155,14 +175,61 @@ Links will work too:&lt;br>
                         <outlet property="label7" destination="ern-RK-tYB" id="ONf-Zf-UQc"/>
                     </connections>
                 </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="QWO-vw-DPg" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-2232" y="-30"/>
+            <point key="canvasLocation" x="-2353" y="-118"/>
         </scene>
+        <!--Simple View Controller - Example 2-->
+        <scene sceneID="f3k-QA-9wO">
+            <objects>
+                <viewController id="dx2-g6-J7F" customClass="CSimpleViewController" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="UKX-gY-SDg">
+                        <rect key="frame" x="0.0" y="20" width="768" height="955"/>
+                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                        <subviews>
+                            <view clipsSubviews="YES" contentMode="scaleToFill" horizontalHuggingPriority="1000" verticalHuggingPriority="1000" translatesAutoresizingMaskIntoConstraints="NO" id="LLh-cj-vUN" customClass="CCoreTextLabel">
+                                <subviews>
+                                    <view contentMode="scaleToFill" horizontalHuggingPriority="1" verticalHuggingPriority="1" horizontalCompressionResistancePriority="1" verticalCompressionResistancePriority="1" translatesAutoresizingMaskIntoConstraints="NO" id="QNe-6Z-Ufm" customClass="CResizerThumb">
+                                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+                                        <constraints>
+                                            <constraint firstAttribute="height" constant="16" type="user" id="Fxl-Tg-sB3"/>
+                                            <constraint firstAttribute="width" constant="16" type="user" id="mkD-DY-blC"/>
+                                        </constraints>
+                                        <connections>
+                                            <outlet property="heightConstraint" destination="GoJ-QT-6Ye" id="WZZ-gL-KaJ"/>
+                                            <outlet property="widthConstraint" destination="hcT-8R-JPv" id="oOw-bY-XIG"/>
+                                        </connections>
+                                    </view>
+                                </subviews>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="310" type="user" id="GoJ-QT-6Ye"/>
+                                    <constraint firstItem="QNe-6Z-Ufm" firstAttribute="bottom" secondItem="LLh-cj-vUN" secondAttribute="bottom" type="user" id="RxY-Pf-dqT"/>
+                                    <constraint firstAttribute="width" priority="816" constant="397" type="user" id="hcT-8R-JPv"/>
+                                    <constraint firstItem="QNe-6Z-Ufm" firstAttribute="trailing" secondItem="LLh-cj-vUN" secondAttribute="trailing" type="user" id="ogO-4m-vkx"/>
+                                </constraints>
+                            </view>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstItem="LLh-cj-vUN" firstAttribute="top" secondItem="UKX-gY-SDg" secondAttribute="top" constant="20" symbolic="YES" type="user" id="Sww-4B-JeX"/>
+                            <constraint firstItem="LLh-cj-vUN" firstAttribute="leading" secondItem="UKX-gY-SDg" secondAttribute="leading" constant="20" symbolic="YES" type="user" id="mHL-gd-aP1"/>
+                        </constraints>
+                    </view>
+                    <tabBarItem key="tabBarItem" title="Example 2" id="pfv-Ms-gJI"/>
+                    <connections>
+                        <outlet property="label" destination="LLh-cj-vUN" id="86M-5G-kzG"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="TSa-UT-KCJ" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-2841" y="1125"/>
+        </scene>
+        <!--Navigation Controller - Example 1-->
         <scene sceneID="wJg-MB-Ot2">
             <objects>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="jpN-qG-X8t" userLabel="First Responder" sceneMemberID="firstResponder"/>
                 <navigationController definesPresentationContext="YES" id="2Gd-DV-JE4" sceneMemberID="viewController">
-                    <tabBarItem key="tabBarItem" title="Item" id="jte-mo-Sbg"/>
+                    <tabBarItem key="tabBarItem" title="Example 1" id="jte-mo-Sbg"/>
                     <navigationBar key="navigationBar" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" id="cmN-SQ-ho1">
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>
@@ -170,12 +237,13 @@ Links will work too:&lt;br>
                         <segue destination="dcq-s2-iTd" kind="relationship" relationship="rootViewController" id="PE9-zX-9Ii"/>
                     </connections>
                 </navigationController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="jpN-qG-X8t" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="-3400" y="-118"/>
         </scene>
+        <!--Tab Bar Controller-->
         <scene sceneID="1Pt-wG-E0r">
             <objects>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="O70-UZ-Igw" userLabel="First Responder" sceneMemberID="firstResponder"/>
                 <tabBarController id="93x-WQ-fvS" sceneMemberID="viewController">
                     <toolbarItems/>
                     <nil key="simulatedBottomBarMetrics"/>
@@ -183,18 +251,20 @@ Links will work too:&lt;br>
                         <autoresizingMask key="autoresizingMask"/>
                     </tabBar>
                     <connections>
+                        <segue destination="dx2-g6-J7F" kind="relationship" relationship="viewControllers" id="t7e-Vw-VOr"/>
                         <segue destination="2Gd-DV-JE4" kind="relationship" relationship="viewControllers" id="kuL-yG-Sa5"/>
                         <segue destination="Ofj-Wn-ofh" kind="relationship" relationship="viewControllers" id="hQe-NU-cSI"/>
                     </connections>
                 </tabBarController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="O70-UZ-Igw" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="-4950" y="-30"/>
         </scene>
+        <!--Navigation Controller - Editable-->
         <scene sceneID="Rqd-2K-gkp">
             <objects>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="Jrc-1R-kAP" userLabel="First Responder" sceneMemberID="firstResponder"/>
                 <navigationController id="Ofj-Wn-ofh" sceneMemberID="viewController">
-                    <tabBarItem key="tabBarItem" title="Item" id="2Jo-eJ-XnP"/>
+                    <tabBarItem key="tabBarItem" title="Editable" id="2Jo-eJ-XnP"/>
                     <toolbarItems/>
                     <navigationBar key="navigationBar" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" id="oz2-QR-3jE">
                         <rect key="frame" x="0.0" y="0.0" width="768" height="44"/>
@@ -205,6 +275,7 @@ Links will work too:&lt;br>
                         <segue destination="2" kind="relationship" relationship="rootViewController" id="qGP-db-oNk"/>
                     </connections>
                 </navigationController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="Jrc-1R-kAP" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="-3288" y="-1656"/>
         </scene>
@@ -212,6 +283,56 @@ Links will work too:&lt;br>
     <resources>
         <image name="Craig.png" width="64" height="64"/>
     </resources>
+    <classes>
+        <class className="CCoreTextLabel" superclassName="UIView">
+            <source key="sourceIdentifier" type="project" relativePath="./Classes/CCoreTextLabel.h"/>
+        </class>
+        <class className="CExampleCoreTextViewController" superclassName="UIViewController">
+            <source key="sourceIdentifier" type="project" relativePath="./Classes/CExampleCoreTextViewController.h"/>
+            <relationships>
+                <relationship kind="outlet" name="label1" candidateClass="CCoreTextLabel"/>
+                <relationship kind="outlet" name="label2" candidateClass="CCoreTextLabel"/>
+                <relationship kind="outlet" name="label3" candidateClass="CCoreTextLabel"/>
+                <relationship kind="outlet" name="label4" candidateClass="CCoreTextLabel"/>
+                <relationship kind="outlet" name="label5" candidateClass="CCoreTextLabel"/>
+                <relationship kind="outlet" name="label6" candidateClass="CCoreTextLabel"/>
+                <relationship kind="outlet" name="label7" candidateClass="CCoreTextLabel"/>
+            </relationships>
+        </class>
+        <class className="CFreeformCoreTextViewController" superclassName="UIViewController">
+            <source key="sourceIdentifier" type="project" relativePath="./Classes/CFreeformCoreTextViewController.h"/>
+            <relationships>
+                <relationship kind="outlet" name="attributedView" candidateClass="UITextView"/>
+                <relationship kind="outlet" name="editView" candidateClass="UITextView"/>
+                <relationship kind="outlet" name="previewView" candidateClass="CLinkingCoreTextLabel"/>
+            </relationships>
+        </class>
+        <class className="CLinkingCoreTextLabel" superclassName="CCoreTextLabel">
+            <source key="sourceIdentifier" type="project" relativePath="./Classes/CLinkingCoreTextLabel.h"/>
+        </class>
+        <class className="CResizerThumb" superclassName="UIView">
+            <source key="sourceIdentifier" type="project" relativePath="./Classes/CResizerThumb.h"/>
+            <relationships>
+                <relationship kind="outlet" name="heightConstraint" candidateClass="NSLayoutConstraint"/>
+                <relationship kind="outlet" name="widthConstraint" candidateClass="NSLayoutConstraint"/>
+            </relationships>
+        </class>
+        <class className="CSimpleViewController" superclassName="UIViewController">
+            <source key="sourceIdentifier" type="project" relativePath="./Classes/CSimpleViewController.h"/>
+            <relationships>
+                <relationship kind="outlet" name="label" candidateClass="CCoreTextLabel"/>
+            </relationships>
+        </class>
+        <class className="CTwitterStyleTweetTextLabel" superclassName="CCoreTextLabel">
+            <source key="sourceIdentifier" type="project" relativePath="./Classes/CTwitterStyleTweetTextLabel.h"/>
+            <relationships>
+                <relationship kind="action" name="tap:"/>
+            </relationships>
+        </class>
+        <class className="NSLayoutConstraint" superclassName="NSObject">
+            <source key="sourceIdentifier" type="project" relativePath="./Classes/NSLayoutConstraint.h"/>
+        </class>
+    </classes>
     <simulatedMetricsContainer key="defaultSimulatedMetrics">
         <simulatedStatusBarMetrics key="statusBar" statusBarStyle="blackTranslucent"/>
         <simulatedOrientationMetrics key="orientation"/>

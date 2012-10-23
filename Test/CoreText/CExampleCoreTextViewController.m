@@ -93,23 +93,11 @@
     self.label6.text = [[NSAttributedString alloc] initWithString:theString];
     self.label6.insets = (UIEdgeInsets){ .left = 20, .top = 20, .right = 20, .bottom = 20 };
     self.label6.lineBreakMode = UILineBreakModeWordWrap;
-    
     self.label6.backgroundColor = [UIColor grayColor];
 //    self.label6.textAlignment = UITextAlignmentRight;
     self.label6.textColor = [UIColor whiteColor];
     self.label6.font = [UIFont systemFontOfSize:18];
-    
-    
-    self.sizeLayer = [CALayer layer];
-    self.sizeLayer.borderColor = [UIColor blackColor].CGColor;
-    self.sizeLayer.borderWidth = 1.0;
-    self.sizeLayer.bounds = (CGRect){ .size = [CCoreTextLabel sizeForString:self.label6.text font:self.label6.font alignment:self.label6.textAlignment lineBreakMode:self.label6.lineBreakMode contentInsets:self.label6.insets thatFits:self.label6.frame.size] };
-    self.sizeLayer.anchorPoint = (CGPoint){ 0, 0 };
-    self.sizeLayer.position = (CGPoint){ 20, 20 };
-    [self.label6.layer addSublayer:self.sizeLayer];
-    
-    [self addObserver:self forKeyPath:@"label6.frame" options:0 context:NULL];
-    
+
     // #########################################################################
 
     BTagHandler theCochinHandler = ^(CSimpleHTMLTag *inTag) {
@@ -153,11 +141,4 @@
     return(YES);
     }
 
-- (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context;
-    {
-    self.sizeLayer.bounds = (CGRect){ .size = [CCoreTextLabel sizeForString:self.label6.text font:self.label6.font alignment:self.label6.textAlignment lineBreakMode:self.label6.lineBreakMode contentInsets:self.label6.insets thatFits:self.label6.frame.size] };
-    self.sizeLayer.anchorPoint = (CGPoint){ 0, 0 };
-    self.sizeLayer.position = (CGPoint){ 20, 20 };
-    }
-    
 @end

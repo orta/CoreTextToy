@@ -403,7 +403,7 @@
 
 - (CGSize)intrinsicContentSize
 	{
-	CGSize theSize = [self sizeThatFits:(CGSize){ self.preferredMaxLayoutWidth, CGFLOAT_MAX }];
+	CGSize theSize = [[self class ] sizeForString:self.text font:self.font alignment:self.textAlignment lineBreakMode:self.lineBreakMode contentInsets:self.insets thatFits:(CGSize){ self.preferredMaxLayoutWidth, CGFLOAT_MAX }];
 	return(theSize);
 	}
 

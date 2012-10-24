@@ -126,8 +126,6 @@
                 };
             CCoreTextAttachment *theAttachment = [[CCoreTextAttachment alloc] initWithType:kCoreTextAttachmentType_Renderer ascent:theImage.size.height descent:0.0 width:theImage.size.width representedObject:[theRenderer copy]];
 
-            CTRunDelegateRef theRunDelegate = [theAttachment createRunDelegate];
-
             NSMutableDictionary *theImageAttributes = [[theAttachment createAttributes] mutableCopy];
             if (theCurrentLink != NULL)
                 {

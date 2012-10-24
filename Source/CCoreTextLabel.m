@@ -46,6 +46,9 @@
 #define CFRangeToNSRange_(r) ({ const CFRange r_ = (r); (NSRange){ (NSUInteger)r_.location, (NSUInteger)r_.length }; })
 #define NSRangeToCFRange_(r) ({ const NSRange r_ = (r); (CFRange){ (CFIndex)r_.location, (CFIndex)r_.length }; })
 
+static CTTextAlignment CTTextAlignmentForUITextAlignment(UITextAlignment inAlignment);
+
+
 @interface CCoreTextLabel ()
 @property (readwrite, nonatomic, strong) CCoreTextRenderer *renderer;
 @end
@@ -311,14 +314,12 @@
             {
             NSRange theLastLineRange = CFRangeToNSRange_([_renderer rangeOfLastLine]);
             
-            CTParagraphStyleRef theParagraphStyle = [[self class] createParagraphStyleForAttributes:NULL alignment:[[self class] CTLineBreakModeForUITextAlignment:self.textAlignment] lineBreakMode:kCTLineBreakByTruncatingTail];
+            CTParagraphStyleRef theParagraphStyle = [[self class] createParagraphStyleForAttributes:NULL alignment:CTTextAlignmentForUITextAlignment(self.textAlignment) lineBreakMode:kCTLineBreakByTruncatingTail];
 
             [theNormalizedText addAttribute:(__bridge NSString *)kCTParagraphStyleAttributeName value:(__bridge id)theParagraphStyle range:theLastLineRange];
             
             _renderer.text = theNormalizedText;
             }
-        
-
 
         [_renderer addPrerendererBlock:^(CGContextRef inContext, CTRunRef inRun, CGRect inRect) {
             NSDictionary *theAttributes2 = (__bridge NSDictionary *)CTRunGetAttributes(inRun);
@@ -598,7 +599,9 @@
     return(theMutableText);
     }
 
-+ (CTLineBreakMode)CTLineBreakModeForUITextAlignment:(UITextAlignment)inAlignment
+@end
+
+static CTTextAlignment CTTextAlignmentForUITextAlignment(UITextAlignment inAlignment)
     {
     CTTextAlignment theTextAlignment;
     switch (inAlignment)
@@ -616,5 +619,3 @@
         }
     return(theTextAlignment);
     }
-
-@end

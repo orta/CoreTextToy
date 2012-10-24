@@ -121,21 +121,14 @@
                 theImage = [UIImage imageNamed:@"MissingImage.png"];
                 }
 
-            CCoreTextAttachment *theAttachment = [[CCoreTextAttachment alloc] init];
-            theAttachment.ascent = theImage.size.height;
-            theAttachment.width = theImage.size.width;
-            theAttachment.representedObject = theImageSource;
-            theAttachment.renderer = ^(CCoreTextAttachment *inAttachment, CGContextRef inContext, CGRect inRect) {
+            CoreTextAttachmentRenderer theRenderer = ^(CCoreTextAttachment *inAttachment, CGContextRef inContext, CGRect inRect) {
                 [theImage drawInRect:inRect];
                 };
+            CCoreTextAttachment *theAttachment = [[CCoreTextAttachment alloc] initWithType:kCoreTextAttachmentType_Renderer ascent:theImage.size.height descent:0.0 width:theImage.size.width representedObject:[theRenderer copy]];
 
             CTRunDelegateRef theRunDelegate = [theAttachment createRunDelegate];
 
-            NSMutableDictionary *theImageAttributes = [NSMutableDictionary dictionaryWithObjectsAndKeys:
-                theAttachment, kMarkupAttachmentAttributeName,
-                (__bridge_transfer id)theRunDelegate, (__bridge id)kCTRunDelegateAttributeName,
-                NULL];
-            
+            NSMutableDictionary *theImageAttributes = [[theAttachment createAttributes] mutableCopy];
             if (theCurrentLink != NULL)
                 {
                 theImageAttributes[kMarkupLinkAttributeName] = theCurrentLink;

@@ -187,7 +187,7 @@ Links will work too:&lt;br>
                         <rect key="frame" x="0.0" y="20" width="768" height="955"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <subviews>
-                            <view clipsSubviews="YES" contentMode="scaleToFill" horizontalHuggingPriority="1000" verticalHuggingPriority="1000" translatesAutoresizingMaskIntoConstraints="NO" id="LLh-cj-vUN" customClass="CCoreTextLabel">
+                            <view clipsSubviews="YES" contentMode="scaleToFill" horizontalHuggingPriority="1" verticalHuggingPriority="1" horizontalCompressionResistancePriority="1" verticalCompressionResistancePriority="1" translatesAutoresizingMaskIntoConstraints="NO" id="LLh-cj-vUN" customClass="CCoreTextLabel">
                                 <subviews>
                                     <view contentMode="scaleToFill" horizontalHuggingPriority="1" verticalHuggingPriority="1" horizontalCompressionResistancePriority="1" verticalCompressionResistancePriority="1" translatesAutoresizingMaskIntoConstraints="NO" id="QNe-6Z-Ufm" customClass="CResizerThumb">
                                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
@@ -196,24 +196,24 @@ Links will work too:&lt;br>
                                             <constraint firstAttribute="width" constant="16" type="user" id="mkD-DY-blC"/>
                                         </constraints>
                                         <connections>
-                                            <outlet property="widthConstraint" destination="hcT-8R-JPv" id="oOw-bY-XIG"/>
+                                            <outlet property="heightConstraint" destination="Cl5-5v-dS3" id="WUw-KD-NP8"/>
+                                            <outlet property="widthConstraint" destination="WWv-dC-2un" id="t5J-OI-NBQ"/>
                                         </connections>
                                     </view>
                                 </subviews>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                                 <constraints>
-                                    <constraint firstItem="QNe-6Z-Ufm" firstAttribute="bottom" secondItem="LLh-cj-vUN" secondAttribute="bottom" type="user" id="RxY-Pf-dqT"/>
-                                    <constraint firstAttribute="width" priority="816" constant="397" type="user" id="hcT-8R-JPv"/>
+                                    <constraint firstAttribute="bottom" secondItem="QNe-6Z-Ufm" secondAttribute="bottom" type="user" id="2kk-HU-12q"/>
+                                    <constraint firstAttribute="height" constant="752" type="user" id="Cl5-5v-dS3"/>
+                                    <constraint firstAttribute="width" constant="580" type="user" id="WWv-dC-2un"/>
                                     <constraint firstItem="QNe-6Z-Ufm" firstAttribute="trailing" secondItem="LLh-cj-vUN" secondAttribute="trailing" type="user" id="ogO-4m-vkx"/>
                                 </constraints>
                             </view>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                         <constraints>
-                            <constraint firstItem="LLh-cj-vUN" firstAttribute="leading" secondItem="UKX-gY-SDg" secondAttribute="leading" constant="20" symbolic="YES" type="default" id="EIo-jg-EbW"/>
-                            <constraint firstAttribute="bottom" secondItem="LLh-cj-vUN" secondAttribute="bottom" constant="20" symbolic="YES" type="default" id="LEX-I0-4OC"/>
-                            <constraint firstItem="LLh-cj-vUN" firstAttribute="top" secondItem="UKX-gY-SDg" secondAttribute="top" constant="20" symbolic="YES" type="default" id="dQC-wc-Ptc"/>
-                            <constraint firstAttribute="trailing" secondItem="LLh-cj-vUN" secondAttribute="trailing" constant="20" symbolic="YES" type="default" id="hct-eo-X6w"/>
+                            <constraint firstItem="LLh-cj-vUN" firstAttribute="leading" secondItem="UKX-gY-SDg" secondAttribute="leading" constant="20" symbolic="YES" type="user" id="EIo-jg-EbW"/>
+                            <constraint firstItem="LLh-cj-vUN" firstAttribute="top" secondItem="UKX-gY-SDg" secondAttribute="top" constant="20" symbolic="YES" type="default" id="RAB-e1-gwm"/>
                         </constraints>
                     </view>
                     <tabBarItem key="tabBarItem" title="Example 2" id="pfv-Ms-gJI"/>

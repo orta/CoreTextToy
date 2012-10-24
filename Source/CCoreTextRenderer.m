@@ -70,7 +70,7 @@
         [_text enumerateAttribute:kShadowColorAttributeName inRange:(NSRange){ .length = _text.length } options:0 usingBlock:^(id value, NSRange range, BOOL *stop) {
             if (value != NULL)
                 {
-                enableShadowRenderer = YES;
+                _enableShadowRenderer = YES;
                 *stop = YES;
                 }
             }];
@@ -303,12 +303,13 @@
         NSDictionary *theAttributes = (__bridge NSDictionary *)CTRunGetAttributes(inRun);
         // ### If we have an image we draw it...
         CCoreTextAttachment *theAttachment = theAttributes[kMarkupAttachmentAttributeName];
-        if (theAttachment != NULL)
+        if (theAttachment.type == kCoreTextAttachmentType_Renderer)
             {
             inRect.origin.y *= -1;
             inRect.origin.y += self.size.height - inRect.size.height;
 
-            theAttachment.renderer(theAttachment, inContext, inRect);
+			CoreTextAttachmentRenderer theRenderer = theAttachment.representedObject;
+            theRenderer(theAttachment, inContext, inRect);
             }
         }];
     }

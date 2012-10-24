@@ -32,6 +32,7 @@
 		45DEC483142BBEDB009FBCC6 /* NSScanner_HTMLExtensions.m in Sources */ = {isa = PBXBuildFile; fileRef = 45DEC47D142BBEDB009FBCC6 /* NSScanner_HTMLExtensions.m */; };
 		45DEC484142BBEDB009FBCC6 /* UIFont_CoreTextExtensions.m in Sources */ = {isa = PBXBuildFile; fileRef = 45DEC47F142BBEDB009FBCC6 /* UIFont_CoreTextExtensions.m */; };
 		45ED79B1145A33A400941149 /* CCoreTextLabel_HTMLExtensions.m in Sources */ = {isa = PBXBuildFile; fileRef = 45ED79B0145A33A400941149 /* CCoreTextLabel_HTMLExtensions.m */; };
+		45FB0A38163762A70093F35B /* UIImage+AnimatedConveniences.m in Sources */ = {isa = PBXBuildFile; fileRef = 45FB0A37163762A70093F35B /* UIImage+AnimatedConveniences.m */; };
 		45FF283313CD6920006D9574 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 45FF283213CD6920006D9574 /* UIKit.framework */; };
 		45FF283513CD6920006D9574 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 45FF283413CD6920006D9574 /* Foundation.framework */; };
 		45FF283713CD6920006D9574 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 45FF283613CD6920006D9574 /* CoreGraphics.framework */; };
@@ -85,6 +86,8 @@
 		45DEC47F142BBEDB009FBCC6 /* UIFont_CoreTextExtensions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UIFont_CoreTextExtensions.m; sourceTree = "<group>"; };
 		45ED79AF145A33A400941149 /* CCoreTextLabel_HTMLExtensions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CCoreTextLabel_HTMLExtensions.h; sourceTree = "<group>"; };
 		45ED79B0145A33A400941149 /* CCoreTextLabel_HTMLExtensions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CCoreTextLabel_HTMLExtensions.m; sourceTree = "<group>"; };
+		45FB0A36163762A70093F35B /* UIImage+AnimatedConveniences.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIImage+AnimatedConveniences.h"; sourceTree = "<group>"; };
+		45FB0A37163762A70093F35B /* UIImage+AnimatedConveniences.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIImage+AnimatedConveniences.m"; sourceTree = "<group>"; };
 		45FF282E13CD6920006D9574 /* CoreText.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = CoreText.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		45FF283213CD6920006D9574 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
 		45FF283413CD6920006D9574 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
@@ -147,6 +150,8 @@
 				37850D011496641A004AAA31 /* UIColor+Hex.m */,
 				4593F76414C7D01D00F78F92 /* NSAttributedString_Extensions.h */,
 				4593F76514C7D01D00F78F92 /* NSAttributedString_Extensions.m */,
+				45FB0A36163762A70093F35B /* UIImage+AnimatedConveniences.h */,
+				45FB0A37163762A70093F35B /* UIImage+AnimatedConveniences.m */,
 			);
 			name = Utility;
 			sourceTree = "<group>";
@@ -328,6 +333,7 @@
 				4593F75914C7C0A300F78F92 /* CLinkingCoreTextLabel.m in Sources */,
 				4593F76614C7D01D00F78F92 /* NSAttributedString_Extensions.m in Sources */,
 				45161E8E1635E14600E74EF1 /* CSimpleViewController.m in Sources */,
+				45FB0A38163762A70093F35B /* UIImage+AnimatedConveniences.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

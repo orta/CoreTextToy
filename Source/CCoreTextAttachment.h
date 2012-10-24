@@ -10,15 +10,33 @@
 
 #import <CoreText/CoreText.h>
 
+typedef enum {
+	kCoreTextAttachmentType_Unknown,
+	kCoreTextAttachmentType_Renderer,
+	kCoreTextAttachmentType_View,
+	} ECoreTextAttachmentType;
+
+@class CCoreTextAttachment;
+typedef void (^CoreTextAttachmentRenderer)(CCoreTextAttachment *, CGContextRef,CGRect);
+
 @interface CCoreTextAttachment : NSObject
 
-@property (readwrite, nonatomic, assign) CGFloat ascent;
-@property (readwrite, nonatomic, assign) CGFloat descent;
-@property (readwrite, nonatomic, assign) CGFloat width;
-@property (readwrite, nonatomic, copy) void (^renderer)(CCoreTextAttachment *, CGContextRef,CGRect);
-@property (readwrite, nonatomic, strong) id representedObject;
-@property (readwrite, nonatomic, strong) id userInfo;
+@property (readonly, nonatomic, assign) ECoreTextAttachmentType type;
+@property (readonly, nonatomic, assign) CGFloat ascent;
+@property (readonly, nonatomic, assign) CGFloat descent;
+@property (readonly, nonatomic, assign) CGFloat width;
+@property (readonly, nonatomic, strong) id representedObject;
+
+- (id)initWithType:(ECoreTextAttachmentType)inType ascent:(CGFloat)inAscent descent:(CGFloat)inDescent width:(CGFloat)inWidth representedObject:(id)inRepresentedObject;
 
 - (CTRunDelegateRef)createRunDelegate;
+- (NSDictionary *)createAttributes;
+- (NSAttributedString *)createAttributedString;
 
+@end
+
+#pragma mark -
+
+@interface CCoreTextAttachment (Conveniences)
++ (CCoreTextAttachment *)coreTextAttachmentWithView:(UIView *)inView;
 @end

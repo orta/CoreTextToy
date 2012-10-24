@@ -9,6 +9,9 @@
 #import "CSimpleViewController.h"
 
 #import "CCoreTextLabel.h"
+#import "CCoreTextLabel_HTMLExtensions.h"
+#import "CCoreTextAttachment.h"
+#import "NSAttributedString_Extensions.h"
 
 @interface CSimpleViewController ()
 @property (readwrite, nonatomic, weak) IBOutlet CCoreTextLabel *label;
@@ -22,13 +25,41 @@
 
 	self.label.insets = (UIEdgeInsets){ 10, 10, 10, 10 };
 
-    NSURL *theURL = [[NSBundle mainBundle] URLForResource:@"Lorem" withExtension:@"txt"];
-    NSString *theString = [NSString stringWithContentsOfURL:theURL encoding:NSUTF8StringEncoding error:NULL];
-    self.label.text = [[NSAttributedString alloc] initWithString:theString];
+	NSMutableAttributedString *theText = [[NSMutableAttributedString alloc] init];
+	[theText appendAttributedString:[[NSAttributedString alloc] initWithString:@"Here is a button: "]];
+
+	// #########################################################################
+	UIButton *theButton = [UIButton buttonWithType:UIButtonTypeRoundedRect];
+	[theButton addTarget:self action:@selector(click:) forControlEvents:UIControlEventTouchUpInside];
+	[theButton setTitle:@"Hello CoreText" forState:UIControlStateNormal];
+	[theButton sizeToFit];
+
+	CCoreTextAttachment *theAttachment = [CCoreTextAttachment coreTextAttachmentWithView:theButton];
+	[theText appendAttributedString:[theAttachment createAttributedString]];
+	// #########################################################################
+
+	UIActivityIndicatorView *theActivityIndicatorView = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
+	[theActivityIndicatorView startAnimating];
+	[theText appendAttributedString:[[CCoreTextAttachment coreTextAttachmentWithView:theActivityIndicatorView] createAttributedString]];
+
+
+
+	// #########################################################################
+
+	[theText appendAttributedString:[[NSAttributedString alloc] initWithString:@"Did it work?"]];
+
+
+    self.label.text = theText;
 	self.label.backgroundColor = [[UIColor redColor] colorWithAlphaComponent:0.1];
 
 	self.label.lineBreakMode = UILineBreakModeWordWrap;
 	self.label.preferredMaxLayoutWidth = 300.0;
+	}
+
+- (IBAction)click:(id)sender
+	{
+	UIAlertView *theAlert = [[UIAlertView alloc] initWithTitle:@"It does!" message:NULL delegate:NULL cancelButtonTitle:@"By jove!" otherButtonTitles:NULL];
+	[theAlert show];
 	}
 
 @end

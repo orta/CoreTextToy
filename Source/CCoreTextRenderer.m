@@ -303,14 +303,22 @@
         NSDictionary *theAttributes = (__bridge NSDictionary *)CTRunGetAttributes(inRun);
         // ### If we have an image we draw it...
         CCoreTextAttachment *theAttachment = theAttributes[kMarkupAttachmentAttributeName];
-        if (theAttachment.type == kCoreTextAttachmentType_Renderer)
-            {
-            inRect.origin.y *= -1;
-            inRect.origin.y += self.size.height - inRect.size.height;
+		if (theAttachment != NULL)
+			{
+			inRect.origin.y *= -1;
+			inRect.origin.y += self.size.height - inRect.size.height;
+			inRect = UIEdgeInsetsInsetRect(inRect, theAttachment.insets);
 
-			CoreTextAttachmentRenderer theRenderer = theAttachment.representedObject;
-            theRenderer(theAttachment, inContext, inRect);
-            }
+			if (theAttachment.type == kCoreTextAttachmentType_Renderer)
+				{
+				CoreTextAttachmentRenderer theRenderer = theAttachment.representedObject;
+				theRenderer(theAttachment, inContext, inRect);
+				}
+			else
+				{
+				CGContextStrokeRect(inContext, inRect);
+				}
+			}
         }];
     }
 
@@ -439,7 +447,7 @@
             CGFloat theAscent, theDescent, theLeading;
             double theWidth = CTRunGetTypographicBounds(theRun, (CFRange){}, &theAscent, &theDescent, &theLeading);
             CGRect theRunRect = {
-                .origin = { theLineOrigin.x + theXPosition, theLineOrigin.y },
+                .origin = { theLineOrigin.x + theXPosition, theLineOrigin.y - theDescent },
                 .size = { (CGFloat)theWidth, theAscent + theDescent },
                 };
 

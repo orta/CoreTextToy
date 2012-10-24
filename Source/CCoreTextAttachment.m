@@ -17,7 +17,7 @@ static void MyCTRunDelegateDeallocCallback(void *refCon);
 
 @implementation CCoreTextAttachment
 
-- (id)initWithType:(ECoreTextAttachmentType)inType ascent:(CGFloat)inAscent descent:(CGFloat)inDescent width:(CGFloat)inWidth representedObject:(id)inRepresentedObject
+- (id)initWithType:(ECoreTextAttachmentType)inType ascent:(CGFloat)inAscent descent:(CGFloat)inDescent width:(CGFloat)inWidth insets:(UIEdgeInsets)inInsets representedObject:(id)inRepresentedObject
     {
     if ((self = [super init]) != NULL)
         {
@@ -25,10 +25,19 @@ static void MyCTRunDelegateDeallocCallback(void *refCon);
         _ascent = inAscent;
         _descent = inDescent;
         _width = inWidth;
+		_insets = inInsets;
         _representedObject = inRepresentedObject;
         }
     return self;
     }
+
+- (id)initWithType:(ECoreTextAttachmentType)inType ascent:(CGFloat)inAscent descent:(CGFloat)inDescent width:(CGFloat)inWidth representedObject:(id)inRepresentedObject;
+	{
+	if ((self = [self initWithType:inType ascent:inAscent descent:inDescent width:inWidth insets:(UIEdgeInsets){} representedObject:inRepresentedObject]) != NULL)
+		{
+		}
+	return(self);
+	}
 
 - (CTRunDelegateRef)createRunDelegate
     {
@@ -91,10 +100,26 @@ static void MyCTRunDelegateDeallocCallback(void *refCon)
 
 @implementation CCoreTextAttachment (Conveniences)
 
++ (CCoreTextAttachment *)coreTextAttachmentWithView:(UIView *)inView insets:(UIEdgeInsets)inInsets;
+	{
+	CGFloat theAscent = inView.frame.size.height;
+	CGFloat theDescent = 0.0;
+
+	UIView *theBaselineView = [inView viewForBaselineLayout];
+	if (theBaselineView != inView)
+		{
+		CGFloat theDelta = inView.frame.size.height - (theBaselineView.frame.origin.y + theBaselineView.frame.size.height);
+		theAscent -= theDelta;
+		theDescent += theDelta;
+		}
+
+	CCoreTextAttachment *theAttachment = [[CCoreTextAttachment alloc] initWithType:kCoreTextAttachmentType_View ascent:theAscent descent:theDescent width:inView.frame.size.width insets:inInsets representedObject:inView];
+	return(theAttachment);
+	}
+
 + (CCoreTextAttachment *)coreTextAttachmentWithView:(UIView *)inView
 	{
-	CCoreTextAttachment *theAttachment = [[CCoreTextAttachment alloc] initWithType:kCoreTextAttachmentType_View ascent:inView.frame.size.height descent:0.0 width:inView.frame.size.width representedObject:inView];
-	return(theAttachment);
+	return([self coreTextAttachmentWithView:inView insets:(UIEdgeInsets){}]);
 	}
 
 @end

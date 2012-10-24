@@ -448,13 +448,7 @@ static CTTextAlignment CTTextAlignmentForUITextAlignment(UITextAlignment inAlign
 				UIView *theView = theAttachment.representedObject;
 
 				CGRect theRect = [[self rectsForRange:range][0] CGRectValue];
-
-				if ([theView viewForBaselineLayout] != theView)
-					{
-					theRect.origin.y += [theView viewForBaselineLayout].frame.origin.y;
-					}
-				theView.frame = theRect;
-
+				theView.frame = UIEdgeInsetsInsetRect(theRect, theAttachment.insets);;
 
 				if (theView.superview != self)
 					{

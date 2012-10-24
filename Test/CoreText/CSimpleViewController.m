@@ -8,6 +8,8 @@
 
 #import "CSimpleViewController.h"
 
+#import <QuartzCore/QuartzCore.h>
+
 #import "CCoreTextLabel.h"
 #import "CCoreTextLabel_HTMLExtensions.h"
 #import "CCoreTextAttachment.h"
@@ -26,13 +28,15 @@
 	self.label.insets = (UIEdgeInsets){ 10, 10, 10, 10 };
 
 	NSMutableAttributedString *theText = [[NSMutableAttributedString alloc] init];
-	[theText appendAttributedString:[[NSAttributedString alloc] initWithString:@"Here is a button: "]];
+	[theText appendAttributedString:[[NSAttributedString alloc] initWithString:@"Here is a UIButton inside a CCoreTextLabel: "]];
 
 	// #########################################################################
 	UIButton *theButton = [UIButton buttonWithType:UIButtonTypeRoundedRect];
 	[theButton addTarget:self action:@selector(click:) forControlEvents:UIControlEventTouchUpInside];
 	[theButton setTitle:@"Hello CoreText" forState:UIControlStateNormal];
 	[theButton sizeToFit];
+	[theButton viewForBaselineLayout].layer.borderColor = [UIColor redColor].CGColor;
+	[theButton viewForBaselineLayout].layer.borderWidth = 1.0;
 
 	CCoreTextAttachment *theAttachment = [CCoreTextAttachment coreTextAttachmentWithView:theButton];
 	[theText appendAttributedString:[theAttachment createAttributedString]];
@@ -46,7 +50,7 @@
 
 	// #########################################################################
 
-	[theText appendAttributedString:[[NSAttributedString alloc] initWithString:@"Did it work?"]];
+	[theText appendAttributedString:[[NSAttributedString alloc] initWithString:@" Did it work?"]];
 
 
     self.label.text = theText;

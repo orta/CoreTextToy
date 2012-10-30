@@ -46,7 +46,7 @@
 #define CFRangeToNSRange_(r) ({ const CFRange r_ = (r); (NSRange){ (NSUInteger)r_.location, (NSUInteger)r_.length }; })
 #define NSRangeToCFRange_(r) ({ const NSRange r_ = (r); (CFRange){ (CFIndex)r_.location, (CFIndex)r_.length }; })
 
-static CTTextAlignment CTTextAlignmentForUITextAlignment(UITextAlignment inAlignment);
+static CTTextAlignment CTTextAlignmentForNSTextAlignment(NSTextAlignment inAlignment);
 
 
 @interface CCoreTextLabel ()
@@ -58,7 +58,7 @@ static CTTextAlignment CTTextAlignmentForUITextAlignment(UITextAlignment inAlign
 @synthesize renderer = _renderer;
 
 // TODO rename thatFits -> constrainedToSize
-+ (CGSize)sizeForString:(NSAttributedString *)inString font:(UIFont *)inBaseFont alignment:(UITextAlignment)inTextAlignment lineBreakMode:(UILineBreakMode)inLineBreakMode contentInsets:(UIEdgeInsets)inContentInsets thatFits:(CGSize)inSize 
++ (CGSize)sizeForString:(NSAttributedString *)inString font:(UIFont *)inBaseFont alignment:(NSTextAlignment)inTextAlignment lineBreakMode:(NSLineBreakMode)inLineBreakMode contentInsets:(UIEdgeInsets)inContentInsets thatFits:(CGSize)inSize 
     {
     NSDictionary *theSettings = @{
 		@"font": inBaseFont,
@@ -91,9 +91,9 @@ static CTTextAlignment CTTextAlignmentForUITextAlignment(UITextAlignment inAlign
 
         _font = [UIFont systemFontOfSize:17];
         _textColor = [UIColor blackColor];
-        _textAlignment = UITextAlignmentLeft;
-        _lineBreakMode = UILineBreakModeTailTruncation;
-        _lastLineBreakMode = UILineBreakModeTailTruncation;
+        _textAlignment = NSTextAlignmentLeft;
+        _lineBreakMode = NSLineBreakByTruncatingTail;
+        _lastLineBreakMode = NSLineBreakByTruncatingTail;
         _shadowColor = NULL;
         _shadowOffset = (CGSize){ 0.0, -1.0 };
         _shadowBlurRadius = 0.0;
@@ -117,9 +117,9 @@ static CTTextAlignment CTTextAlignmentForUITextAlignment(UITextAlignment inAlign
 
         _font = [UIFont systemFontOfSize:17];
         _textColor = [UIColor blackColor];
-        _textAlignment = UITextAlignmentLeft;
-        _lineBreakMode = UILineBreakModeTailTruncation;
-        _lastLineBreakMode = UILineBreakModeTailTruncation;
+        _textAlignment = NSTextAlignmentLeft;
+        _lineBreakMode = NSLineBreakByTruncatingTail;
+        _lastLineBreakMode = NSLineBreakByTruncatingTail;
         _shadowColor = NULL;
         _shadowOffset = (CGSize){ 0.0, -1.0 };
         _shadowBlurRadius = 0.0;
@@ -186,7 +186,7 @@ static CTTextAlignment CTTextAlignmentForUITextAlignment(UITextAlignment inAlign
         }
     }
 
-- (void)setTextAlignment:(UITextAlignment)inTextAlignment
+- (void)setTextAlignment:(NSTextAlignment)inTextAlignment
     {
     if (_textAlignment != inTextAlignment)
         {
@@ -197,7 +197,7 @@ static CTTextAlignment CTTextAlignmentForUITextAlignment(UITextAlignment inAlign
         }
     }
     
-- (void)setLineBreakMode:(UILineBreakMode)inLineBreakMode
+- (void)setLineBreakMode:(NSLineBreakMode)inLineBreakMode
     {
     if (_lineBreakMode != inLineBreakMode)
         {
@@ -208,7 +208,7 @@ static CTTextAlignment CTTextAlignmentForUITextAlignment(UITextAlignment inAlign
         }
     }
 
-- (void)setLastLineBreakMode:(UILineBreakMode)inLastLineBreakMode
+- (void)setLastLineBreakMode:(NSLineBreakMode)inLastLineBreakMode
     {
     if (_lastLineBreakMode != inLastLineBreakMode)
         {
@@ -314,7 +314,7 @@ static CTTextAlignment CTTextAlignmentForUITextAlignment(UITextAlignment inAlign
             {
             NSRange theLastLineRange = CFRangeToNSRange_([_renderer rangeOfLastLine]);
             
-            CTParagraphStyleRef theParagraphStyle = [[self class] createParagraphStyleForAttributes:NULL alignment:CTTextAlignmentForUITextAlignment(self.textAlignment) lineBreakMode:kCTLineBreakByTruncatingTail];
+            CTParagraphStyleRef theParagraphStyle = [[self class] createParagraphStyleForAttributes:NULL alignment:CTTextAlignmentForNSTextAlignment(self.textAlignment) lineBreakMode:kCTLineBreakByTruncatingTail];
 
             [theNormalizedText addAttribute:(__bridge NSString *)kCTParagraphStyleAttributeName value:(__bridge id)theParagraphStyle range:theLastLineRange];
             
@@ -569,19 +569,19 @@ static CTTextAlignment CTTextAlignmentForUITextAlignment(UITextAlignment inAlign
     CTTextAlignment theTextAlignment;
     switch ([[inSettings valueForKey:@"textAlignment"] integerValue])
         {
-        case UITextAlignmentCenter:
+        case NSTextAlignmentCenter:
             theTextAlignment = kCTCenterTextAlignment;
             break;
-        case UITextAlignmentRight:
+        case NSTextAlignmentRight:
             theTextAlignment = kCTRightTextAlignment;
             break;
-        case UITextAlignmentLeft:
+        case NSTextAlignmentLeft:
         default:
             theTextAlignment = kCTLeftTextAlignment;
             break;
         }
     
-    // UILineBreakMode maps 1:1 to CTLineBreakMode
+    // NSLineBreakMode maps 1:1 to CTLineBreakMode
     CTLineBreakMode theLineBreakMode = (CTLineBreakMode)[[inSettings valueForKey:@"lineBreakMode"] unsignedIntegerValue];
 
     [theMutableText enumerateAttributesInRange:(NSRange){ .length = theMutableText.length } options:0 usingBlock:^(NSDictionary *attrs, NSRange range, BOOL *stop) {
@@ -595,18 +595,18 @@ static CTTextAlignment CTTextAlignmentForUITextAlignment(UITextAlignment inAlign
 
 @end
 
-static CTTextAlignment CTTextAlignmentForUITextAlignment(UITextAlignment inAlignment)
+static CTTextAlignment CTTextAlignmentForNSTextAlignment(NSTextAlignment inAlignment)
     {
     CTTextAlignment theTextAlignment;
     switch (inAlignment)
         {
-        case UITextAlignmentCenter:
+        case NSTextAlignmentCenter:
             theTextAlignment = kCTCenterTextAlignment;
             break;
-        case UITextAlignmentRight:
+        case NSTextAlignmentRight:
             theTextAlignment = kCTRightTextAlignment;
             break;
-        case UITextAlignmentLeft:
+        case NSTextAlignmentLeft:
         default:
             theTextAlignment = kCTLeftTextAlignment;
             break;

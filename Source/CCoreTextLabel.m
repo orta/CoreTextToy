@@ -447,12 +447,16 @@ static CTTextAlignment CTTextAlignmentForNSTextAlignment(NSTextAlignment inAlign
 				{
 				UIView *theView = theAttachment.representedObject;
 
-				CGRect theRect = [[self rectsForRange:range][0] CGRectValue];
-				theView.frame = UIEdgeInsetsInsetRect(theRect, theAttachment.insets);;
-
-				if (theView.superview != self)
+				NSArray *theRects = [self rectsForRange:range];
+				if (theRects.count > 0)
 					{
-					[self addSubview:theView];
+					CGRect theRect = [[self rectsForRange:range][0] CGRectValue];
+					theView.frame = UIEdgeInsetsInsetRect(theRect, theAttachment.insets);;
+
+					if (theView.superview != self)
+						{
+						[self addSubview:theView];
+						}
 					}
 //				NSLog(@"%@", theView);
 				}

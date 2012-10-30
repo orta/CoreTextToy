@@ -316,7 +316,7 @@
 				}
 			else
 				{
-				CGContextStrokeRect(inContext, inRect);
+//				CGContextStrokeRect(inContext, inRect);
 				}
 			}
         }];

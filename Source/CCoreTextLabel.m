@@ -51,6 +51,7 @@ static CTTextAlignment CTTextAlignmentForNSTextAlignment(NSTextAlignment inAlign
 
 @interface CCoreTextLabel ()
 @property (readwrite, nonatomic, strong) CCoreTextRenderer *renderer;
+@property (readwrite, nonatomic, strong) NSArray *attachmentViews;
 @end
 
 @implementation CCoreTextLabel
@@ -101,6 +102,8 @@ static CTTextAlignment CTTextAlignmentForNSTextAlignment(NSTextAlignment inAlign
         _enabled = YES;
 
 		_preferredMaxLayoutWidth = CGFLOAT_MAX;
+
+		_attachmentViews = [NSArray array];
         }
     return(self);
     }
@@ -127,6 +130,8 @@ static CTTextAlignment CTTextAlignmentForNSTextAlignment(NSTextAlignment inAlign
         _enabled = YES;
 
 		_preferredMaxLayoutWidth = CGFLOAT_MAX;
+
+		_attachmentViews = [NSArray array];
         }
     return(self);
     }
@@ -158,6 +163,14 @@ static CTTextAlignment CTTextAlignmentForNSTextAlignment(NSTextAlignment inAlign
         self.accessibilityLabel = inText.string;
         
         self.renderer = NULL;
+
+		for (UIView *theView in self.attachmentViews)
+			{
+			[theView removeFromSuperview];
+			}
+		self.attachmentViews = [NSArray array];
+
+
 		[self invalidateIntrinsicContentSize];
         }
     }
@@ -352,7 +365,7 @@ static CTTextAlignment CTTextAlignmentForNSTextAlignment(NSTextAlignment inAlign
     if (_renderer != inRenderer)
         {
         _renderer = inRenderer;
-        
+		//
         [self setNeedsDisplay];
         }
     }
@@ -439,6 +452,8 @@ static CTTextAlignment CTTextAlignmentForNSTextAlignment(NSTextAlignment inAlign
 
 - (void)updateAttachments
 	{
+	NSMutableArray *theAttachmentViews = [self.attachmentViews mutableCopy];
+
 	[self.text enumerateAttribute:kMarkupAttachmentAttributeName inRange:(NSRange){ .length = self.text.length } options:0 usingBlock:^(id value, NSRange range, BOOL *stop) {
 		if (value)
 			{
@@ -456,12 +471,15 @@ static CTTextAlignment CTTextAlignmentForNSTextAlignment(NSTextAlignment inAlign
 					if (theView.superview != self)
 						{
 						[self addSubview:theView];
+						[theAttachmentViews addObject:theView];
 						}
 					}
 //				NSLog(@"%@", theView);
 				}
 			}
 		}];
+
+	self.attachmentViews = theAttachmentViews;
 	}
 
 + (CTParagraphStyleRef)createParagraphStyleForAttributes:(NSDictionary *)inAttributes alignment:(CTTextAlignment)inTextAlignment lineBreakMode:(CTLineBreakMode)inLineBreakMode

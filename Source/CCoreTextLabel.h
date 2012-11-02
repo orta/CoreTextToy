@@ -39,6 +39,8 @@
 @property (readwrite, nonatomic, assign) NSTextAlignment textAlignment; // default is NSTextAlignmentLeft
 @property (readwrite, nonatomic, assign) NSLineBreakMode lineBreakMode; // default is NSLineBreakByTruncatingTail. used for single and multiple lines of text
 @property (readwrite, nonatomic, assign) NSLineBreakMode lastLineBreakMode; // default is NSLineBreakByTruncatingTail. used for last line of text if different from lineBreakMode.
+@property (readwrite, nonatomic, assign) CGFloat lineSpacingAdjustment; // default is 0.0
+
 @property (readwrite, nonatomic, strong) UIColor *shadowColor;          // default is nil (no shadow)
 @property (readwrite, nonatomic, assign) CGSize shadowOffset;           // default is CGSizeMake(0, -1) -- a top shadow
 @property (readwrite, nonatomic, assign) CGFloat shadowBlurRadius;      // default is 0 (sharp shadow)
@@ -51,7 +53,7 @@
 @property (readwrite, nonatomic, assign) CGFloat preferredMaxLayoutWidth;
 
 
-+ (CGSize)sizeForString:(NSAttributedString *)inString font:(UIFont *)inBaseFont alignment:(NSTextAlignment)inTextAlignment lineBreakMode:(NSLineBreakMode)inLineBreakMode contentInsets:(UIEdgeInsets)inContentInsets thatFits:(CGSize)inSize;
++ (CGSize)sizeForString:(NSAttributedString *)inString font:(UIFont *)inBaseFont alignment:(NSTextAlignment)inTextAlignment lineBreakMode:(NSLineBreakMode)inLineBreakMode lineSpacingAdjustment:(CGFloat)inLineSpacingAdjustment contentInsets:(UIEdgeInsets)inContentInsets thatFits:(CGSize)inSize;
 
 - (CGSize)sizeForString:(NSAttributedString *)inText constrainedToSize:(CGSize)inSize;
 

@@ -58,12 +58,13 @@ static CTTextAlignment CTTextAlignmentForNSTextAlignment(NSTextAlignment inAlign
 @synthesize renderer = _renderer;
 
 // TODO rename thatFits -> constrainedToSize
-+ (CGSize)sizeForString:(NSAttributedString *)inString font:(UIFont *)inBaseFont alignment:(NSTextAlignment)inTextAlignment lineBreakMode:(NSLineBreakMode)inLineBreakMode contentInsets:(UIEdgeInsets)inContentInsets thatFits:(CGSize)inSize 
++ (CGSize)sizeForString:(NSAttributedString *)inString font:(UIFont *)inBaseFont alignment:(NSTextAlignment)inTextAlignment lineBreakMode:(NSLineBreakMode)inLineBreakMode lineSpacingAdjustment:(CGFloat)inLineSpacingAdjustment contentInsets:(UIEdgeInsets)inContentInsets thatFits:(CGSize)inSize
     {
     NSDictionary *theSettings = @{
 		@"font": inBaseFont,
         @"textAlignment": @(inTextAlignment),
         @"lineBreakMode": @(inLineBreakMode),
+		@"lineSpacingAdjustment": @(inLineSpacingAdjustment),
 		};
         
     NSAttributedString *theNormalizedText = [self normalizeString:inString settings:theSettings];
@@ -314,7 +315,7 @@ static CTTextAlignment CTTextAlignmentForNSTextAlignment(NSTextAlignment inAlign
             {
             NSRange theLastLineRange = CFRangeToNSRange_([_renderer rangeOfLastLine]);
             
-            CTParagraphStyleRef theParagraphStyle = [[self class] createParagraphStyleForAttributes:NULL alignment:CTTextAlignmentForNSTextAlignment(self.textAlignment) lineBreakMode:kCTLineBreakByTruncatingTail];
+            CTParagraphStyleRef theParagraphStyle = [[self class] createParagraphStyleForAttributes:NULL alignment:CTTextAlignmentForNSTextAlignment(self.textAlignment) lineBreakMode:kCTLineBreakByTruncatingTail lineSpacingAdjustment:self.lineSpacingAdjustment];
 
             [theNormalizedText addAttribute:(__bridge NSString *)kCTParagraphStyleAttributeName value:(__bridge id)theParagraphStyle range:theLastLineRange];
             
@@ -403,7 +404,7 @@ static CTTextAlignment CTTextAlignmentForNSTextAlignment(NSTextAlignment inAlign
 
 - (CGSize)intrinsicContentSize
 	{
-	CGSize theSize = [[self class ] sizeForString:self.text font:self.font alignment:self.textAlignment lineBreakMode:self.lineBreakMode contentInsets:self.insets thatFits:(CGSize){ self.preferredMaxLayoutWidth, CGFLOAT_MAX }];
+	CGSize theSize = [[self class ] sizeForString:self.text font:self.font alignment:self.textAlignment lineBreakMode:self.lineBreakMode lineSpacingAdjustment:self.lineSpacingAdjustment contentInsets:self.insets thatFits:(CGSize){ self.preferredMaxLayoutWidth, CGFLOAT_MAX }];
 	return(theSize);
 	}
 
@@ -411,7 +412,7 @@ static CTTextAlignment CTTextAlignmentForNSTextAlignment(NSTextAlignment inAlign
 
 - (CGSize)sizeForString:(NSAttributedString *)inText constrainedToSize:(CGSize)inSize
     {
-    CGSize theSize = [[self class] sizeForString:inText font:self.font alignment:self.textAlignment lineBreakMode:self.lineBreakMode contentInsets:self.insets thatFits:inSize];
+    CGSize theSize = [[self class] sizeForString:inText font:self.font alignment:self.textAlignment lineBreakMode:self.lineBreakMode lineSpacingAdjustment:self.lineSpacingAdjustment contentInsets:self.insets thatFits:inSize];
     return(theSize);
     }
     
@@ -464,7 +465,7 @@ static CTTextAlignment CTTextAlignmentForNSTextAlignment(NSTextAlignment inAlign
 		}];
 	}
 
-+ (CTParagraphStyleRef)createParagraphStyleForAttributes:(NSDictionary *)inAttributes alignment:(CTTextAlignment)inTextAlignment lineBreakMode:(CTLineBreakMode)inLineBreakMode
++ (CTParagraphStyleRef)createParagraphStyleForAttributes:(NSDictionary *)inAttributes alignment:(CTTextAlignment)inTextAlignment lineBreakMode:(CTLineBreakMode)inLineBreakMode lineSpacingAdjustment:(CGFloat)inLineSpacingAdjustment
     {
     CGFloat theFirstLineHeadIndent;
     CGFloat theHeadIndent;
@@ -474,7 +475,6 @@ static CTTextAlignment CTTextAlignmentForNSTextAlignment(NSTextAlignment inAlign
     CGFloat theLineHeightMultiple;
     CGFloat theMaximumLineHeight;
     CGFloat theMinimumLineHeight;
-    CGFloat theLineSpacing;
     CGFloat theParagraphSpacing;
     CGFloat theParagraphSpacingBefore;
     CTWritingDirection theBaseWritingDirection; 
@@ -497,7 +497,6 @@ static CTTextAlignment CTTextAlignmentForNSTextAlignment(NSTextAlignment inAlign
     CTParagraphStyleGetValueForSpecifier(currentParagraphStyle, kCTParagraphStyleSpecifierLineHeightMultiple, sizeof(theLineHeightMultiple), &theLineHeightMultiple);
     CTParagraphStyleGetValueForSpecifier(currentParagraphStyle, kCTParagraphStyleSpecifierMaximumLineHeight, sizeof(theMaximumLineHeight), &theMaximumLineHeight);
     CTParagraphStyleGetValueForSpecifier(currentParagraphStyle, kCTParagraphStyleSpecifierMinimumLineHeight, sizeof(theMinimumLineHeight), &theMinimumLineHeight);
-    CTParagraphStyleGetValueForSpecifier(currentParagraphStyle, kCTParagraphStyleSpecifierLineSpacing, sizeof(theLineSpacing), &theLineSpacing);
     CTParagraphStyleGetValueForSpecifier(currentParagraphStyle, kCTParagraphStyleSpecifierParagraphSpacing, sizeof(theParagraphSpacing), &theParagraphSpacing);
     CTParagraphStyleGetValueForSpecifier(currentParagraphStyle, kCTParagraphStyleSpecifierParagraphSpacingBefore, sizeof(theParagraphSpacingBefore), &theParagraphSpacingBefore);
     CTParagraphStyleGetValueForSpecifier(currentParagraphStyle, kCTParagraphStyleSpecifierBaseWritingDirection, sizeof(theBaseWritingDirection), &theBaseWritingDirection);
@@ -520,10 +519,10 @@ static CTTextAlignment CTTextAlignmentForNSTextAlignment(NSTextAlignment inAlign
         { .spec = kCTParagraphStyleSpecifierLineHeightMultiple, .valueSize = sizeof(theLineHeightMultiple), .value = &theLineHeightMultiple, },
         { .spec = kCTParagraphStyleSpecifierMaximumLineHeight, .valueSize = sizeof(theMaximumLineHeight), .value = &theMaximumLineHeight, },
         { .spec = kCTParagraphStyleSpecifierMinimumLineHeight, .valueSize = sizeof(theMinimumLineHeight), .value = &theMinimumLineHeight, },
-        { .spec = kCTParagraphStyleSpecifierLineSpacing, .valueSize = sizeof(theLineSpacing), .value = &theLineSpacing, },
         { .spec = kCTParagraphStyleSpecifierParagraphSpacing, .valueSize = sizeof(theParagraphSpacing), .value = &theParagraphSpacing, },
         { .spec = kCTParagraphStyleSpecifierParagraphSpacingBefore, .valueSize = sizeof(theParagraphSpacingBefore), .value = &theParagraphSpacingBefore, },
         { .spec = kCTParagraphStyleSpecifierBaseWritingDirection, .valueSize = sizeof(theBaseWritingDirection), .value = &theBaseWritingDirection, },
+        { .spec = kCTParagraphStyleSpecifierLineSpacingAdjustment, .valueSize = sizeof(inLineSpacingAdjustment), .value = &inLineSpacingAdjustment, },
         };
 
     CTParagraphStyleRef newStyle = CTParagraphStyleCreate( newSettings, sizeof(newSettings)/sizeof(CTParagraphStyleSetting) );
@@ -588,8 +587,10 @@ static CTTextAlignment CTTextAlignmentForNSTextAlignment(NSTextAlignment inAlign
     // NSLineBreakMode maps 1:1 to CTLineBreakMode
     CTLineBreakMode theLineBreakMode = (CTLineBreakMode)[[inSettings valueForKey:@"lineBreakMode"] unsignedIntegerValue];
 
+	CGFloat theLineSpacingAdjustment = [[inSettings valueForKey:@"lineSpacingAdjustment"] floatValue];
+
     [theMutableText enumerateAttributesInRange:(NSRange){ .length = theMutableText.length } options:0 usingBlock:^(NSDictionary *attrs, NSRange range, BOOL *stop) {
-        CTParagraphStyleRef newParagraphStyle = [self createParagraphStyleForAttributes:attrs alignment:theTextAlignment lineBreakMode:theLineBreakMode];
+        CTParagraphStyleRef newParagraphStyle = [self createParagraphStyleForAttributes:attrs alignment:theTextAlignment lineBreakMode:theLineBreakMode lineSpacingAdjustment:theLineSpacingAdjustment];
         [theMutableText addAttribute:(__bridge NSString *)kCTParagraphStyleAttributeName value:(__bridge id)newParagraphStyle range:range];
         CFRelease(newParagraphStyle);
         }];

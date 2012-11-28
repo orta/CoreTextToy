@@ -19,6 +19,7 @@ extern NSString *const kShadowBlurRadiusAttributeName;
 extern NSString *const kMarkupAttachmentAttributeName;
 extern NSString *const kMarkupBackgroundColorAttributeName;
 extern NSString *const kMarkupStrikeColorAttributeName;
+extern NSString *const kMarkupOutlineAttributeName;
 
 @interface NSAttributedString (NSAttributedString_Extensions)
 

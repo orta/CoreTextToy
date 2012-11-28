@@ -216,6 +216,13 @@
         };
     [self addHandler:theTagHandler forTag:@"strike"];
 
+    // ### outline
+    theTagHandler = ^(CSimpleHTMLTag *inTag) {
+        return(@{kMarkupOutlineAttributeName: @YES});
+        };
+    [self addHandler:theTagHandler forTag:@"outline"];
+
+
     // ### small
     theTagHandler = ^(CSimpleHTMLTag *inTag) {
         return(@{kMarkupSizeAdjustmentAttributeName: @-4.0f});

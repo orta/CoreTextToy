@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="2.0" toolsVersion="2843" systemVersion="12C60" targetRuntime="iOS.CocoaTouch.iPad" propertyAccessControl="none" useAutolayout="YES" initialViewController="93x-WQ-fvS">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="2.0" toolsVersion="2844" systemVersion="12C3006" targetRuntime="iOS.CocoaTouch.iPad" propertyAccessControl="none" useAutolayout="YES" initialViewController="93x-WQ-fvS">
     <dependencies>
         <development version="4400" identifier="xcode"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="1929"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="1930"/>
     </dependencies>
     <scenes>
         <!--Freeform Core Text View Controller - Freeform-->
@@ -21,7 +21,7 @@
                                 <constraints>
                                     <constraint firstAttribute="height" constant="180" id="zKz-M4-P0o"/>
                                 </constraints>
-                                <string key="text">&lt;b>hello &lt;i>world&lt;/i>&lt;/b>&lt;br>
+                                <mutableString key="text">&lt;b>hello &lt;i>world&lt;/i>&lt;/b>&lt;br>&lt;outline>Does outline work&lt;/outline>
 A lot of entites are supported. &amp;amp; &amp;lt; &amp;gt;&lt;br>
 White space mostly follows normal HTML rules. (But a bit buggy?)&lt;br>
 &lt;purple>Custom tags can be used for simple styling&lt;/purple>&lt;br>
@@ -31,7 +31,7 @@ White space mostly follows normal HTML rules. (But a bit buggy?)&lt;br>
 Links will work too:&lt;br>
 &lt;a href="http://apple.com">Apple&lt;/a>&lt;br>
 &lt;a href="http://google.com">Google&lt;/a>&lt;br>
-</string>
+</mutableString>
                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                 <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
                                 <connections>
@@ -320,6 +320,7 @@ Links will work too:&lt;br>
         <class className="CSimpleViewController" superclassName="UIViewController">
             <source key="sourceIdentifier" type="project" relativePath="./Classes/CSimpleViewController.h"/>
             <relationships>
+                <relationship kind="action" name="click:"/>
                 <relationship kind="outlet" name="label" candidateClass="CCoreTextLabel"/>
             </relationships>
         </class>

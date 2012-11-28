@@ -22,6 +22,7 @@ NSString *const kShadowBlurRadiusAttributeName = @"com.touchcode.shadowBlurRadiu
 NSString *const kMarkupAttachmentAttributeName = @"com.touchcode.attachment";
 NSString *const kMarkupBackgroundColorAttributeName = @"com.touchcode.backgroundColor";
 NSString *const kMarkupStrikeColorAttributeName = @"com.touchcode.strikeColor";
+NSString *const kMarkupOutlineAttributeName = @"com.touchcode.outline";
 
 @implementation NSAttributedString (NSAttributedString_Extensions)
 
@@ -82,7 +83,13 @@ NSString *const kMarkupStrikeColorAttributeName = @"com.touchcode.strikeColor";
         {
         theFont = theBaseFont.italicFont;
         }
-        
+
+    if (theAttributes[kMarkupOutlineAttributeName] != NULL)
+        {
+        [theAttributes removeObjectForKey:kMarkupOutlineAttributeName];
+		theAttributes[(__bridge NSString *)kCTStrokeWidthAttributeName] = @(3.0);
+        }
+
     NSNumber *theSizeValue = theAttributes[kMarkupSizeAdjustmentAttributeName];
     if (theSizeValue != NULL)
         {

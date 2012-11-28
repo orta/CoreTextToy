@@ -34,6 +34,12 @@
 
 + (CGSize)sizeForString:(NSAttributedString *)inString thatFits:(CGSize)inSize
     {
+	if (inString == NULL)
+		{
+        NSLog(@"Could not create CTFramesetter");
+        return(CGSizeZero);
+		}
+
     CTFramesetterRef theFramesetter = CTFramesetterCreateWithAttributedString((__bridge CFAttributedStringRef)inString);
     if (theFramesetter == NULL)
         {
@@ -61,6 +67,12 @@
 
 - (id)initWithText:(NSAttributedString *)inText size:(CGSize)inSize
     {
+	if (inText == NULL)
+		{
+		self = NULL;
+		return(NULL);
+		}
+
     if ((self = [super init]) != NULL)
         {
         _text = [inText copy];

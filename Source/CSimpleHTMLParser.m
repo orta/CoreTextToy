@@ -258,4 +258,10 @@ NSString *const kSimpleHTMLParserErrorDomain = @"kSimpleHTMLParserErrorDomain";
 
 @implementation CSimpleHTMLTag
 
+- (NSString *)description
+    {
+    return([NSString stringWithFormat:@"%@ (%@, %@)", [super description], self.name, self.attributes]);
+    }
+
+
 @end

@@ -312,6 +312,12 @@ static CTTextAlignment CTTextAlignmentForNSTextAlignment(NSTextAlignment inAlign
     {
     if (_renderer == NULL)
         {
+		if (self.text == NULL)
+			{
+			// Bail early...
+			return(NULL);
+			}
+
         NSMutableAttributedString *theNormalizedText = [[[self class] normalizeString:self.text settings:self] mutableCopy];
 
         CGRect theBounds = self.bounds;

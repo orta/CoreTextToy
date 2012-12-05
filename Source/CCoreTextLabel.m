@@ -154,6 +154,16 @@ static CTTextAlignment CTTextAlignmentForNSTextAlignment(NSTextAlignment inAlign
 
 #pragma mark -
 
+- (NSString *)plainText
+	{
+	return(self.text.string);
+	}
+
+- (void)setPlainText:(NSString *)plainText
+	{
+	self.text = [[NSAttributedString alloc] initWithString:plainText];
+	}
+
 - (void)setText:(NSAttributedString *)inText
     {
     if (_text != inText)

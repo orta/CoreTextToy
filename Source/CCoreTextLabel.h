@@ -33,6 +33,7 @@
 
 @interface CCoreTextLabel : UIView
 
+@property (readwrite, nonatomic, strong) NSString *plainText;
 @property (readwrite, nonatomic, strong) NSAttributedString *text;
 @property (readwrite, nonatomic, strong) UIFont *font;                  // default is nil (system font 17 plain)
 @property (readwrite, nonatomic, strong) UIColor *textColor;            // default is nil (text draws black)

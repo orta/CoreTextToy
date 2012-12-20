@@ -66,18 +66,18 @@
     }
 
 - (id)init
-	{
-	if ((self = [super init]) != NULL)
-		{
+    {
+    if ((self = [super init]) != NULL)
+        {
         tagHandlers = [NSMutableDictionary dictionary];
 
         [self resetStyles];
 
         [self addStandardStyles];
-		}
-	return(self);
-	}
-    
+        }
+    return(self);
+    }
+
 - (id)transformedValue:(id)value
     {
     return([self transformedValue:value error:NULL]);
@@ -114,7 +114,7 @@
                 {
                 theImageSource = NULL;
                 }
-        
+
             UIImage *theImage = NULL;
             if ([theImageSource length] > 0)
                 {
@@ -139,7 +139,7 @@
                 theAttachment, kMarkupAttachmentAttributeName,
                 (__bridge_transfer id)theRunDelegate, (__bridge id)kCTRunDelegateAttributeName,
                 NULL];
-            
+
             if (theCurrentLink != NULL)
                 {
                 [theImageAttributes setObject:theCurrentLink forKey:kMarkupLinkAttributeName];
@@ -156,6 +156,10 @@
             {
             theCurrentLink = NULL;
             }
+        else if ([inTag.name isEqualToString:@"p"] == YES) {
+            NSAttributedString *as = [[NSAttributedString alloc] initWithString:@"\n"];
+            [theAttributedString appendAttributedString:as];
+        }
     };
 
     theParser.textHandler = ^(NSString *inString, NSArray *tagStack) {
@@ -166,7 +170,7 @@
             {
             [theTextAttributes setObject:theCurrentLink forKey:kMarkupLinkAttributeName];
             }
-        
+
         [theAttributedString appendAttributedString:[[NSAttributedString alloc] initWithString:inString attributes:theTextAttributes]];
         };
 
@@ -176,14 +180,14 @@
         // Therefore we need this autorelease pool.
         @autoreleasepool
         {
-            
+
         if ([theParser parseString:theMarkup error:outError] == NO)
             {
             return(NULL);
             }
 
         }
-        
+
     return(theAttributedString);
     }
 
@@ -203,7 +207,7 @@
             NULL]);
         };
     [self addHandler:theTagHandler forTag:@"b"];
-
+    [self addHandler:theTagHandler forTag:@"strong"];
     // ### i
     theTagHandler = ^(CSimpleHTMLTag *inTag) {
         return([NSDictionary dictionaryWithObjectsAndKeys:
@@ -211,6 +215,7 @@
             NULL]);
         };
     [self addHandler:theTagHandler forTag:@"i"];
+    [self addHandler:theTagHandler forTag:@"em"];
 
     // ### a
     theTagHandler = ^(CSimpleHTMLTag *inTag) {
@@ -275,7 +280,7 @@
 
     for (CSimpleHTMLTag *theTag in inTagStack)
         {
-        BTagHandler theHandler = [self.tagHandlers objectForKey:theTag.name]; 
+        BTagHandler theHandler = [self.tagHandlers objectForKey:theTag.name];
         if (theHandler)
             {
             NSDictionary *theAttributes = theHandler(theTag);

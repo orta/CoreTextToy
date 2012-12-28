@@ -148,7 +148,7 @@ NSString *const kSimpleHTMLParserErrorDomain = @"kSimpleHTMLParserErrorDomain";
                     if ([theTagName isEqualToString:@"br"])
                         {
                         theLastCharacterWasWhitespace = YES;
-                        self.textHandler(@"\n", theTagStack);
+                        self.textHandler([NSString stringWithFormat:@"%C", (unsigned short)0x2028], theTagStack);
                         theString = [NSMutableString string];
                         }
                     else
@@ -174,7 +174,7 @@ NSString *const kSimpleHTMLParserErrorDomain = @"kSimpleHTMLParserErrorDomain";
                     if ([theTagName isEqualToString:@"br"])
                         {
                         theLastCharacterWasWhitespace = YES;
-                        self.textHandler(@"\n", theTagStack);
+                        self.textHandler([NSString stringWithFormat:@"%C", (unsigned short)0x2028], theTagStack);
                         theString = [NSMutableString string];
                         }
                     else

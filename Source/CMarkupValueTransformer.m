@@ -91,6 +91,7 @@
 
     __block NSMutableDictionary *theTextAttributes = NULL;
     __block NSURL *theCurrentLink = NULL;
+    __block BOOL tagHasText = NO;
 
     CSimpleHTMLParser *theParser = [[CSimpleHTMLParser alloc] init];
     if (self.whitespaceCharacterSet != NULL)
@@ -99,6 +100,7 @@
         }
 
     theParser.openTagHandler = ^(CSimpleHTMLTag *inTag, NSArray *tagStack) {
+        tagHasText = NO;
         if ([inTag.name isEqualToString:@"a"] == YES)
             {
             NSString *theURLString = [inTag.attributes objectForKey:@"href"];
@@ -152,17 +154,32 @@
         };
 
     theParser.closeTagHandler = ^(CSimpleHTMLTag *inTag, NSArray *tagStack) {
-        if ([inTag.name isEqualToString:@"a"] == YES == YES)
+        if ([inTag.name isEqualToString:@"a"] == YES)
             {
             theCurrentLink = NULL;
             }
-        else if ([inTag.name isEqualToString:@"p"] == YES) {
+        else if ([inTag.name isEqualToString:@"p"] == YES && tagHasText == YES) {
             NSAttributedString *as = [[NSAttributedString alloc] initWithString:@"\n"];
             [theAttributedString appendAttributedString:as];
         }
     };
 
     theParser.textHandler = ^(NSString *inString, NSArray *tagStack) {
+        if (!tagHasText) {
+            int n = [inString length];
+            for (int i = 0; i < n; i++) {
+                unichar aChar = [inString characterAtIndex:i];
+                if (![self.whitespaceCharacterSet characterIsMember:aChar]) {
+                    tagHasText = YES;
+                    break;
+                }
+            }
+            // if the in string is all whitespace, we really don't need to
+            // process it
+            if (!tagHasText) {
+                return;
+            }
+        }
         NSDictionary *theAttributes = [self attributesForTagStack:tagStack];
         theTextAttributes = [theAttributes mutableCopy];
 

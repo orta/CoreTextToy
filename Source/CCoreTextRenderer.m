@@ -55,17 +55,17 @@
 
     CGSize theSize = CTFramesetterSuggestFrameSizeWithConstraints(theFramesetter, (CFRange){}, NULL, inSize, NULL);
     CFRelease(theFramesetter);
-    
+
     if (inSize.width < CGFLOAT_MAX && inSize.height == CGFLOAT_MAX)
         {
         theSize.width = inSize.width;
         }
-    
+
     // On iOS 5.0 the function `CTFramesetterSuggestFrameSizeWithConstraints` returns rounded float values (e.g. "15.0").
     // Prior to iOS 5.0 the function returns float values (e.g. "14.7").
     // Make sure the return value for `sizeForString:thatFits:" is equal for both versions:
     theSize = (CGSize){ .width = roundf(theSize.width), .height = roundf(theSize.height) };
-        
+
     return(theSize);
     }
 
@@ -78,10 +78,12 @@
         text = [inText copy];
         size = inSize;
         enableShadowRenderer = NO;
-        
+
         [text enumerateAttribute:kShadowColorAttributeName inRange:(NSRange){ .length = text.length } options:0 usingBlock:^(id value, NSRange range, BOOL *stop) {
-            enableShadowRenderer = YES;
-            *stop = YES;
+            if (value) {
+                enableShadowRenderer = YES;
+                *stop = YES;
+            }
             }];
         }
     return(self);
@@ -129,29 +131,29 @@
             {
             NSLog(@"Could not create CTFrameRef");
             }
-            
+
         CFRelease(thePath);
         }
     return(frame);
     }
-    
+
 - (void)setText:(NSAttributedString *)inText
     {
     if (text != inText)
         {
         text = [inText copy];
-    
+
         [self reset];
         }
     }
-    
+
 - (void)setSize:(CGSize)inSize
     {
     size = inSize;
-    
-    [self reset];    
+
+    [self reset];
     }
-    
+
 - (CGPoint *)lineOrigins
     {
     if (lineOriginsData == NULL)
@@ -159,7 +161,7 @@
         NSArray *theLines = (__bridge NSArray *)CTFrameGetLines(self.frame);
 
         lineOriginsData = [NSMutableData dataWithLength:sizeof(CGPoint) * theLines.count];
-        CTFrameGetLineOrigins(self.frame, (CFRange){}, [lineOriginsData mutableBytes]); 
+        CTFrameGetLineOrigins(self.frame, (CFRange){}, [lineOriginsData mutableBytes]);
         }
     return([lineOriginsData mutableBytes]);
     }
@@ -172,7 +174,7 @@
         {
         self.prerenderersForAttributes = [NSMutableDictionary dictionary];
         }
-        
+
     [self.prerenderersForAttributes setObject:[inBlock copy] forKey:inKey];
     }
 
@@ -182,7 +184,7 @@
         {
         self.postRenderersForAttributes = [NSMutableDictionary dictionary];
         }
-        
+
     [self.postRenderersForAttributes setObject:[inBlock copy] forKey:inKey];
     }
 
@@ -195,7 +197,7 @@
         inSize.width = CGFLOAT_MAX;
         inSize.height = CGFLOAT_MAX;
         }
-    
+
     CFRange theFitRange;
     CGSize theSize = CTFramesetterSuggestFrameSizeWithConstraints(self.framesetter, (CFRange){}, NULL, inSize, &theFitRange);
 
@@ -211,7 +213,7 @@
         {
         return;
         }
-    
+
     // ### Get and set up the context...
     CGContextSaveGState(inContext);
 
@@ -243,6 +245,7 @@
         }
     else
         {
+
         const CGPoint *theLineOrigins = self.lineOrigins;
 
         [self enumerateLines:^(CTLineRef line, NSUInteger idx, BOOL *stop) {
@@ -250,7 +253,7 @@
             const CGPoint theLineOrigin = theLineOrigins[idx];
 
             CGContextSetTextPosition(inContext, theLineOrigin.x, theLineOrigin.y);
-            
+
             // ### Iterate each run... Keeping track of our X position...
             NSArray *theRuns = (__bridge NSArray *)CTLineGetGlyphRuns(line);
             [theRuns enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
@@ -284,7 +287,7 @@
                 }];
 
             }];
-        
+
         }
 
     // ### Reset the text position (important!)
@@ -337,28 +340,28 @@
         return(theAttributes);
         }
     }
-    
+
 - (NSArray *)rectsForRange:(CFRange)inRange
     {
     NSMutableArray *theRects = [NSMutableArray array];
 
     [self enumerateRuns:^(CTRunRef inRun, CGRect inRect) {
 
-//    NSIntersectionRange(inRange, 
-    
+//    NSIntersectionRange(inRange,
+
         CFRange theRunRange = CTRunGetStringRange(inRun);
         if (theRunRange.location >= (CFIndex)inRange.location && theRunRange.location <= (CFIndex)inRange.location + (CFIndex)inRange.length)
             {
             inRect.origin.y *= -1;
             inRect.origin.y += self.size.height -  inRect.size.height;
-            
+
             [theRects addObject:[NSValue valueWithCGRect:inRect]];
             }
         }];
 
     return(theRects);
     }
-    
+
 - (NSUInteger)indexAtPoint:(CGPoint)inPoint
     {
     inPoint.y *= -1;
@@ -381,14 +384,14 @@
             }
         theLastLineOrigin = theLineOrigin;
         }];
-        
+
     return(theIndex);
     }
 
 - (NSArray *)visibleLines
     {
     NSMutableArray *theVisibleLines = [NSMutableArray array];
-    
+
     [self enumerateLines:^(CTLineRef line, NSUInteger idx, BOOL *stop) {
         CGPoint theLineOrigin;
         CTFrameGetLineOrigins(self.frame, CFRangeMake(idx, 1), &theLineOrigin);
@@ -403,23 +406,23 @@
             *stop = YES;
             }
         }];
-    
+
     return([theVisibleLines copy]);
     }
 
 - (CFRange)rangeOfLastLine
     {
     CTLineRef theLine = (__bridge CTLineRef)[self.visibleLines lastObject];
-    
+
     CFRange theRange = CTLineGetStringRange(theLine);
-    
+
     return((CFRange){ .location = theRange.location, .length = theRange.length });
     }
 
 - (void)enumerateLines:(void (^)(CTLineRef line, NSUInteger idx, BOOL *stop))inHandler
     {
     NSParameterAssert(inHandler != NULL);
-    
+
     // ### Iterate through each line...
     NSArray *theLines = (__bridge NSArray *)CTFrameGetLines(self.frame);
     [theLines enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
@@ -436,13 +439,13 @@
     [self enumerateLines:^(CTLineRef line, NSUInteger idx, BOOL *stop) {
         // ### Get the line rect offseting it by the line origin
         const CGPoint theLineOrigin = self.lineOrigins[idx];
-        
+
         // ### Iterate each run... Keeping track of our X position...
         __block CGFloat theXPosition = 0;
         NSArray *theRuns = (__bridge NSArray *)CTLineGetGlyphRuns(line);
         [theRuns enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
             CTRunRef theRun = (__bridge CTRunRef)obj;
-            
+
             // ### Get the ascent, descent, leading, width and produce a rect for the run...
             CGFloat theAscent, theDescent, theLeading;
             double theWidth = CTRunGetTypographicBounds(theRun, (CFRange){}, &theAscent, &theDescent, &theLeading);

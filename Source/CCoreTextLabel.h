@@ -48,7 +48,7 @@
 
 @property (readwrite, nonatomic, assign) UIEdgeInsets insets;
 
-+ (CGSize)sizeForString:(NSAttributedString *)inString font:(UIFont *)inBaseFont alignment:(UITextAlignment)inTextAlignment lineBreakMode:(UILineBreakMode)inLineBreakMode contentInsets:(UIEdgeInsets)inContentInsets thatFits:(CGSize)inSize;
++ (CGSize)sizeForString:(NSAttributedString *)inString font:(UIFont *)inBaseFont alignment:(NSTextAlignment)inTextAlignment lineBreakMode:(NSLineBreakMode)inLineBreakMode contentInsets:(UIEdgeInsets)inContentInsets thatFits:(CGSize)inSize;
 
 - (CGSize)sizeForString:(NSAttributedString *)inText constrainedToSize:(CGSize)inSize;
 
